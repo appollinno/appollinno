@@ -1,0 +1,13 @@
+services:
+  whatsapp-agent:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      AUTH_DIR: /data/auth
+    volumes:
+      - wa-session:/data
+    stdin_open: true
+    tty: true   # para ver o QR code em `docker compose logs -f`
+volumes:
+  wa-session:

@@ -62,7 +62,7 @@ export const IntuneSummitPremium: React.FC = () => (
         <SceneSecurityCopilot />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition presentation={fade()} timing={T} />
-      <TransitionSeries.Sequence durationInFrames={150}>
+      <TransitionSeries.Sequence durationInFrames={210}>
         <SceneFinal />
       </TransitionSeries.Sequence>
     </TransitionSeries>

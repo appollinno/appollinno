@@ -28,7 +28,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="IntuneSummitPremium"
         component={IntuneSummitPremium}
-        durationInFrames={1335}
+        durationInFrames={1395}
         fps={30}
         width={1920}
         height={1080}

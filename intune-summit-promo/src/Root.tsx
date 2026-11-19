@@ -3,6 +3,7 @@ import {Composition, Folder} from 'remotion';
 import {IntuneSummitPromo} from './IntuneSummitPromo';
 import {Cta, Intro, Topics} from './Scenes';
 import {IntuneSummitEdicao1} from './IntuneSummitEdicao1';
+import {IntuneSummitPremium} from './IntuneSummitPremium';
 import {
   EdConditionalAccess,
   EdCopilot,
@@ -20,6 +21,14 @@ export const RemotionRoot: React.FC = () => {
         id="IntuneSummitPromo"
         component={IntuneSummitPromo}
         durationInFrames={450}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="IntuneSummitPremium"
+        component={IntuneSummitPremium}
+        durationInFrames={1335}
         fps={30}
         width={1920}
         height={1080}

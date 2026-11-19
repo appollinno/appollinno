@@ -10,7 +10,7 @@ import {
 } from 'remotion';
 import {colors, font} from './theme';
 
-const FlagStripe: React.FC = () => (
+export const FlagStripe: React.FC = () => (
   <div style={{display: 'flex', height: 12, width: 360, borderRadius: 6, overflow: 'hidden'}}>
     <div style={{flex: 1, background: colors.green}} />
     <div style={{flex: 1, background: colors.yellow}} />
@@ -28,7 +28,7 @@ const useFadeUp = (delay: number) => {
   };
 };
 
-const Line: React.FC<{
+export const Line: React.FC<{
   readonly delay: number;
   readonly children: React.ReactNode;
   readonly style: React.CSSProperties;
@@ -37,7 +37,7 @@ const Line: React.FC<{
   return <div style={{fontFamily: font, ...style, ...anim}}>{children}</div>;
 };
 
-const Glow: React.FC = () => {
+export const Glow: React.FC = () => {
   const frame = useCurrentFrame();
   const x = interpolate(frame, [0, 150], [-100, 100], {easing: Easing.inOut(Easing.quad), extrapolateRight: 'clamp'});
   return (

@@ -2,6 +2,16 @@ import React from 'react';
 import {Composition, Folder} from 'remotion';
 import {IntuneSummitPromo} from './IntuneSummitPromo';
 import {Cta, Intro, Topics} from './Scenes';
+import {IntuneSummitEdicao1} from './IntuneSummitEdicao1';
+import {
+  EdConditionalAccess,
+  EdCopilot,
+  EdCta,
+  EdIntro,
+  EdIntune,
+  EdPim,
+  EdSecurityCopilot,
+} from './Edicao1';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -14,6 +24,79 @@ export const RemotionRoot: React.FC = () => {
         width={1920}
         height={1080}
       />
+      <Composition
+        id="IntuneSummitEdicao1"
+        component={IntuneSummitEdicao1}
+        durationInFrames={990}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Folder name="Edicao1-Cenas">
+        <Composition
+          id="Ed-Abertura"
+          component={EdIntro}
+          durationInFrames={120}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-Intune"
+          component={EdIntune}
+          durationInFrames={150}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-Copilot"
+          component={EdCopilot}
+          durationInFrames={150}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-SecurityCopilot"
+          component={EdSecurityCopilot}
+          durationInFrames={150}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-AcessoCondicional"
+          component={EdConditionalAccess}
+          durationInFrames={150}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-PimJit"
+          component={EdPim}
+          durationInFrames={150}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#0b1220'}}}
+        />
+        <Composition
+          id="Ed-Encerramento"
+          component={EdCta}
+          durationInFrames={120}
+          fps={30}
+          width={1920}
+          height={1080}
+          defaultProps={{style: {backgroundColor: '#10204a'}}}
+        />
+      </Folder>
       <Folder name="Scenes">
         <Composition
           id="Intro"

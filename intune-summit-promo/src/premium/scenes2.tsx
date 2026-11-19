@@ -245,13 +245,7 @@ export const SceneSecurityCopilot: React.FC = () => {
 };
 
 /* 11 — Encerramento */
-const community = [
-  {src: 'logos/community-1.jpg', w: 92},
-  {src: 'logos/community-2.jpg', w: 92},
-  {src: 'logos/community-3.jpg', w: 150},
-  {src: 'logos/community-4.jpg', w: 200},
-  {src: 'logos/community-5.jpg', w: 92},
-];
+const community = [1, 2, 3, 4, 5].map((n) => ({src: `logos/community-${n}-fmt.png`, w: 180}));
 const row = [LOGOS.intune, LOGOS.m365, LOGOS.purview, LOGOS.defender, LOGOS.copilot, LOGOS.entra, LOGOS.azure];
 
 export const SceneFinal: React.FC = () => {
@@ -289,7 +283,7 @@ export const SceneFinal: React.FC = () => {
         <div style={{display: 'flex', alignItems: 'center', gap: 22, marginTop: 24}}>
           {community.map((c, i) => (
             <Appear key={c.src} delay={72 + i * 6} y={24}>
-              <div style={{width: c.w, height: 92, borderRadius: 22, overflow: 'hidden', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 10px 30px rgba(0,0,0,0.45)', background: '#fff'}}>
+              <div style={{width: c.w, height: 100, borderRadius: 22, overflow: 'hidden', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 10px 30px rgba(0,0,0,0.45)', background: '#fff'}}>
                 <Img src={staticFile(c.src)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
               </div>
             </Appear>

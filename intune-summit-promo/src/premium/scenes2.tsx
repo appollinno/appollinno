@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {C, gradText, LOGOS} from './tokens';
 import {Appear, CheckIcon, clampX, Glass, Kicker, Logo, LogoTile, Pill, Scene, typed, useEnter, Words} from './ui';
 
@@ -245,6 +245,13 @@ export const SceneSecurityCopilot: React.FC = () => {
 };
 
 /* 11 — Encerramento */
+const community = [
+  {src: 'logos/community-1.jpg', w: 92},
+  {src: 'logos/community-2.jpg', w: 92},
+  {src: 'logos/community-3.jpg', w: 150},
+  {src: 'logos/community-4.jpg', w: 200},
+  {src: 'logos/community-5.jpg', w: 92},
+];
 const row = [LOGOS.intune, LOGOS.m365, LOGOS.purview, LOGOS.defender, LOGOS.copilot, LOGOS.entra, LOGOS.azure];
 
 export const SceneFinal: React.FC = () => {
@@ -255,31 +262,40 @@ export const SceneFinal: React.FC = () => {
     <Scene>
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center'}}>
         <Pill color={C.red} style={{fontSize: 48, padding: '10px 50px', opacity: useEnter(0)}}>1.ª EDIÇÃO</Pill>
-        <Words text="INTUNE SUMMIT" delay={6} center style={{fontSize: 170, fontWeight: 900, lineHeight: 1.05, letterSpacing: -4, marginTop: 10}} wordStyle={gradText} />
-        <Words text="MOÇAMBIQUE" delay={16} center style={{fontSize: 96, fontWeight: 800, letterSpacing: 16}} />
-        <div style={{display: 'flex', alignItems: 'center', gap: 34, marginTop: 26, fontSize: 58, fontWeight: 800, opacity: useEnter(30)}}>
+        <Words text="INTUNE SUMMIT" delay={6} center style={{fontSize: 150, fontWeight: 900, lineHeight: 1.05, letterSpacing: -4, marginTop: 10}} wordStyle={gradText} />
+        <Words text="MOÇAMBIQUE" delay={16} center style={{fontSize: 80, fontWeight: 800, letterSpacing: 16}} />
+        <div style={{display: 'flex', alignItems: 'center', gap: 34, marginTop: 18, fontSize: 52, fontWeight: 800, opacity: useEnter(30)}}>
           <span>28 NOV</span>
           <span style={{color: C.cyan}}>·</span>
           <span>09:00 - 17:00</span>
           <span style={{color: C.cyan}}>·</span>
           <span style={{color: C.green}}>ONLINE</span>
         </div>
-        <div style={{display: 'flex', gap: 26, marginTop: 32}}>
+        <div style={{display: 'flex', gap: 26, marginTop: 22}}>
           {row.map((l, i) => (
-            <LogoTile key={l} name={l} size={104} delay={34 + i * 5} />
+            <LogoTile key={l} name={l} size={88} delay={34 + i * 5} />
           ))}
         </div>
-        <div style={{marginTop: 34, opacity: cta, transform: `scale(${0.8 + cta * 0.2})`}}>
-          <div style={{fontSize: 56, fontWeight: 800, padding: '16px 70px', borderRadius: 999, background: `linear-gradient(90deg, ${C.blue}, ${C.violet})`, boxShadow: `0 0 ${50 + pulse * 50}px ${C.blue}aa`}}>
+        <div style={{marginTop: 22, opacity: cta, transform: `scale(${0.8 + cta * 0.2})`}}>
+          <div style={{fontSize: 52, fontWeight: 800, padding: '12px 64px', borderRadius: 999, background: `linear-gradient(90deg, ${C.blue}, ${C.violet})`, boxShadow: `0 0 ${50 + pulse * 50}px ${C.blue}aa`}}>
             Call for Speakers · Registo
           </div>
         </div>
         <Appear delay={64} y={20}>
-          <div style={{marginTop: 22, fontSize: 48, fontWeight: 700, color: C.cyan, letterSpacing: 0.5}}>
+          <div style={{marginTop: 14, fontSize: 46, fontWeight: 700, color: C.cyan, letterSpacing: 0.5}}>
             sessionize.com/intune-summit-para-mozambique
           </div>
         </Appear>
-        <div style={{display: 'flex', alignItems: 'center', gap: 16, marginTop: 28, fontSize: 38, color: C.mute}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: 22, marginTop: 24}}>
+          {community.map((c, i) => (
+            <Appear key={c.src} delay={72 + i * 6} y={24}>
+              <div style={{width: c.w, height: 92, borderRadius: 22, overflow: 'hidden', border: '1.5px solid rgba(255,255,255,0.25)', boxShadow: '0 10px 30px rgba(0,0,0,0.45)', background: '#fff'}}>
+                <Img src={staticFile(c.src)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+              </div>
+            </Appear>
+          ))}
+        </div>
+        <div style={{display: 'flex', alignItems: 'center', gap: 14, marginTop: 20, fontSize: 36, color: C.mute}}>
           <Logo name={LOGOS.azure} size={46} /> Azure User Group Moçambique
         </div>
       </AbsoluteFill>

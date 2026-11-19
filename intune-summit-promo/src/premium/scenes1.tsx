@@ -103,7 +103,7 @@ export const SceneDate: React.FC = () => {
           </Glass>
           <Glass delay={24} style={{padding: '34px 44px'}}>
             <div style={{fontSize: 44, color: C.mute}}>Horário (hora de Maputo)</div>
-            <div style={{fontSize: 104, fontWeight: 900, letterSpacing: -2, whiteSpace: 'nowrap', ...gradText}}>09:00 — 17:00</div>
+            <div style={{fontSize: 104, fontWeight: 900, letterSpacing: -2, whiteSpace: 'nowrap', ...gradText}}>09:00 - 17:00</div>
             <div style={{marginTop: 24, height: 18, borderRadius: 9, background: 'rgba(255,255,255,0.12)', position: 'relative'}}>
               <div style={{height: '100%', width: `${progress * 100}%`, borderRadius: 9, background: `linear-gradient(90deg, ${C.blue}, ${C.cyan})`, boxShadow: `0 0 30px ${C.cyan}`}} />
             </div>

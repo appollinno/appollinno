@@ -260,7 +260,7 @@ export const SceneFinal: React.FC = () => {
         <div style={{display: 'flex', alignItems: 'center', gap: 34, marginTop: 26, fontSize: 58, fontWeight: 800, opacity: useEnter(30)}}>
           <span>28 NOV</span>
           <span style={{color: C.cyan}}>·</span>
-          <span>09:00 — 17:00</span>
+          <span>09:00 - 17:00</span>
           <span style={{color: C.cyan}}>·</span>
           <span style={{color: C.green}}>ONLINE</span>
         </div>

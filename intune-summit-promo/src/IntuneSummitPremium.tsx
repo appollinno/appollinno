@@ -1,5 +1,6 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {Audio} from '@remotion/media';
+import {AbsoluteFill, staticFile} from 'remotion';
 import {linearTiming, TransitionSeries} from '@remotion/transitions';
 import {fade} from '@remotion/transitions/fade';
 import {slide} from '@remotion/transitions/slide';
@@ -19,6 +20,7 @@ const T = linearTiming({durationInFrames: 15});
 export const IntuneSummitPremium: React.FC = () => (
   <AbsoluteFill>
     <Background />
+    <Audio name="Música" src={staticFile('music.mp3')} volume={0.9} />
     <TransitionSeries>
       <TransitionSeries.Sequence durationInFrames={135}>
         <SceneIntro />

@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/*
+  Appollo Coffee Shop — Brand Design Tokens
+  Warm, editorial, premium specialty-coffee palette.
+*/
+:root {
+  /* Brand palette */
+  --ivory: #f4efe5;
+  --cream: #e9ddcb;
+  --caramel: #b87945;
+  --coffee: #70452e;
+  --espresso: #3b241b;
+  --charcoal: #191715;
+
+  /* Semantic tokens (light) */
+  --background: var(--ivory);
+  --surface: var(--cream);
+  --foreground: var(--espresso);
+  --foreground-muted: color-mix(in srgb, var(--espresso) 70%, transparent);
+  --primary: var(--coffee);
+  --primary-foreground: var(--ivory);
+  --accent: var(--caramel);
+  --accent-foreground: var(--charcoal);
+  --border: color-mix(in srgb, var(--espresso) 14%, transparent);
+  --ring: var(--caramel);
+
+  --radius: 0.25rem;
+}
+
+:root[data-theme="dark"] {
+  --background: var(--charcoal);
+  --surface: #241f1b;
+  --foreground: var(--cream);
+  --foreground-muted: color-mix(in srgb, var(--cream) 65%, transparent);
+  --primary: var(--caramel);
+  --primary-foreground: var(--charcoal);
+  --accent: var(--caramel);
+  --accent-foreground: var(--charcoal);
+  --border: color-mix(in srgb, var(--cream) 16%, transparent);
+  --ring: var(--caramel);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --color-ivory: var(--ivory);
+  --color-cream: var(--cream);
+  --color-caramel: var(--caramel);
+  --color-coffee: var(--coffee);
+  --color-espresso: var(--espresso);
+  --color-charcoal: var(--charcoal);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+
+  --radius-ds: var(--radius);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: var(--charcoal);
+    --surface: #241f1b;
+    --foreground: var(--cream);
+    --foreground-muted: color-mix(in srgb, var(--cream) 65%, transparent);
+    --primary: var(--caramel);
+    --primary-foreground: var(--charcoal);
+    --accent: var(--caramel);
+    --accent-foreground: var(--charcoal);
+    --border: color-mix(in srgb, var(--cream) 16%, transparent);
+    --ring: var(--caramel);
+  }
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Visible focus ring for keyboard users, hidden for pointer users */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Editorial letter-spacing utility for oversized display type */
+.tracking-tight-display {
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+}

@@ -1,40 +1,36 @@
-# Hi, I'm Cremildo Manhique
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-### System Engineer & DevOps Engineer | Maputo, Mozambique
+## Getting Started
 
-I work at the intersection of Systems Engineering, DevOps, and Cloud Infrastructure, building and automating CI/CD pipelines, container platforms, and infrastructure-as-code.
+First, run the development server:
 
-## Technologies & Tools
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-**Cloud Platforms:** Azure
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-**OS:** Linux & Windows (11 and Server 2019, 2022 & 2025)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-**Infrastructure as Code:** Terraform
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-**Configuration Management:** Ansible
+## Learn More
 
-**Monitoring/Observability:** Grafana, Prometheus
+To learn more about Next.js, take a look at the following resources:
 
-**Containerization & Orchestration:** Docker, Kubernetes
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-**Programming/Scripting:** Bash, Python
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-**CI/CD & Version Control:** GitHub Actions, Git, GitLab, GitHub, Nexus, Docker Hub
+## Deploy on Vercel
 
-**Package Management:** Helm
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-**GitOps:** ArgoCD
-
-## Additional Information
-
-- 🤝 Open to collaborating on DevOps projects and cloud automation
-- 🧠 Always learning (non-stop!), exploring new tools, and improving skills
-- 😄 Let's connect, share knowledge, or just talk about tech
-- 📫 Connect with me on [LinkedIn](https://www.linkedin.com/in/cremildosamanhique)
-
-## GitHub Stats
-
-![Stats](https://github-readme-stats.vercel.app/api?username=appollinno&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=appollinno&layout=compact&theme=tokyonight)
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -118,6 +118,9 @@ export function Footer() {
             <Link href="/contact" className="hover:text-cream">
               Business Info
             </Link>
+            <Link href="/credits" className="hover:text-cream">
+              Image Credits
+            </Link>
             <span>Maputo · Mozambique</span>
           </div>
         </div>

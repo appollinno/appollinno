@@ -16,6 +16,7 @@ const PAGES = [
   "/contact",
   "/login",
   "/register",
+  "/credits",
 ];
 
 for (const path of PAGES) {

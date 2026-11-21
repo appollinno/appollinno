@@ -6,7 +6,7 @@ import { test, expect, type Page } from "@playwright/test";
 // This walks every visible text node, reads its real computed color and
 // effective background via getComputedStyle, and applies the actual
 // WCAG 2 contrast formula with the correct large-text threshold.
-const PAGES = ["/", "/shop", "/shop/ethiopia-yirgacheffe", "/our-story", "/journal", "/contact", "/login"];
+const PAGES = ["/", "/shop", "/shop/ethiopia-yirgacheffe", "/our-story", "/journal", "/contact", "/login", "/credits"];
 
 async function findContrastViolations(page: Page) {
   return page.evaluate(() => {

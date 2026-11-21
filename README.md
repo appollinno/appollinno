@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Appollo Coffee Shop
 
-## Getting Started
+A specialty coffee e-commerce site and brand experience — Next.js 16, TypeScript,
+Tailwind CSS v4, Framer Motion. Single-origin coffee, roasted in small
+batches, sold through a cinematic, editorial storefront.
 
-First, run the development server:
+**Read [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md) first** — it's
+the honest, current state of the project: what's real, what's mocked and
+why, what's actually been measured and tested, and what's left before this
+is launch-ready.
+
+## Documentation
+
+| Doc | Covers |
+|---|---|
+| [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md) | Project status, verified test/audit results, acceptance criteria, what's next |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Stack, directory layout, what's real vs. mocked, rendering model |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | How to deploy, and how to connect Supabase/payments/email |
+| [docs/SECURITY.md](docs/SECURITY.md) | Security posture (OWASP-mapped) and performance findings |
+| [docs/IMAGE_SOURCING.md](docs/IMAGE_SOURCING.md) | Where the photography comes from and its required attribution |
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). An admin account is
+seeded automatically at `admin@appollo.coffee` — password from
+`ADMIN_SEED_PASSWORD` if set, otherwise `AppolloAdmin!2026` (development
+only; see docs/DEPLOYMENT.md before deploying anywhere reachable).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev         # start the dev server
+npm run build        # production build
+npm run start        # run the production build
+npm run lint          # eslint
+npm run test:unit    # Vitest unit tests
+npm run test:e2e     # Playwright e2e tests (builds + starts the app first)
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/              routes: pages, API routes, layout, metadata
+components/       by domain: home/, shop/, product/, cart/, account/, admin/, layout/, ui/, seo/
+lib/              domain logic: data/, auth/, store/ (Zustand), orders.ts, inventory.ts, types.ts
+public/images/    self-hosted, real, CC-licensed coffee photography
+supabase/         SQL migrations for the real backend (see docs/ARCHITECTURE.md)
+tests/            unit/ (Vitest) and e2e/ (Playwright)
+docs/             architecture, deployment, security, image sourcing, progress report
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why this doesn't
+have separate `frontend/`/`backend/` folders.

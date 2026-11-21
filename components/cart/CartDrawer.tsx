@@ -1,11 +1,15 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Minus, Plus, X } from "lucide-react";
 import { useCartStore, cartSubtotal, cartDiscount } from "@/lib/store/cart";
 import { formatPrice } from "@/lib/utils";
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function CartDrawer() {
   const isOpen = useCartStore((s) => s.isOpen);
@@ -15,9 +19,48 @@ export function CartDrawer() {
   const removeLine = useCartStore((s) => s.removeLine);
   const couponCode = useCartStore((s) => s.couponCode);
   const prefersReducedMotion = useReducedMotion();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const lastFocused = useRef<HTMLElement | null>(null);
 
   const subtotal = cartSubtotal(lines);
   const discount = cartDiscount(lines, couponCode);
+
+  // Escape to close, focus the dialog on open, a basic focus trap while
+  // open, and restore focus to whatever triggered it on close — the
+  // keyboard behaviour expected of a modal dialog (WCAG 2.1.2 / 2.4.3).
+  useEffect(() => {
+    if (!isOpen) return;
+
+    lastFocused.current = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
+    const focusable = dialog?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+    focusable?.[0]?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      if (e.key !== "Tab" || !dialog) return;
+      const items = dialog.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      lastFocused.current?.focus();
+    };
+  }, [isOpen, close]);
 
   return (
     <AnimatePresence>
@@ -33,6 +76,7 @@ export function CartDrawer() {
             aria-hidden="true"
           />
           <motion.aside
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label="Shopping cart"

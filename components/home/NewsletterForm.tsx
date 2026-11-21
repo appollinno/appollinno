@@ -73,7 +73,12 @@ export function NewsletterForm({ variant = "light" }: NewsletterFormProps) {
         {status === "error" && "Something went wrong, please try again"}
       </span>
       {status === "success" && (
-        <p className="text-xs text-caramel sm:absolute sm:mt-12">
+        <p
+          className={cn(
+            "text-xs sm:absolute sm:mt-12",
+            dark ? "text-caramel" : "text-accent"
+          )}
+        >
           You&apos;re on the list — welcome to Appollo.
         </p>
       )}

@@ -77,7 +77,7 @@ export function Footer() {
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-cream/50">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-cream/65">
                 {col.title}
               </h3>
               <ul className="mt-4 space-y-3">
@@ -109,7 +109,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-cream/10 pt-8 text-xs text-cream/50 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-cream/10 pt-8 text-xs text-cream/65 md:flex-row md:items-center md:justify-between">
           <p>
             © <CopyrightYear /> Appollo Coffee Shop. All rights
             reserved.

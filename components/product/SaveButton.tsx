@@ -13,10 +13,9 @@ export function SaveButton({ productId }: { productId: string }) {
       type="button"
       onClick={() => toggle(productId)}
       aria-pressed={isSaved}
-      aria-label={isSaved ? "Remove from saved products" : "Save product"}
       className="mt-4 flex items-center gap-2 text-sm text-foreground-muted hover:text-foreground"
     >
-      <Heart size={16} className={cn(isSaved && "fill-accent text-accent")} />
+      <Heart size={16} aria-hidden="true" className={cn(isSaved && "fill-accent text-accent")} />
       {isSaved ? "Saved" : "Save for later"}
     </button>
   );

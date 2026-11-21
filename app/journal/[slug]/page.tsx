@@ -43,7 +43,7 @@ export default async function JournalArticlePage({
       </Link>
 
       <p className="mt-6 text-sm font-semibold uppercase tracking-wide text-accent">
-        {article.category} · {article.readMinutes} min read
+        {`${article.category} · ${article.readMinutes} min read`}
       </p>
       <h1 className="mt-2 font-display text-4xl tracking-tight-display md:text-5xl">
         {article.title}

@@ -84,7 +84,7 @@ function ExplorerInner({ articles }: { articles: JournalArticle[] }) {
               />
             </div>
             <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-accent">
-              {article.category} · {article.readMinutes} min read
+              {`${article.category} · ${article.readMinutes} min read`}
             </p>
             <h3 className="mt-2 font-display text-xl leading-snug">{article.title}</h3>
             <p className="mt-2 text-sm text-foreground-muted">{article.excerpt}</p>

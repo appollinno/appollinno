@@ -76,7 +76,11 @@ export function Hero({ image }: HeroProps) {
             href="/our-story"
             variant="secondary"
             size="lg"
-            className="border-cream text-cream hover:bg-cream hover:text-charcoal"
+            // !-prefixed so these reliably win over the "secondary" variant's
+            // own text-foreground/border-foreground utilities regardless of
+            // Tailwind's generated CSS order — without it this rendered as
+            // near-invisible dark text on the hero image (measured ~1.2:1).
+            className="!border-cream !text-cream hover:!bg-cream hover:!text-charcoal"
           >
             Our Story
           </Button>

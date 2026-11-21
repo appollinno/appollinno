@@ -9,6 +9,13 @@
   --ivory: #f4efe5;
   --cream: #e9ddcb;
   --caramel: #b87945;
+  /* A darker caramel used wherever the accent color needs to render as
+     TEXT on a light background. Plain --caramel is ~3.1:1 against
+     --ivory, which fails WCAG AA for text (needs 4.5:1) though it's fine
+     for icons/graphics (needs 3:1). --caramel-deep measures ~5.6:1 on
+     --ivory and ~4.8:1 on the slightly darker --cream (--surface) —
+     both verified directly against the WCAG 2 contrast formula. */
+  --caramel-deep: #855328;
   --coffee: #70452e;
   --espresso: #3b241b;
   --charcoal: #191715;
@@ -20,7 +27,7 @@
   --foreground-muted: color-mix(in srgb, var(--espresso) 70%, transparent);
   --primary: var(--coffee);
   --primary-foreground: var(--ivory);
-  --accent: var(--caramel);
+  --accent: var(--caramel-deep);
   --accent-foreground: var(--charcoal);
   --border: color-mix(in srgb, var(--espresso) 14%, transparent);
   --ring: var(--caramel);

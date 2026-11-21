@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cremildo Manhique — Cloud &amp; DevOps Engineer</title>
+<meta name="description" content="Azure Cloud Architect and DevOps Engineer. I design resilient cloud platforms and the CI/CD, Kubernetes and automation that keep them shipping.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#050506;
+    --bg-2:#0a0b0d;
+    --ink:#f5f6f8;
+    --muted:#9a9ca3;
+    --faint:#6a6c74;
+    --line:rgba(255,255,255,.10);
+    --line-soft:rgba(255,255,255,.06);
+    --accent:#5cc8ff;
+    --accent-ink:#031019;
+    --glass:rgba(255,255,255,.055);
+    --glass-brd:rgba(255,255,255,.12);
+    --ease-expo:cubic-bezier(.16,1,.3,1);
+    --ease-quint:cubic-bezier(.22,1,.36,1);
+    --maxw:1240px;
+    --gut:clamp(20px,5vw,64px);
+  }
+  html,body{height:100%}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img,video{display:block;max-width:100%}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;margin:0;letter-spacing:-.02em;line-height:1.02}
+  p{margin:0}
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:500}
+  .accent{color:var(--accent)}
+
+  /* ---------- NAV ---------- */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:60;padding:16px var(--gut);
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    transition:background .4s ease,backdrop-filter .4s ease,border-color .4s ease;
+    border-bottom:1px solid transparent}
+  header.nav.scrolled{background:rgba(5,5,6,.72);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line-soft)}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;letter-spacing:-.01em}
+  .brand .mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(140deg,rgba(92,200,255,.22),rgba(92,200,255,.04));
+    border:1px solid rgba(92,200,255,.35);color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;letter-spacing:-.04em}
+  .brand small{display:block;font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10.5px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav-links{display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;
+    background:var(--glass);border:1px solid var(--glass-brd);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .nav-links a{font-size:13.5px;color:var(--muted);padding:8px 15px;border-radius:999px;transition:color .25s,background .25s}
+  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+  .nav-cta{font-size:13.5px;font-weight:500;padding:11px 20px;border-radius:999px;background:var(--ink);color:#07090c;
+    transition:transform .25s var(--ease-quint),box-shadow .25s}
+  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(255,255,255,.4)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--glass-brd);background:var(--glass);
+    cursor:pointer;padding:0;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+  .burger i{display:block;width:18px;height:1.6px;background:var(--ink);border-radius:2px;transition:transform .35s var(--ease-quint),opacity .25s}
+  .is-open .burger i:nth-child(1){transform:translateY(6.6px) rotate(45deg)}
+  .is-open .burger i:nth-child(2){opacity:0}
+  .is-open .burger i:nth-child(3){transform:translateY(-6.6px) rotate(-45deg)}
+
+  /* mobile menu overlay */
+  .mobile-menu{position:fixed;inset:0;z-index:55;background:rgba(5,6,8,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    display:flex;flex-direction:column;justify-content:center;padding:var(--gut);gap:8px;
+    opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease}
+  .is-open .mobile-menu{opacity:1;visibility:visible}
+  .mobile-menu a{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,9vw,46px);font-weight:600;color:var(--ink);padding:10px 0;
+    border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;
+    opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease-expo),transform .5s var(--ease-expo)}
+  .mobile-menu a span{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--faint)}
+  .is-open .mobile-menu a{opacity:1;transform:none}
+  .is-open .mobile-menu a:nth-child(1){transition-delay:.08s}
+  .is-open .mobile-menu a:nth-child(2){transition-delay:.14s}
+  .is-open .mobile-menu a:nth-child(3){transition-delay:.20s}
+  .is-open .mobile-menu a:nth-child(4){transition-delay:.26s}
+  .is-open .mobile-menu a:nth-child(5){transition-delay:.32s}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end}
+  .hero-bg{position:absolute;inset:0;z-index:-3;
+    background:
+      radial-gradient(60% 55% at 62% 42%,rgba(92,200,255,.16),transparent 60%),
+      radial-gradient(40% 40% at 64% 40%,rgba(92,200,255,.28),transparent 55%),
+      linear-gradient(180deg,#07080b 0%,#050506 70%)}
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center;z-index:-2;pointer-events:none;
+    opacity:0;transform:scale(1.06);transition:opacity 1.8s var(--ease-expo),transform 2.2s var(--ease-expo)}
+  .hero-video.is-ready{opacity:1;transform:none}
+  .hero-scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;background:
+    linear-gradient(180deg,rgba(5,5,6,.55) 0%,rgba(5,5,6,0) 22%,rgba(5,5,6,0) 46%,rgba(5,5,6,.72) 78%,var(--bg) 100%),
+    linear-gradient(90deg,rgba(5,5,6,.85) 0%,rgba(5,5,6,.45) 34%,rgba(5,5,6,0) 62%)}
+  .hero-inner{position:relative;padding-bottom:clamp(48px,9vh,110px);padding-top:140px}
+  .hero h1{font-size:clamp(42px,8.2vw,104px);letter-spacing:-.035em;max-width:16ch}
+  .hero h1 .ln{display:block;overflow:hidden}
+  .hero h1 .ln>span{display:block}
+  .hero-sub{margin-top:26px;max-width:52ch;font-size:clamp(15.5px,1.9vw,19px);color:var(--muted);line-height:1.6}
+  .hero-kicker{display:inline-flex;align-items:center;gap:10px;margin-bottom:24px}
+  .hero-kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px 2px rgba(92,200,255,.8);animation:pulse 2.4s var(--ease-expo) infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero-actions{margin-top:38px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:500;padding:14px 26px;border-radius:999px;cursor:pointer;
+    transition:transform .3s var(--ease-quint),box-shadow .3s,background .3s,border-color .3s}
+  .btn svg{width:16px;height:16px}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 0 rgba(92,200,255,.5)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px rgba(92,200,255,.7)}
+  .btn-ghost{border:1px solid var(--glass-brd);background:var(--glass);color:var(--ink);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.3)}
+  .scroll-hint{position:absolute;bottom:26px;right:var(--gut);z-index:2;display:flex;align-items:center;gap:10px;color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .scroll-hint .bar{width:1px;height:38px;background:linear-gradient(var(--accent),transparent);position:relative;overflow:hidden}
+  .scroll-hint .bar::after{content:"";position:absolute;top:-40%;left:0;width:100%;height:40%;background:var(--accent);animation:drip 2.2s var(--ease-expo) infinite}
+  @keyframes drip{0%{top:-40%}60%,100%{top:100%}}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease-expo),transform .9s var(--ease-expo)}
+  .reveal.in{opacity:1;transform:none}
+  [data-delay="1"]{transition-delay:.08s}[data-delay="2"]{transition-delay:.16s}
+  [data-delay="3"]{transition-delay:.24s}[data-delay="4"]{transition-delay:.32s}
+
+  /* ---------- STATS ---------- */
+  .stats{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);background:linear-gradient(180deg,#070809,#050506)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .stat{padding:clamp(34px,5vw,56px) clamp(14px,2.4vw,30px);border-right:1px solid var(--line-soft)}
+  .stat:last-child{border-right:0}
+  .stat .num{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(38px,5vw,60px);letter-spacing:-.04em;line-height:1}
+  .stat .num .suf{color:var(--accent)}
+  .stat .lbl{margin-top:10px;font-size:13.5px;color:var(--muted);line-height:1.4}
+
+  /* ---------- SECTION SHELL ---------- */
+  section.block{padding:clamp(80px,13vh,150px) 0;position:relative}
+  .sec-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(44px,6vw,72px);max-width:720px}
+  .sec-head h2{font-size:clamp(30px,4.6vw,56px)}
+  .sec-head p{color:var(--muted);font-size:clamp(15px,1.8vw,18px);max-width:56ch}
+
+  /* ---------- EXPERTISE CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{position:relative;padding:clamp(26px,3vw,40px);border-radius:20px;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+    border:1px solid var(--line);transition:border-color .4s,transform .4s var(--ease-quint),background .4s}
+  .card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .5s;
+    background:radial-gradient(120% 90% at 100% 0%,rgba(92,200,255,.12),transparent 60%)}
+  .card:hover{transform:translateY(-4px);border-color:rgba(92,200,255,.35)}
+  .card:hover::before{opacity:1}
+  .card .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:22px;
+    background:rgba(92,200,255,.10);border:1px solid rgba(92,200,255,.28);color:var(--accent)}
+  .card .ic svg{width:22px;height:22px}
+  .card .idx{position:absolute;top:26px;right:30px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint)}
+  .card h3{font-size:clamp(20px,2.3vw,25px);margin-bottom:12px}
+  .card p{color:var(--muted);font-size:15px;line-height:1.6}
+  .card .tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+  .card .tags span{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee-wrap{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:30px 0;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .marquee{display:flex;width:max-content;gap:0;animation:scroll 34s linear infinite}
+  .marquee-wrap:hover .marquee{animation-play-state:paused}
+  .marquee .item{display:inline-flex;align-items:center;gap:16px;padding:0 30px;font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(18px,2.4vw,26px);font-weight:500;color:var(--muted);white-space:nowrap}
+  .marquee .item::after{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.6}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ---------- WORK ---------- */
+  .work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .proj{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--bg-2);
+    display:flex;flex-direction:column;min-height:330px;transition:transform .45s var(--ease-quint),border-color .45s}
+  .proj:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.26)}
+  .proj .top{padding:26px 26px 0;display:flex;align-items:center;justify-content:space-between}
+  .proj .kind{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .proj .arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:background .3s,color .3s,transform .3s}
+  .proj:hover .arrow{background:var(--accent);color:var(--accent-ink);transform:rotate(-45deg)}
+  .proj .body{padding:24px 26px 28px;margin-top:auto}
+  .proj h3{font-size:22px;margin-bottom:10px}
+  .proj p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .proj .stack{margin-top:18px;display:flex;flex-wrap:wrap;gap:7px}
+  .proj .stack span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--faint)}
+  .proj .viz{height:150px;position:relative;overflow:hidden;background:
+    radial-gradient(90% 120% at 50% 0%,rgba(92,200,255,.14),transparent 60%),#070809;
+    border-bottom:1px solid var(--line-soft)}
+  .proj .viz svg{position:absolute;inset:0;width:100%;height:100%}
+
+  /* ---------- CTA / CONTACT ---------- */
+  .cta{position:relative;overflow:hidden;border-radius:28px;padding:clamp(48px,8vw,96px) clamp(26px,5vw,72px);text-align:center;
+    background:linear-gradient(180deg,#0a0d11,#060708);border:1px solid var(--line)}
+  .cta::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+    radial-gradient(60% 100% at 50% 0%,rgba(92,200,255,.18),transparent 62%)}
+  .cta>*{position:relative}
+  .cta h2{font-size:clamp(32px,6vw,68px);letter-spacing:-.03em}
+  .cta p{margin:22px auto 0;max-width:46ch;color:var(--muted);font-size:clamp(15px,1.9vw,18px)}
+  .cta-actions{margin-top:40px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+
+  /* ---------- COMMUNITY (editorial band) ---------- */
+  .community-row{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,80px);align-items:end;
+    padding-top:clamp(50px,7vw,82px);border-top:1px solid var(--line-soft)}
+  .community-row h2{font-size:clamp(30px,4.6vw,56px)}
+  .community-copy p{color:var(--muted);font-size:clamp(15px,1.8vw,18px)}
+  .community-copy .cta-actions{justify-content:flex-start;margin-top:28px}
+  @media (max-width:860px){.community-row{grid-template-columns:1fr;gap:24px;align-items:start}}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:60px 0 46px;border-top:1px solid var(--line-soft);margin-top:clamp(80px,12vh,140px)}
+  .foot-row{display:flex;flex-wrap:wrap;gap:26px;align-items:center;justify-content:space-between}
+  .foot-brand{display:flex;flex-direction:column;gap:6px}
+  .foot-brand strong{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px}
+  .foot-brand span{color:var(--faint);font-size:13px}
+  .socials{display:flex;gap:10px;flex-wrap:wrap}
+  .socials a{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);
+    padding:10px 15px;border-radius:999px;border:1px solid var(--line);transition:color .3s,border-color .3s,background .3s}
+  .socials a:hover{color:var(--ink);border-color:rgba(92,200,255,.4);background:rgba(92,200,255,.06)}
+  .socials svg{width:15px;height:15px}
+  .foot-base{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;color:var(--faint);font-size:12.5px;font-family:'JetBrains Mono',monospace}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .work-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:860px){
+    .nav-links{display:none}.nav-cta{display:none}.burger{display:inline-flex}
+    .stats-grid{grid-template-columns:1fr 1fr}
+    .stat:nth-child(2){border-right:0}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--line-soft)}
+    .cards{grid-template-columns:1fr}
+    .work-grid{grid-template-columns:1fr}
+    .hero-scrim{background:
+      linear-gradient(180deg,rgba(5,5,6,.5) 0%,rgba(5,5,6,0) 30%,rgba(5,5,6,.4) 55%,var(--bg) 100%),
+      linear-gradient(90deg,rgba(5,5,6,.7),rgba(5,5,6,.3) 60%,transparent)}
+    .scroll-hint{display:none}
+  }
+  @media (max-width:480px){
+    .hero-video{object-position:66% center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    .hero-video{opacity:1;transform:none}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body class="no-js">
+<a class="sr-only" href="#work">Skip to content</a>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Cremildo Manhique — home">
+    <span class="mark" aria-hidden="true">CM</span>
+    <span>Cremildo Manhique<small>Cloud · DevOps</small></span>
+  </a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#expertise">Expertise</a>
+    <a href="#stack">Stack</a>
+    <a href="#work">Work</a>
+    <a href="#community">Community</a>
+  </nav>
+  <div class="nav-right">
+    <a class="nav-cta" href="#contact">Let’s talk</a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <i></i><i></i><i></i>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+  <a href="#expertise">Expertise <span>01</span></a>
+  <a href="#stack">Stack <span>02</span></a>
+  <a href="#work">Work <span>03</span></a>
+  <a href="#community">Community <span>04</span></a>
+  <a href="#contact">Let’s talk <span>→</span></a>
+</nav>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" aria-label="Intro">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="auto" aria-hidden="true"
+      data-src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_112712_da9d53df-6d27-4b12-bdf6-aa9dc2622bdf.mp4"></video>
+    <div class="hero-scrim" aria-hidden="true"></div>
+
+    <div class="wrap hero-inner">
+      <span class="hero-kicker eyebrow"><span class="dot" aria-hidden="true"></span>Maputo, Mozambique — open to DevOps roles</span>
+      <h1>
+        I architect the cloud<br>and ship it with <span class="accent">confidence.</span>
+      </h1>
+      <p class="hero-sub">
+        Azure Cloud Architect and DevOps Engineer. I design resilient cloud platforms
+        and the CI/CD, Kubernetes and automation that keep them shipping — from managed
+        AKS and EKS to bare-metal K3s.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#work">
+          See what I build
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span>scroll</span><span class="bar"></span></div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" aria-label="At a glance">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="num"><span class="count" data-to="6">0</span><span class="suf">+</span></div><div class="lbl">Years across ICT, cloud &amp; infrastructure</div></div>
+        <div class="stat reveal" data-delay="1"><div class="num"><span class="count" data-to="12">0</span><span class="suf">+</span></div><div class="lbl">Hands-on DevOps &amp; platform projects</div></div>
+        <div class="stat reveal" data-delay="2"><div class="num"><span class="count" data-to="3">0</span></div><div class="lbl">Clouds in play — Azure · AWS · bare-metal</div></div>
+        <div class="stat reveal" data-delay="3"><div class="num"><span class="count" data-to="1">0</span></div><div class="lbl">Tech community founded &amp; led</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section class="block" id="expertise">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">What I do</span>
+        <h2>From landing zone to last mile of delivery.</h2>
+        <p>I work end to end: architecting the cloud foundation, automating the path to production, and keeping it observable and secure once it’s live.</p>
+      </div>
+      <div class="cards">
+        <article class="card reveal">
+          <span class="idx mono">01</span>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.3 9.5 4 4 0 0 0 7 17.5"/><path d="M12 12v6M9 15l3-3 3 3"/></svg></div>
+          <h3>Cloud architecture</h3>
+          <p>Azure-first landing zones, networking, identity and cost-aware design — delivered as code with Terraform and Bicep, and ported to AWS where the workload fits.</p>
+          <div class="tags"><span>Azure</span><span>Landing zones</span><span>Terraform</span><span>Bicep</span><span>AWS</span></div>
+        </article>
+        <article class="card reveal" data-delay="1">
+          <span class="idx mono">02</span>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3-2 2 2 2M16 3l2 2-2 2"/><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M7 15h4M15 15h2"/></svg></div>
+          <h3>DevOps &amp; platform</h3>
+          <p>CI/CD that promotes artifacts cleanly across environments — Jenkins and GitHub Actions, Docker and a Nexus registry, GitOps onto Kubernetes clusters from AKS and EKS to K3s.</p>
+          <div class="tags"><span>Kubernetes</span><span>K3s</span><span>Docker</span><span>Jenkins</span><span>Nexus</span><span>GitOps</span></div>
+        </article>
+        <article class="card reveal" data-delay="2">
+          <span class="idx mono">03</span>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <h3>Security &amp; observability</h3>
+          <p>Threat detection and hardening with Wazuh XDR/SIEM across a Linux fleet, plus the metrics and logs that make a platform legible under pressure. Proud Wazuh Ambassador.</p>
+          <div class="tags"><span>Wazuh</span><span>SIEM / XDR</span><span>Linux</span><span>Hardening</span><span>Monitoring</span></div>
+        </article>
+        <article class="card reveal" data-delay="3">
+          <span class="idx mono">04</span>
+          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/><path d="m19 3 1.2 2.4L22.6 6.6 20.2 7.8 19 10l-1.2-2.2L15.4 6.6 17.8 5.4 19 3Z"/></svg></div>
+          <h3>Community &amp; content</h3>
+          <p>Founder of the Azure User Group Mozambique and a YouTube creator on Azure, Microsoft Copilot and Intune — turning hands-on practice into talks, demos and tutorials.</p>
+          <div class="tags"><span>Azure UG MZ</span><span>YouTube</span><span>Copilot</span><span>Intune</span><span>Speaking</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK MARQUEE -->
+  <section id="stack" aria-label="Toolbox">
+    <div class="wrap" style="margin-bottom:34px">
+      <div class="sec-head reveal" style="margin-bottom:0">
+        <span class="eyebrow">The toolbox</span>
+        <h2>Tools I reach for daily.</h2>
+      </div>
+    </div>
+    <div class="marquee-wrap reveal" aria-hidden="true">
+      <div class="marquee" id="marquee">
+        <span class="item">Azure</span><span class="item">Kubernetes</span><span class="item">Docker</span><span class="item">Terraform</span><span class="item">Jenkins</span><span class="item">GitHub Actions</span><span class="item">AWS</span><span class="item">K3s</span><span class="item">Nexus</span><span class="item">Wazuh</span><span class="item">Linux</span><span class="item">Helm</span><span class="item">Prometheus</span><span class="item">Grafana</span><span class="item">Bicep</span><span class="item">Ansible</span>
+      </div>
+    </div>
+    <p class="sr-only">Azure, Kubernetes, Docker, Terraform, Jenkins, GitHub Actions, AWS, K3s, Nexus, Wazuh, Linux, Helm, Prometheus, Grafana, Bicep, Ansible.</p>
+  </section>
+
+  <!-- WORK -->
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects I’ve built with my own hands.</h2>
+        <p>Lab-to-production builds that mirror how I’d run the real thing. Swap these for your repos and demo links.</p>
+      </div>
+      <div class="work-grid">
+        <article class="proj reveal">
+          <div class="viz" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none" stroke="rgba(92,200,255,.5)" stroke-width="1.3"><circle cx="150" cy="40" r="14"/><circle cx="80" cy="110" r="12"/><circle cx="150" cy="110" r="12"/><circle cx="220" cy="110" r="12"/><path d="M150 54v26m0-26-62 44m62-44 62 44M80 110h140" stroke-dasharray="3 4"/></svg></div>
+          <div class="top"><span class="kind">Platform</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+          <div class="body">
+            <h3>K3s on bare metal</h3>
+            <p>A lightweight production-style Kubernetes cluster with ingress, TLS, GitOps delivery and full monitoring — proof you don’t need a hyperscaler to run it right.</p>
+            <div class="stack"><span>K3s</span><span>· Traefik</span><span>· ArgoCD</span><span>· Prometheus</span></div>
+          </div>
+        </article>
+        <article class="proj reveal" data-delay="1">
+          <div class="viz" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none" stroke="rgba(92,200,255,.5)" stroke-width="1.3"><rect x="30" y="64" width="40" height="22" rx="4"/><rect x="110" y="64" width="40" height="22" rx="4"/><rect x="190" y="64" width="40" height="22" rx="4"/><path d="M70 75h40M150 75h40M230 75h30" stroke-dasharray="3 4"/><circle cx="265" cy="75" r="6" fill="rgba(92,200,255,.5)" stroke="none"/></svg></div>
+          <div class="top"><span class="kind">CI / CD</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+          <div class="body">
+            <h3>Pipeline factory</h3>
+            <p>A Jenkins pipeline that builds, scans and promotes Docker images through a Nexus registry across dev, staging and prod — repeatable, auditable, boring in the best way.</p>
+            <div class="stack"><span>Jenkins</span><span>· Docker</span><span>· Nexus</span><span>· Trivy</span></div>
+          </div>
+        </article>
+        <article class="proj reveal" data-delay="2">
+          <div class="viz" aria-hidden="true"><svg viewBox="0 0 300 150" fill="none" stroke="rgba(92,200,255,.5)" stroke-width="1.3"><path d="M150 26 60 54v34c0 30 40 46 90 56 50-10 90-26 90-56V54l-90-28Z"/><path d="m128 78 14 14 30-30"/></svg></div>
+          <div class="top"><span class="kind">Security</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+          <div class="body">
+            <h3>Wazuh SOC lab</h3>
+            <p>A centralized Wazuh deployment collecting and correlating events across a Linux fleet — file integrity, intrusion detection and dashboards that actually get watched.</p>
+            <div class="stack"><span>Wazuh</span><span>· Linux</span><span>· Elastic</span><span>· Suricata</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="block" id="community" style="padding-top:0">
+    <div class="wrap">
+      <div class="community-row">
+        <div class="reveal">
+          <span class="eyebrow">Beyond the terminal</span>
+          <h2 style="margin-top:18px">I build the community I wanted to learn in.</h2>
+        </div>
+        <div class="community-copy reveal" data-delay="1">
+          <p>As founder of the <strong style="color:var(--ink)">Azure User Group Mozambique</strong> and a Wazuh Ambassador, I run meetups, demos and a YouTube channel on Azure, Copilot and Intune — because the fastest way to learn is to teach.</p>
+          <div class="cta-actions">
+            <a class="btn btn-ghost" href="#" data-swap>Azure UG Mozambique</a>
+            <a class="btn btn-ghost" href="#" data-swap>YouTube channel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="block" id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta reveal">
+        <span class="eyebrow">Let’s talk</span>
+        <h2 style="margin-top:18px">Looking for a DevOps engineer<br>who ships and owns it?</h2>
+        <p>I’m open to DevOps and platform engineering roles, remote or based in Maputo. If you’re building something that needs a reliable path to production, let’s talk.</p>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="#" data-swap>
+            Email me
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#" data-swap>Connect on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="foot-brand">
+        <strong>Cremildo Manhique</strong>
+        <span>Azure Cloud Architect · DevOps &amp; Platform Engineer · Wazuh Ambassador</span>
+      </div>
+      <div class="socials">
+        <a href="#" data-swap aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>GitHub</a>
+        <a href="#" data-swap aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.82-2.05 3.75-2.05C21.3 8.65 22 10.9 22 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21h-4z"/></svg>LinkedIn</a>
+        <a href="#" data-swap aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.76-1.77C19.33 5.13 12 5.13 12 5.13s-7.33 0-8.84.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.76 1.77c1.51.4 8.84.4 8.84.4s7.33 0 8.84-.4a2.5 2.5 0 0 0 1.76-1.77C23 15.2 23 12 23 12ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/></svg>YouTube</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="year">2026</span> Cremildo Manhique</span>
+      <span>Maputo · Mozambique — built for shipping</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.body.classList.remove('no-js');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Nav scrolled state */
+  var nav = document.getElementById('nav');
+  var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll(); addEventListener('scroll', onScroll, {passive:true});
+
+  /* Mobile menu */
+  var burger = document.getElementById('burger');
+  var closeMenu = function(){ document.body.classList.remove('is-open'); burger.setAttribute('aria-expanded','false'); burger.setAttribute('aria-label','Open menu'); };
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+  addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
+  matchMedia('(min-width:861px)').addEventListener('change', function(e){ if(e.matches) closeMenu(); });
+
+  /* Hero video: load + settle-in, respect reduced motion + autoplay refusal */
+  (function(){
+    var v = document.getElementById('heroVideo');
+    if(!v) return;
+    v.muted = true; v.playsInline = true;
+    if(reduce){ return; } /* keep the designed fallback gradient, no motion */
+    v.src = v.dataset.src;
+    var reveal = function(){ v.classList.add('is-ready'); };
+    v.readyState >= 2 ? reveal() : v.addEventListener('loadeddata', reveal, {once:true});
+    v.play().catch(function(){}); /* refused autoplay -> fallback gradient stays */
+    new IntersectionObserver(function(e){ e[0].isIntersecting ? v.play().catch(function(){}) : v.pause(); }).observe(v);
+  })();
+
+  /* Reveal on scroll */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:0.14, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  /* Failsafe: never let a section stay invisible (e.g. observer edge cases) */
+  addEventListener('load', function(){ setTimeout(function(){
+    document.querySelectorAll('.reveal:not(.in)').forEach(function(el){
+      if(el.getBoundingClientRect().top < innerHeight * 1.2) el.classList.add('in');
+    });
+  }, 400); });
+
+  /* Count-up stats */
+  var counted = new WeakSet();
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting || counted.has(en.target)) return;
+      counted.add(en.target);
+      var el = en.target, to = +el.dataset.to, dur = 1100, t0 = performance.now();
+      if(reduce){ el.textContent = to; return; }
+      var step = function(now){
+        var p = Math.min((now - t0)/dur, 1), e = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.round(e*to);
+        if(p<1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, {threshold:0.6});
+  document.querySelectorAll('.count').forEach(function(el){ cio.observe(el); });
+
+  /* Marquee: duplicate once for a seamless -50% loop */
+  (function(){
+    var m = document.getElementById('marquee');
+    if(m) m.innerHTML += m.innerHTML;
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

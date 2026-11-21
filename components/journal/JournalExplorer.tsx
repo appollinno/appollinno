@@ -86,7 +86,8 @@ function ExplorerInner({ articles }: { articles: JournalArticle[] }) {
             <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-accent">
               {`${article.category} · ${article.readMinutes} min read`}
             </p>
-            <h3 className="mt-2 font-display text-xl leading-snug">{article.title}</h3>
+            {/* See ProductCard.tsx for why this is a <p>, not a heading. */}
+            <p className="mt-2 font-display text-xl leading-snug">{article.title}</p>
             <p className="mt-2 text-sm text-foreground-muted">{article.excerpt}</p>
           </Link>
         ))}

@@ -57,7 +57,12 @@ export function ProductCard({ product }: { product: Product }) {
 
         <div className="mt-4 flex items-start justify-between gap-2">
           <div>
-            <h3 className="font-display text-lg leading-tight">{product.name}</h3>
+            {/* A <p>, not a heading: this card can appear directly under
+                the page's own h1 (e.g. /shop) with no intervening h2, and
+                marking every grid item as a heading breaks heading order
+                and clutters the document outline. The link text already
+                names the product for assistive tech. */}
+            <p className="font-display text-lg leading-tight">{product.name}</p>
             <p className="mt-1 text-sm text-foreground-muted">{product.tagline}</p>
             <div className="mt-2 flex items-center gap-1">
               <Star size={13} className="fill-caramel text-caramel" />

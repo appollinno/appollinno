@@ -62,6 +62,7 @@ export default async function JournalArticlePage({
           alt={article.coverImage.alt}
           fill
           priority
+          fetchPriority="high"
           sizes="(min-width: 768px) 768px, 100vw"
           className="object-cover"
         />

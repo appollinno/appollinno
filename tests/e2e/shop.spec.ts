@@ -13,8 +13,9 @@ test.describe("Shop catalog", () => {
   test("search narrows results", async ({ page }) => {
     await page.goto("/shop");
     await page.getByPlaceholder("Search coffee, notes…").fill("Yirgacheffe");
-    await expect(page.getByRole("heading", { name: "Ethiopia Yirgacheffe" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Colombia Huila" })).not.toBeVisible();
+    // Product card titles are <p>, not headings — see ProductCard.tsx.
+    await expect(page.getByText("Ethiopia Yirgacheffe")).toBeVisible();
+    await expect(page.getByText("Colombia Huila")).not.toBeVisible();
   });
 
   test("product detail page shows origin and brewing info", async ({ page }) => {

@@ -29,6 +29,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       // fresh server render — the client Router Cache can otherwise serve
       // a stale "signed out" response for /account if it was prefetched
       // (e.g. via the Navbar's account link) before this login/register.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/account";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

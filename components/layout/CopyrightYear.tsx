@@ -1,20 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-// A static fallback for SSR/prerendering (Next.js's Cache Components
-// validator flags any `new Date()` read during prerendering, even inside a
-// Client Component, since its SSR pass still executes the render). The
-// real year is filled in client-side after mount, per Next's own
-// recommended fix ("defer the read into useEffect").
+// The year genuinely differs between the server's prerender and the
+// client, so useSyncExternalStore (not a setState-in-effect, which
+// eslint-plugin-react-hooks now flags) is the React-recommended way to
+// read it: getServerSnapshot supplies the build-time fallback for SSR,
+// and getSnapshot supplies the real value once mounted in the browser.
+function subscribe() {
+  return () => {};
+}
+
+function getSnapshot() {
+  return new Date().getFullYear();
+}
+
 const BUILD_YEAR_FALLBACK = 2026;
+function getServerSnapshot() {
+  return BUILD_YEAR_FALLBACK;
+}
 
 export function CopyrightYear() {
-  const [year, setYear] = useState(BUILD_YEAR_FALLBACK);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
-
+  const year = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   return <>{year}</>;
 }

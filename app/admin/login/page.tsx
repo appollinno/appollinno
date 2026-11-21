@@ -25,6 +25,7 @@ export default function AdminLoginPage() {
       }
       // Hard navigation — see AuthForm.tsx for why (avoids a stale
       // Router Cache entry for /admin from before this login).
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/admin";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

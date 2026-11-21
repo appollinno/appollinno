@@ -19,10 +19,16 @@ export default function SavedProductsPage() {
       .finally(() => setChecked(true));
   }, []);
 
+  useEffect(() => {
+    if (checked && !user) {
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+      window.location.href = "/login";
+    }
+  }, [checked, user]);
+
   const savedProducts = PRODUCTS.filter((p) => productIds.includes(p.id));
 
   if (checked && !user) {
-    if (typeof window !== "undefined") window.location.href = "/login";
     return null;
   }
 

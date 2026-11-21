@@ -16,6 +16,7 @@ export function AccountNav({ userName }: { userName: string }) {
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
     // Hard navigation — see AuthForm.tsx for why.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = "/";
   }
 

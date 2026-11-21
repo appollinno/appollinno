@@ -27,7 +27,7 @@ type ButtonProps = ButtonBaseProps &
   React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: undefined };
 
 export function Button(props: AnchorProps | ButtonProps) {
-  const { variant = "primary", size = "md", className, children } = props;
+  const { variant = "primary", size = "md", className, children, ...rest } = props;
   const classes = cn(
     "inline-flex items-center justify-center gap-2 font-semibold uppercase tracking-wide transition-colors disabled:cursor-not-allowed disabled:opacity-50",
     VARIANTS[variant],
@@ -35,20 +35,17 @@ export function Button(props: AnchorProps | ButtonProps) {
     className
   );
 
-  if ("href" in props && props.href) {
-    const { href, variant: _v, size: _s, className: _c, children: _ch, ...rest } =
-      props as AnchorProps;
+  if ("href" in rest && rest.href) {
+    const { href, ...anchorRest } = rest as AnchorProps;
     return (
-      <Link href={href} className={classes} {...rest}>
+      <Link href={href} className={classes} {...anchorRest}>
         {children}
       </Link>
     );
   }
 
-  const { variant: _v2, size: _s2, className: _c2, children: _ch2, ...rest } =
-    props as ButtonProps;
   return (
-    <button className={classes} {...rest}>
+    <button className={classes} {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
       {children}
     </button>
   );

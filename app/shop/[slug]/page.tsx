@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductDetails } from "@/components/product/ProductDetails";
@@ -72,9 +73,9 @@ export default async function ProductPage({
         }}
       />
       <nav aria-label="Breadcrumb" className="text-sm text-foreground-muted">
-        <a href="/shop" className="hover:text-foreground">
+        <Link href="/shop" className="hover:text-foreground">
           Shop
-        </a>{" "}
+        </Link>{" "}
         / <span className="text-foreground">{product.name}</span>
       </nav>
 

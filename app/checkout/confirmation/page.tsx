@@ -1,29 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useSyncExternalStore } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { formatPrice } from "@/lib/utils";
 import type { Order } from "@/lib/orders";
 
+// sessionStorage doesn't exist during SSR and can't change under us once
+// read, so useSyncExternalStore (getServerSnapshot = "not loaded yet") is
+// the React-recommended way to read it — see CopyrightYear.tsx for the
+// same pattern.
+function subscribe() {
+  return () => {};
+}
+
+// getSnapshot must return a referentially-stable value when the
+// underlying data hasn't changed, or useSyncExternalStore re-renders in
+// an infinite loop (each call would otherwise return a freshly-parsed
+// object). Cache the parse, keyed on the raw string.
+let cachedRaw: string | null = null;
+let cachedOrder: Order | null = null;
+
+function getSnapshot(): Order | null {
+  const raw = sessionStorage.getItem("appollo-last-order");
+  if (raw === cachedRaw) return cachedOrder;
+  cachedRaw = raw;
+  cachedOrder = raw ? safeParseOrder(raw) : null;
+  return cachedOrder;
+}
+
+function safeParseOrder(raw: string): Order | null {
+  try {
+    return JSON.parse(raw) as Order;
+  } catch {
+    return null;
+  }
+}
+
+function getServerSnapshot(): Order | null {
+  return null;
+}
+
 export default function ConfirmationPage() {
-  const [order, setOrder] = useState<Order | null>(null);
-  const [checked, setChecked] = useState(false);
+  const order = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    const raw = sessionStorage.getItem("appollo-last-order");
-    if (raw) {
-      try {
-        setOrder(JSON.parse(raw));
-      } catch {
-        setOrder(null);
-      }
-    }
-    setChecked(true);
-  }, []);
-
-  if (checked && !order) {
+  if (!order) {
     return (
       <div className="mx-auto max-w-xl px-5 py-28 text-center md:px-8">
         <h1 className="font-display text-3xl">No recent order found</h1>
@@ -36,8 +57,6 @@ export default function ConfirmationPage() {
       </div>
     );
   }
-
-  if (!order) return null;
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-28 text-center md:px-8">

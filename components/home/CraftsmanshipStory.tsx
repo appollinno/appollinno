@@ -28,7 +28,7 @@ export function CraftsmanshipStory({ image }: CraftsmanshipStoryProps) {
           </h2>
           <p className="mt-6 max-w-lg text-foreground-muted">
             Every lot we roast is profiled individually — charge temperature,
-            airflow, and drop point tuned to that specific origin's density
+            airflow, and drop point tuned to that specific origin&apos;s density
             and moisture. We roast in batches under 12kg, several times a
             week, so what ships is never more than a few days off the drum.
           </p>

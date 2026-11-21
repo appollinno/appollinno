@@ -1,10 +1,13 @@
 import { randomBytes, randomUUID, pbkdf2Sync } from "node:crypto";
+import { readStore, withStore } from "@/lib/server-store";
 
-// Mock, in-memory auth store for local development and demos only.
-// This is NOT production-ready: data is lost on every restart and there is
-// no email verification, rate limiting, or password-reset flow. Replace
-// with Supabase Auth (see supabase/migrations/0001_init.sql, which already
-// models `customers` as 1:1 with `auth.users`) before going live.
+// Mock, file-backed auth store for local development and demos only.
+// This is NOT production-ready: there is no email verification, rate
+// limiting, or password-reset flow, and the data file is plaintext on
+// disk. Replace with Supabase Auth (see supabase/migrations/0001_init.sql,
+// which already models `customers` as 1:1 with `auth.users`) before going
+// live. See lib/server-store.ts for why this reads/writes a file instead
+// of keeping state in a module-level Map.
 
 export type UserRole = "customer" | "admin";
 
@@ -18,8 +21,17 @@ export interface MockUser {
   createdAt: string;
 }
 
-const users = new Map<string, MockUser>(); // keyed by lowercased email
-const sessions = new Map<string, string>(); // token -> user id
+interface AuthData {
+  users: MockUser[];
+  sessions: Record<string, string>; // token -> user id
+}
+
+const STORE_NAME = "auth";
+const EMPTY: AuthData = { users: [], sessions: {} };
+
+function load(): AuthData {
+  return readStore<AuthData>(STORE_NAME, EMPTY);
+}
 
 function hashPassword(password: string, salt: string) {
   return pbkdf2Sync(password, salt, 100_000, 64, "sha256").toString("hex");
@@ -31,22 +43,23 @@ export function createUser(
   password: string,
   role: UserRole = "customer"
 ) {
-  const key = email.toLowerCase();
-  if (users.has(key)) {
-    throw new Error("An account with that email already exists.");
-  }
-  const salt = randomBytes(16).toString("hex");
-  const user: MockUser = {
-    id: randomUUID(),
-    name,
-    email: key,
-    passwordHash: hashPassword(password, salt),
-    salt,
-    role,
-    createdAt: new Date().toISOString(),
-  };
-  users.set(key, user);
-  return user;
+  return withStore<AuthData, MockUser>(STORE_NAME, EMPTY, (data) => {
+    const key = email.toLowerCase();
+    if (data.users.some((u) => u.email === key)) {
+      throw new Error("An account with that email already exists.");
+    }
+    const salt = randomBytes(16).toString("hex");
+    const user: MockUser = {
+      id: randomUUID(),
+      name,
+      email: key,
+      passwordHash: hashPassword(password, salt),
+      salt,
+      role,
+      createdAt: new Date().toISOString(),
+    };
+    return { next: { ...data, users: [...data.users, user] }, result: user };
+  });
 }
 
 // Dev-only seed admin account so the /admin dashboard can be exercised
@@ -55,39 +68,55 @@ export function createUser(
 // and remove this seed entirely.
 const ADMIN_SEED_EMAIL = "admin@appollo.coffee";
 const ADMIN_SEED_PASSWORD = process.env.ADMIN_SEED_PASSWORD ?? "AppolloAdmin!2026";
-if (!users.has(ADMIN_SEED_EMAIL)) {
-  createUser("Appollo Admin", ADMIN_SEED_EMAIL, ADMIN_SEED_PASSWORD, "admin");
+
+function ensureAdminSeed() {
+  const data = load();
+  if (data.users.some((u) => u.email === ADMIN_SEED_EMAIL)) return;
+  try {
+    createUser("Appollo Admin", ADMIN_SEED_EMAIL, ADMIN_SEED_PASSWORD, "admin");
+  } catch {
+    // Another module instance / process won the race and seeded it first — fine.
+  }
 }
+ensureAdminSeed();
 
 export function verifyUser(email: string, password: string) {
-  const user = users.get(email.toLowerCase());
+  const data = load();
+  const user = data.users.find((u) => u.email === email.toLowerCase());
   if (!user) return null;
   const hash = hashPassword(password, user.salt);
   return hash === user.passwordHash ? user : null;
 }
 
 export function createSession(userId: string) {
-  const token = randomBytes(32).toString("hex");
-  sessions.set(token, userId);
-  return token;
+  return withStore<AuthData, string>(STORE_NAME, EMPTY, (data) => {
+    const token = randomBytes(32).toString("hex");
+    return {
+      next: { ...data, sessions: { ...data.sessions, [token]: userId } },
+      result: token,
+    };
+  });
 }
 
 export function getUserBySessionToken(token: string | undefined) {
   if (!token) return null;
-  const userId = sessions.get(token);
+  const data = load();
+  const userId = data.sessions[token];
   if (!userId) return null;
-  for (const user of users.values()) {
-    if (user.id === userId) return user;
-  }
-  return null;
+  return data.users.find((u) => u.id === userId) ?? null;
 }
 
 export function deleteSession(token: string | undefined) {
-  if (token) sessions.delete(token);
+  if (!token) return;
+  withStore<AuthData, void>(STORE_NAME, EMPTY, (data) => {
+    const sessions = { ...data.sessions };
+    delete sessions[token];
+    return { next: { ...data, sessions }, result: undefined };
+  });
 }
 
 export function listUsers() {
-  return Array.from(users.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return [...load().users].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function toPublicUser(user: MockUser) {

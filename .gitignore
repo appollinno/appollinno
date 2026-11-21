@@ -29,6 +29,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# mock file-backed data store (lib/server-store.ts) — dev/demo only
+.data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

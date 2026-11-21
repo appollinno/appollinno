@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -15,12 +15,11 @@ const LINKS = [
 
 export function AdminNav() {
   const pathname = usePathname();
-  const router = useRouter();
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
+    // Hard navigation — see AuthForm.tsx for why.
+    window.location.href = "/admin/login";
   }
 
   return (

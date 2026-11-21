@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [form, setForm] = useState({ email: "admin@appollo.coffee", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,8 +23,9 @@ export default function AdminLoginPage() {
       if (data.user.role !== "admin") {
         throw new Error("This account does not have admin access.");
       }
-      router.push("/admin");
-      router.refresh();
+      // Hard navigation — see AuthForm.tsx for why (avoids a stale
+      // Router Cache entry for /admin from before this login).
+      window.location.href = "/admin";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

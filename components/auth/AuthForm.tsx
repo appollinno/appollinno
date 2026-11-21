@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
@@ -10,7 +9,6 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,8 +25,11 @@ export function AuthForm({ mode }: AuthFormProps) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Something went wrong");
-      router.push("/account");
-      router.refresh();
+      // A hard navigation (not router.push) so the destination is always a
+      // fresh server render — the client Router Cache can otherwise serve
+      // a stale "signed out" response for /account if it was prefetched
+      // (e.g. via the Navbar's account link) before this login/register.
+      window.location.href = "/account";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { InstagramIcon, FacebookIcon, YoutubeIcon } from "@/components/icons/SocialIcons";
 import { NewsletterForm } from "@/components/home/NewsletterForm";
-
-const CURRENT_YEAR = new Date().getFullYear();
+import { CopyrightYear } from "@/components/layout/CopyrightYear";
 
 const COLUMNS = [
   {
@@ -112,7 +111,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-cream/10 pt-8 text-xs text-cream/50 md:flex-row md:items-center md:justify-between">
           <p>
-            © {CURRENT_YEAR} Appollo Coffee Shop. All rights
+            © <CopyrightYear /> Appollo Coffee Shop. All rights
             reserved.
           </p>
           <div className="flex gap-6">

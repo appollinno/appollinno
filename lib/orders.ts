@@ -1,3 +1,5 @@
+import { readStore, withStore } from "@/lib/server-store";
+
 export interface OrderItem {
   name: string;
   variantLabel: string;
@@ -29,29 +31,42 @@ export interface Order {
   createdAt: string;
 }
 
-// In-memory store for the demo/mock checkout flow. Ephemeral — replace with
-// the `orders` table (see supabase/migrations/0001_init.sql) once a real
-// database and payment provider are connected.
-const orders = new Map<string, Order>();
+// File-backed store for the demo/mock checkout flow (see
+// lib/server-store.ts for why — a plain module-level Map isn't reliably
+// shared between the checkout route and the pages that read it back).
+// Replace with the `orders` table (supabase/migrations/0001_init.sql) once
+// a real database and payment provider are connected.
+const STORE_NAME = "orders";
+
+function load(): Order[] {
+  return readStore<Order[]>(STORE_NAME, []);
+}
 
 export function createOrder(order: Order) {
-  orders.set(order.id, order);
-  return order;
+  return withStore<Order[], Order>(STORE_NAME, [], (orders) => ({
+    next: [...orders, order],
+    result: order,
+  }));
 }
 
 export function getOrder(id: string) {
-  return orders.get(id);
+  return load().find((o) => o.id === id);
 }
 
 export function listOrders() {
-  return Array.from(orders.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return load().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export function updateOrderStatus(id: string, status: Order["fulfillmentStatus"]) {
-  const order = orders.get(id);
-  if (!order) return null;
-  order.fulfillmentStatus = status;
-  return order;
+  return withStore<Order[], Order | null>(STORE_NAME, [], (orders) => {
+    const order = orders.find((o) => o.id === id);
+    if (!order) return { next: orders, result: null };
+    const updated = { ...order, fulfillmentStatus: status };
+    return {
+      next: orders.map((o) => (o.id === id ? updated : o)),
+      result: updated,
+    };
+  });
 }
 
 export function generateOrderNumber() {

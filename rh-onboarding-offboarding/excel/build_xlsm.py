@@ -25,6 +25,10 @@ THISWORKBOOK = (
 'Attribute VB_Exposed = True\r\n'
 'Attribute VB_TemplateDerived = False\r\n'
 'Attribute VB_Customizable = True\r\n'
+"Private Sub Workbook_Open()\r\n"
+"    On Error Resume Next\r\n"
+"    CriarBotao\r\n"
+"End Sub\r\n"
 "Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)\r\n"
 "    On Error Resume Next\r\n"
 "    If Sh.Name <> SHEET_REG Then Exit Sub\r\n"
@@ -41,6 +45,32 @@ MODULE1 = (
 'Public Const ICT_EMAIL As String = "ict.approver@iom.int"\r\n'
 'Public Const ADM_EMAIL As String = "admin.approver@iom.int"\r\n'
 'Public Const HR_EMAIL As String = "hr@iom.int"\r\n'
+'Public Const SHEET_DASH As String = "Dashboard"\r\n'
+"' AUTO_SEND = True -> envia direto pelo Outlook (.Send)\r\n"
+"' AUTO_SEND = False -> abre o email para rever antes (.Display)\r\n"
+"Public Const AUTO_SEND As Boolean = True\r\n"
+"\r\n"
+"' Cria/actualiza o botao 'Enviar pedidos pendentes' no Dashboard (chamado no Open)\r\n"
+"Public Sub CriarBotao()\r\n"
+"    Dim ws As Worksheet, shp As Shape\r\n"
+"    On Error Resume Next\r\n"
+"    Set ws = ThisWorkbook.Sheets(SHEET_DASH)\r\n"
+"    If ws Is Nothing Then Exit Sub\r\n"
+'    ws.Shapes("btnEnviar").Delete\r\n'
+"    On Error GoTo 0\r\n"
+"    Set shp = ws.Shapes.AddShape(msoShapeRoundedRectangle, 300, 36, 220, 30)\r\n"
+'    shp.Name = "btnEnviar"\r\n'
+"    shp.Fill.ForeColor.RGB = RGB(0, 51, 160)\r\n"
+"    shp.Line.Visible = msoFalse\r\n"
+"    With shp.TextFrame2.TextRange\r\n"
+'        .Text = "Enviar pedidos pendentes"\r\n'
+"        .Font.Fill.ForeColor.RGB = RGB(255, 255, 255)\r\n"
+"        .Font.Size = 11\r\n"
+"        .Font.Bold = msoTrue\r\n"
+"    End With\r\n"
+"    shp.TextFrame2.VerticalAnchor = msoAnchorMiddle\r\n"
+'    shp.OnAction = "EnviarPedidosPendentes"\r\n'
+"End Sub\r\n"
 "\r\n"
 "' Envia por email todos os pedidos com Estado = PENDENTE (botao/manual)\r\n"
 "Public Sub EnviarPedidosPendentes()\r\n"
@@ -98,7 +128,11 @@ MODULE1 = (
 "    m.To = para\r\n"
 '    m.Subject = "[IOM] " & assunto\r\n'
 '    m.Body = corpo & vbCrLf & vbCrLf & "Mensagem automatica do sistema de Onboarding/Offboarding."\r\n'
-"    m.Display\r\n"
+"    If AUTO_SEND Then\r\n"
+"        m.Send\r\n"
+"    Else\r\n"
+"        m.Display\r\n"
+"    End If\r\n"
 "End Sub\r\n"
 )
 
@@ -111,25 +145,59 @@ MODULES = [
 # ---------------------------------------------------------------------------
 # 2) Compressao MS-OVBA (chunks: inteiros=nao-comprimido, parcial=literais)
 # ---------------------------------------------------------------------------
+def _ceil_log2(x):
+    n = 0
+    while (1 << n) < x:
+        n += 1
+    return n
+
+def _compress_chunk(data: bytes) -> bytes:
+    """Comprime um chunk (<=4096 bytes) em tokens MS-OVBA (literais + copia)."""
+    out = bytearray()
+    pos = 0
+    n = len(data)
+    while pos < n:
+        flag_index = len(out)
+        out.append(0)           # placeholder do FlagByte
+        flag = 0
+        for bit in range(8):
+            if pos >= n:
+                break
+            bit_count = max(_ceil_log2(pos), 4) if pos > 0 else 4
+            length_mask = 0xFFFF >> bit_count
+            max_len = length_mask + 3
+            max_off = 1 << bit_count
+            win_start = max(0, pos - max_off)
+            best_len, best_off = 0, 0
+            for cand in range(pos - 1, win_start - 1, -1):
+                l = 0
+                while l < max_len and pos + l < n and data[cand + l] == data[pos + l]:
+                    l += 1
+                if l > best_len:
+                    best_len, best_off = l, pos - cand
+                    if l == max_len:
+                        break
+            if best_len >= 3:
+                token = ((best_off - 1) << (16 - bit_count)) | (best_len - 3)
+                out += struct.pack('<H', token)
+                flag |= (1 << bit)
+                pos += best_len
+            else:
+                out.append(data[pos])
+                pos += 1
+        out[flag_index] = flag
+    return bytes(out)
+
 def ovba_compress(data: bytes) -> bytes:
     out = bytearray(b'\x01')
-    i = 0
-    while i < len(data):
+    for i in range(0, len(data), 4096):
         chunk = data[i:i+4096]
-        i += 4096
-        if len(chunk) == 4096:
-            out += struct.pack('<H', 0x3FFF)   # nao comprimido (flag=0, 011, size=0xFFF)
-            out += chunk
+        comp = _compress_chunk(chunk)
+        if len(comp) >= 4096 and len(chunk) == 4096:
+            out += struct.pack('<H', 0x3FFF) + chunk          # chunk nao comprimido
         else:
-            cd = bytearray()
-            j = 0
-            while j < len(chunk):
-                cd.append(0x00)                # flagbyte: 8 literais
-                cd += chunk[j:j+8]
-                j += 8
-            assert len(cd) <= 4098, "chunk parcial grande demais para literais"
-            hdr = 0x8000 | 0x3000 | ((len(cd) - 1) & 0x0FFF)
-            out += struct.pack('<H', hdr) + bytes(cd)
+            hdr = 0x8000 | 0x3000 | ((len(comp) - 1) & 0x0FFF)  # chunk comprimido
+            out += struct.pack('<H', hdr) + comp
     return bytes(out)
 
 # ---------------------------------------------------------------------------

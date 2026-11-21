@@ -27,10 +27,18 @@ Ver [`../docs/fields.md`](../docs/fields.md).
 Ao abrir, o Excel mostra a barra amarela **"Ativar conteúdo"** → clicar para ligar as macros.
 
 O que o macro faz (código em [`vba/`](vba/)):
-- **`EnviarPedidosPendentes`** (executar manualmente ou por botão): percorre as linhas e abre no Outlook um email para o aprovador de **ICT** (Laptop) e/ou **Administração** (Celular+SIM) de cada linha com Estado `Pendente`.
-- **Automático:** quando alguém muda a coluna **Estado** para `Aprovado`/`Rejeitado`, prepara um email para o RH + email pessoal do colaborador (evento `Workbook_SheetChange`).
+- **Botão «Enviar pedidos pendentes»** no `Dashboard`: criado automaticamente ao abrir o ficheiro (evento `Workbook_Open` → `CriarBotao`). Clicar corre `EnviarPedidosPendentes`.
+- **`EnviarPedidosPendentes`**: percorre as linhas e, para cada uma com Estado `Pendente`, envia email ao aprovador de **ICT** (Laptop) e/ou **Administração** (Celular+SIM).
+- **Automático:** quando alguém muda a coluna **Estado** para `Aprovado`/`Rejeitado`, envia email ao RH + email pessoal do colaborador (evento `Workbook_SheetChange`).
 
-> Por segurança o macro usa `.Display` (abre o email para revisão). Para enviar automaticamente, troca `.Display` por `.Send` em `vba/Module1.bas`.
+### Envio automático vs. rever antes (`AUTO_SEND`)
+No topo de `vba/Module1.bas`:
+```vba
+' True  -> envia direto pelo Outlook (.Send)
+' False -> abre o email para rever antes (.Display)
+Public Const AUTO_SEND As Boolean = True
+```
+Está **`True`** (envio automático). Com `.Send`, o Outlook pode mostrar um aviso de segurança na primeira vez — autorize, ou configure o Outlook/Exchange para permitir envio programático. Para rever cada email antes de enviar, ponha `AUTO_SEND = False`.
 
 ### ⚠️ Importante sobre o .xlsm deste repositório
 Foi gerado **sem Excel** (ambiente Linux), com o `vbaProject.bin` construído e validado por `olefile` + `olevba` (o macro extrai-se corretamente). Deve abrir e correr no Excel normalmente. **Se** a tua versão do Excel reclamar do projeto, usa o método de importação abaixo — é 100% fiável e demora 1 minuto.

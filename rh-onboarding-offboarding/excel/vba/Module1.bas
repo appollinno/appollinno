@@ -4,6 +4,32 @@ Public Const SHEET_REG As String = "Registos"
 Public Const ICT_EMAIL As String = "ict.approver@iom.int"
 Public Const ADM_EMAIL As String = "admin.approver@iom.int"
 Public Const HR_EMAIL As String = "hr@iom.int"
+Public Const SHEET_DASH As String = "Dashboard"
+' AUTO_SEND = True -> envia direto pelo Outlook (.Send)
+' AUTO_SEND = False -> abre o email para rever antes (.Display)
+Public Const AUTO_SEND As Boolean = True
+
+' Cria/actualiza o botao 'Enviar pedidos pendentes' no Dashboard (chamado no Open)
+Public Sub CriarBotao()
+    Dim ws As Worksheet, shp As Shape
+    On Error Resume Next
+    Set ws = ThisWorkbook.Sheets(SHEET_DASH)
+    If ws Is Nothing Then Exit Sub
+    ws.Shapes("btnEnviar").Delete
+    On Error GoTo 0
+    Set shp = ws.Shapes.AddShape(msoShapeRoundedRectangle, 300, 36, 220, 30)
+    shp.Name = "btnEnviar"
+    shp.Fill.ForeColor.RGB = RGB(0, 51, 160)
+    shp.Line.Visible = msoFalse
+    With shp.TextFrame2.TextRange
+        .Text = "Enviar pedidos pendentes"
+        .Font.Fill.ForeColor.RGB = RGB(255, 255, 255)
+        .Font.Size = 11
+        .Font.Bold = msoTrue
+    End With
+    shp.TextFrame2.VerticalAnchor = msoAnchorMiddle
+    shp.OnAction = "EnviarPedidosPendentes"
+End Sub
 
 ' Envia por email todos os pedidos com Estado = PENDENTE (botao/manual)
 Public Sub EnviarPedidosPendentes()
@@ -61,5 +87,9 @@ Private Sub EnviarEmail(para As String, assunto As String, corpo As String)
     m.To = para
     m.Subject = "[IOM] " & assunto
     m.Body = corpo & vbCrLf & vbCrLf & "Mensagem automatica do sistema de Onboarding/Offboarding."
-    m.Display
+    If AUTO_SEND Then
+        m.Send
+    Else
+        m.Display
+    End If
 End Sub

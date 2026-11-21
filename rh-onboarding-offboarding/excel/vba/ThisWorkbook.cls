@@ -6,6 +6,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Attribute VB_TemplateDerived = False
 Attribute VB_Customizable = True
+Private Sub Workbook_Open()
+    On Error Resume Next
+    CriarBotao
+End Sub
 Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     On Error Resume Next
     If Sh.Name <> SHEET_REG Then Exit Sub

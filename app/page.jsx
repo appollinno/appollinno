@@ -1,6 +1,7 @@
 import "./coffee.css";
 import CoffeeHero from "@/components/coffee/CoffeeHero";
 import RoastGrid from "@/components/coffee/RoastGrid";
+import MenuSection from "@/components/coffee/MenuSection";
 import SubscriptionCounter from "@/components/coffee/SubscriptionCounter";
 import BrewingGuides from "@/components/coffee/BrewingGuides";
 import CafeLocations from "@/components/coffee/CafeLocations";
@@ -14,6 +15,7 @@ export default function Page() {
           <a href="#top" className="font-display text-2xl tracking-wide">appollo</a>
           <div className="hidden items-center gap-8 font-label text-xs uppercase tracking-[0.14em] text-cream/65 md:flex">
             <a href="#roasts" className="transition-colors hover:text-cream">Roasts</a>
+            <a href="#menu" className="transition-colors hover:text-cream">Menu</a>
             <a href="#subscriptions" className="transition-colors hover:text-cream">Subscribe</a>
             <a href="#brewing" className="transition-colors hover:text-cream">Brewing</a>
             <a href="#cafes" className="transition-colors hover:text-cream">Cafés</a>
@@ -25,6 +27,7 @@ export default function Page() {
       <main>
         <CoffeeHero />
         <RoastGrid />
+        <MenuSection />
         <SubscriptionCounter />
         <BrewingGuides />
         <CafeLocations />

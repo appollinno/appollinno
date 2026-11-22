@@ -1,0 +1,52 @@
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+type ButtonBaseProps = {
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "md" | "lg";
+  className?: string;
+  children: React.ReactNode;
+};
+
+const VARIANTS: Record<string, string> = {
+  primary: "bg-primary text-primary-foreground hover:opacity-90",
+  secondary:
+    "bg-transparent border border-foreground text-foreground hover:bg-foreground hover:text-background",
+  ghost: "bg-transparent text-foreground underline-offset-4 hover:underline",
+};
+
+const SIZES: Record<string, string> = {
+  md: "px-6 py-3 text-sm",
+  lg: "px-8 py-4 text-base",
+};
+
+type AnchorProps = ButtonBaseProps &
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+
+type ButtonProps = ButtonBaseProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { href?: undefined };
+
+export function Button(props: AnchorProps | ButtonProps) {
+  const { variant = "primary", size = "md", className, children, ...rest } = props;
+  const classes = cn(
+    "inline-flex items-center justify-center gap-2 font-semibold uppercase tracking-wide transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+    VARIANTS[variant],
+    SIZES[size],
+    className
+  );
+
+  if ("href" in rest && rest.href) {
+    const { href, ...anchorRest } = rest as AnchorProps;
+    return (
+      <Link href={href} className={classes} {...anchorRest}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button className={classes} {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {children}
+    </button>
+  );
+}

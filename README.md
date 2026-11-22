@@ -1,40 +1,58 @@
-# Hi, I'm Cremildo Manhique
+# Appollo Coffee Shop
 
-### System Engineer & DevOps Engineer | Maputo, Mozambique
+A specialty coffee e-commerce site and brand experience — Next.js 16, TypeScript,
+Tailwind CSS v4, Framer Motion. Single-origin coffee, roasted in small
+batches, sold through a cinematic, editorial storefront.
 
-I work at the intersection of Systems Engineering, DevOps, and Cloud Infrastructure, building and automating CI/CD pipelines, container platforms, and infrastructure-as-code.
+**Read [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md) first** — it's
+the honest, current state of the project: what's real, what's mocked and
+why, what's actually been measured and tested, and what's left before this
+is launch-ready.
 
-## Technologies & Tools
+## Documentation
 
-**Cloud Platforms:** Azure
+| Doc | Covers |
+|---|---|
+| [docs/PROGRESS_REPORT.md](docs/PROGRESS_REPORT.md) | Project status, verified test/audit results, acceptance criteria, what's next |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Stack, directory layout, what's real vs. mocked, rendering model |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | How to deploy, and how to connect Supabase/payments/email |
+| [docs/SECURITY.md](docs/SECURITY.md) | Security posture (OWASP-mapped) and performance findings |
+| [docs/IMAGE_SOURCING.md](docs/IMAGE_SOURCING.md) | Where the photography comes from and its required attribution |
 
-**OS:** Linux & Windows (11 and Server 2019, 2022 & 2025)
+## Getting started
 
-**Infrastructure as Code:** Terraform
+```bash
+npm install
+npm run dev
+```
 
-**Configuration Management:** Ansible
+Open [http://localhost:3000](http://localhost:3000). An admin account is
+seeded automatically at `admin@appollo.coffee` — password from
+`ADMIN_SEED_PASSWORD` if set, otherwise `AppolloAdmin!2026` (development
+only; see docs/DEPLOYMENT.md before deploying anywhere reachable).
 
-**Monitoring/Observability:** Grafana, Prometheus
+## Scripts
 
-**Containerization & Orchestration:** Docker, Kubernetes
+```bash
+npm run dev         # start the dev server
+npm run build        # production build
+npm run start        # run the production build
+npm run lint          # eslint
+npm run test:unit    # Vitest unit tests
+npm run test:e2e     # Playwright e2e tests (builds + starts the app first)
+```
 
-**Programming/Scripting:** Bash, Python
+## Project structure
 
-**CI/CD & Version Control:** GitHub Actions, Git, GitLab, GitHub, Nexus, Docker Hub
+```
+app/              routes: pages, API routes, layout, metadata
+components/       by domain: home/, shop/, product/, cart/, account/, admin/, layout/, ui/, seo/
+lib/              domain logic: data/, auth/, store/ (Zustand), orders.ts, inventory.ts, types.ts
+public/images/    self-hosted, real, CC-licensed coffee photography
+supabase/         SQL migrations for the real backend (see docs/ARCHITECTURE.md)
+tests/            unit/ (Vitest) and e2e/ (Playwright)
+docs/             architecture, deployment, security, image sourcing, progress report
+```
 
-**Package Management:** Helm
-
-**GitOps:** ArgoCD
-
-## Additional Information
-
-- 🤝 Open to collaborating on DevOps projects and cloud automation
-- 🧠 Always learning (non-stop!), exploring new tools, and improving skills
-- 😄 Let's connect, share knowledge, or just talk about tech
-- 📫 Connect with me on [LinkedIn](https://www.linkedin.com/in/cremildosamanhique)
-
-## GitHub Stats
-
-![Stats](https://github-readme-stats.vercel.app/api?username=appollinno&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=appollinno&layout=compact&theme=tokyonight)
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why this doesn't
+have separate `frontend/`/`backend/` folders.

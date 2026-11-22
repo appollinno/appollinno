@@ -35,6 +35,7 @@ export default function OurStoryPage() {
             "That principle hasn't changed. Every origin on our shelf is one our buying team has either visited directly or sourced through an importer we've worked with for years and trust completely.",
           ]}
           image={img("roasting", 0, "Roaster working at a commercial coffee roasting machine")}
+          priority
         />
 
         <StoryBlock

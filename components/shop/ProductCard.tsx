@@ -7,7 +7,14 @@ import { Star } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
-export function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+  /** Set for the first few cards in an above-the-fold grid so the browser
+   * doesn't lazy-load a likely LCP image (Next.js flags this at runtime). */
+  priority?: boolean;
+}
+
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const cheapestVariant = product.variants[0];
   const inStock = product.variants.some((v) => v.stock > 0);
 
@@ -25,6 +32,8 @@ export function ProductCard({ product }: { product: Product }) {
             src={product.images[0].url}
             alt={product.images[0].alt}
             fill
+            loading={priority ? "eager" : undefined}
+            fetchPriority={priority ? "high" : undefined}
             sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />

@@ -10,9 +10,19 @@ interface StoryBlockProps {
   paragraphs: string[];
   image: { url: string; alt: string };
   reverse?: boolean;
+  /** Set on the first block on a page — it's likely above the fold and
+   * Next.js flags it as a probable LCP element without this. */
+  priority?: boolean;
 }
 
-export function StoryBlock({ eyebrow, title, paragraphs, image, reverse }: StoryBlockProps) {
+export function StoryBlock({
+  eyebrow,
+  title,
+  paragraphs,
+  image,
+  reverse,
+  priority = false,
+}: StoryBlockProps) {
   return (
     <div className="grid gap-10 py-16 md:grid-cols-2 md:items-center md:gap-16">
       <motion.div
@@ -29,6 +39,8 @@ export function StoryBlock({ eyebrow, title, paragraphs, image, reverse }: Story
           src={image.url}
           alt={image.alt}
           fill
+          loading={priority ? "eager" : undefined}
+          fetchPriority={priority ? "high" : undefined}
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover"
         />

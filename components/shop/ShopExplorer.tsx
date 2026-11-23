@@ -74,8 +74,8 @@ function ExplorerInner({ products }: { products: Product[] }) {
           ))}
         </div>
 
-        <div className="flex gap-3">
-          <div className="relative">
+        <div className="flex flex-wrap gap-3">
+          <div className="relative w-full sm:w-auto sm:flex-none">
             <Search
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-foreground-muted"
@@ -87,7 +87,7 @@ function ExplorerInner({ products }: { products: Product[] }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search coffee, notes…"
               aria-label="Search products"
-              className="w-56 border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus-visible:border-primary"
+              className="w-full border border-border bg-background py-2 pl-9 pr-3 text-sm outline-none focus-visible:border-primary sm:w-56"
             />
           </div>
           <label className="sr-only" htmlFor="shop-sort">

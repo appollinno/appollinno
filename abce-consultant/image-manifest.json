@@ -1,0 +1,247 @@
+{
+ "about-facility.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "about-team.jpg": {
+  "width": 1280,
+  "height": 850,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "cat-civil-structural.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "cat-electrical.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "cat-mechanical-piping.jpg": {
+  "width": 1280,
+  "height": 850,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "cat-rigging-lifting.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "cat-tools-consumables.jpg": {
+  "width": 1280,
+  "height": 854,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "clients-industrial.jpg": {
+  "width": 1280,
+  "height": 752,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "contact-maputo.jpg": {
+  "width": 1280,
+  "height": 752,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "hero-industrial.jpg": {
+  "width": 1920,
+  "height": 1080,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "hero-port.jpg": {
+  "width": 1100,
+  "height": 650,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-construction.jpg": {
+  "width": 1280,
+  "height": 854,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-energy.jpg": {
+  "width": 1280,
+  "height": 854,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-industrial.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-mining.jpg": {
+  "width": 1280,
+  "height": 720,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-oil-gas.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": false,
+  "small": 640,
+  "smallWebp": true
+ },
+ "ind-processing.jpg": {
+  "width": 1280,
+  "height": 854,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "og-default.jpg": {
+  "width": 1200,
+  "height": 630,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "qual-inspection.jpg": {
+  "width": 1280,
+  "height": 534,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "qual-standards.jpg": {
+  "width": 1600,
+  "height": 1068,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "sub-chain-hoist.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-flanges-fittings.jpg": {
+  "width": 520,
+  "height": 347,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-generator.jpg": {
+  "width": 520,
+  "height": 293,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-hv-cable.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-pumps.jpg": {
+  "width": 520,
+  "height": 347,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-rebar.jpg": {
+  "width": 520,
+  "height": 280,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-steel-beams.jpg": {
+  "width": 520,
+  "height": 293,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-transformer.jpg": {
+  "width": 520,
+  "height": 353,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-valves.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-welding.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "sub-wire-rope.jpg": {
+  "width": 520,
+  "height": 346,
+  "webp": true,
+  "small": null,
+  "smallWebp": false
+ },
+ "svc-customs.jpg": {
+  "width": 1280,
+  "height": 851,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "svc-freight.jpg": {
+  "width": 1280,
+  "height": 841,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "svc-inspection.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ },
+ "svc-warehouse.jpg": {
+  "width": 1280,
+  "height": 853,
+  "webp": true,
+  "small": 640,
+  "smallWebp": true
+ }
+}

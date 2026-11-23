@@ -100,8 +100,8 @@ entries, 6 industries and 9 client names are present and asserted by tests.
 
 | Page | Performance | Accessibility | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| Home | 99 | 100 | 100 | 100 | 0.9 s | 0.003 | 0 ms |
-| Products | 99 | 100 | 100 | 100 | 0.9 s | 0 | 0 ms |
+| Home | 100 | 100 | 100 | 100 | 0.8 s | 0.003 | 0 ms |
+| Products | 99 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
 | Contact | 100 | 100 | 100 | 100 | 0.7 s | 0 | 0 ms |
 
 All four brief targets (Performance 90+, Accessibility 95+, Best Practices
@@ -117,8 +117,27 @@ with `npm run preview` then `npm run lighthouse`.
 | Initial JavaScript | 13 KB (GSAP's 114 KB loads lazily, and never under reduced motion) |
 | CSS | 36 KB, one hashed file |
 | Fonts | 76 KB total — Inter + Sora variable, latin subset, self-hosted |
-| Photography | 5.2 MB JPEG + 4.1 MB WebP across 35 images, site-wide |
+| Photography | 35 images, each in two widths × JPEG and WebP |
 | Third-party requests | None |
+
+Measured transfer for a real first view of the home page (desktop, no
+scrolling), by category:
+
+| | Default | Reduced motion |
+|---|---|---|
+| Images | 302 KB | 302 KB |
+| JavaScript | 125 KB | 13 KB |
+| Fonts | 72 KB | 72 KB |
+| CSS | 36 KB | 36 KB |
+| HTML | 34 KB | 34 KB |
+| **Total** | **569 KB** | **457 KB** |
+
+Those are uncompressed bodies — `vite preview` does not gzip. Behind a server
+with gzip or brotli the text assets drop to roughly 8 KB of CSS, 8 KB of HTML
+and 51 KB of JavaScript, putting a real first view near 430 KB.
+
+Scrolling the entire home page fetches 15 images totalling 0.72 MB; the whole
+Products page, which is the heaviest, comes to 0.84 MB.
 
 ### Browser testing
 
@@ -154,6 +173,7 @@ Everything below was discovered by driving the real site, not by inspection.
 | 12 | Alt text described the wrong photograph | A port container inspection was captioned "fabricated industrial components" | Alt text corrected to what is actually in the frame |
 | 13 | Content columns were the narrow side | Products and Industries put the heading, lede, imagery and lists in the 5fr column and the shorter content in 7fr | Content column is now 7fr; variety comes from the alternating surface colour |
 | 14 | Section headings sat flush against their content | Three blocks set their own top margin and the rest did not | `.section-head` owns the gap below it, once |
+| 15 | A 304 px thumbnail was downloading a 208 KB image | Several photographs serve both as a small thumbnail on one page and a wide band image on another; one file cannot be the right weight for both | Each photograph now has a 640 px variant, and the build emits `srcset` with width descriptors from `image-manifest.json`. That thumbnail went 208 KB → 51 KB, the home page's first view 724 KB → 569 KB, and its LCP 1.0 s → 0.8 s |
 
 ### Three test-harness defects also found and fixed
 
@@ -242,6 +262,11 @@ npm run shots                        # 48 screenshots, 6 breakpoints
 10. **Render-blocking CSS** is the one remaining Lighthouse hint. Inlining
    critical CSS would gain a little; at 99–100 it was not worth the
    complexity.
+11. **Derived image variants are committed** (`*-640.jpg`, `*.webp`), which is
+    why `public/assets/images/` is ~12 MB. They are regenerable with
+    `npm run images`, but committing them means a clone builds and deploys
+    without needing ImageMagick installed. Remove them from git if you would
+    rather generate them in CI.
 
 ## 9. Agents
 

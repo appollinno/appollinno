@@ -36,7 +36,7 @@ Both servers bind to `127.0.0.1` only and are never exposed on the network.
 | `npm run test:report` | Opens the generated Playwright HTML report |
 | `npm run lighthouse` | Real Lighthouse audit against the running preview |
 | `npm run shots` | Screenshots every page at 375/390/768/1024/1440/1920 |
-| `npm run images` | Re-optimises photography and regenerates WebP variants |
+| `npm run images` | Re-optimises photography, regenerates WebP and 640px variants, rewrites `image-manifest.json` |
 | `npm run icons` | Regenerates favicons and the Open Graph share card |
 | `npm run seo` | Regenerates `public/sitemap.xml` from the real page list |
 

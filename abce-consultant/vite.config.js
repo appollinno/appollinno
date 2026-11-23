@@ -5,6 +5,16 @@ import { fileURLToPath } from 'node:url';
 import { site, nav } from './site.config.js';
 import { blocks } from './src/content/render.js';
 
+/** Widths and available variants for each photograph, written by
+ *  `npm run images`. Lets the build emit srcset without probing files. */
+const MANIFEST_PATH = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  'image-manifest.json',
+);
+const imageManifest = existsSync(MANIFEST_PATH)
+  ? JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'))
+  : {};
+
 const root = dirname(fileURLToPath(import.meta.url));
 const PARTIALS_DIR = resolve(root, 'src/partials');
 const PAGES = [
@@ -58,13 +68,35 @@ function abceHtml() {
     html.replace(/<img\b[^>]*>/g, (tag) => {
       const src = tag.match(/\ssrc="([^"]+\.jpe?g)"/)?.[1];
       if (!src) return tag;
-      const webpPath = resolve(root, 'public', src.replace(/^\//, '').replace(/\.jpe?g$/i, '.webp'));
-      if (!existsSync(webpPath)) return tag;
-      const webpSrc = src.replace(/\.jpe?g$/i, '.webp');
+
+      const file = src.split('/').pop();
+      const meta = imageManifest[file];
+      if (!meta) return tag;
+
+      const stem = src.replace(/\.jpe?g$/i, '');
       const sizes = tag.match(/\ssizes="([^"]+)"/)?.[1];
+
+      // Build a width-descriptor srcset. Several photographs are used both as
+      // a ~300px thumbnail and as a ~640px band image; a single file cannot
+      // be the right weight for both, so the browser picks using `sizes`.
+      const set = (ext, hasSmall) =>
+        [
+          hasSmall ? `${stem}-640.${ext} 640w` : null,
+          `${stem}.${ext} ${meta.width}w`,
+        ]
+          .filter(Boolean)
+          .join(', ');
+
+      let out = tag;
+      if (meta.small) {
+        out = out.replace(/\ssrcset="[^"]*"/, '');
+        out = out.replace(/<img\b/, `<img srcset="${set('jpg', true)}"`);
+      }
+      if (!meta.webp) return out;
+
       return (
-        `<picture><source type="image/webp" srcset="${webpSrc}"` +
-        `${sizes ? ` sizes="${sizes}"` : ''}>${tag}</picture>`
+        `<picture><source type="image/webp" srcset="${set('webp', meta.smallWebp)}"` +
+        `${sizes ? ` sizes="${sizes}"` : ''}>${out}</picture>`
       );
     });
 

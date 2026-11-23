@@ -12,7 +12,7 @@
  * Run: npm run images
  */
 import { execFileSync } from 'node:child_process';
-import { readdirSync, statSync, renameSync, unlinkSync } from 'node:fs';
+import { readdirSync, statSync, renameSync, unlinkSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIR = 'public/assets/images';
@@ -52,6 +52,25 @@ const rows = [];
  * while the JPEG stays as the fallback. A WebP that comes out no smaller
  * than its JPEG is discarded rather than shipped.
  */
+const SMALL_W = 640;
+
+/**
+ * Writes the narrow variant (JPEG + WebP) used by srcset. Skipped when the
+ * image is already at or below the small width.
+ */
+function writeSmall(src, file, quality, width) {
+  if (width <= SMALL_W) return false;
+  const stem = file.replace(/\.jpe?g$/i, '');
+  for (const [ext, extra] of [['jpg', []], ['webp', ['-define', 'webp:method=5']]]) {
+    execFileSync('convert', [
+      src, '-strip', '-resize', `${SMALL_W}x>`, '-sampling-factor', '4:2:0',
+      '-interlace', 'JPEG', '-quality', String(quality), ...extra,
+      join(DIR, `${stem}-${SMALL_W}.${ext}`),
+    ]);
+  }
+  return true;
+}
+
 function writeWebp(src, file, quality, jpegBytes) {
   const dest = join(DIR, file.replace(/\.jpe?g$/i, '.webp'));
   execFileSync('convert', [
@@ -72,8 +91,9 @@ for (const file of readdirSync(DIR).filter((f) => /\.jpe?g$/i.test(f))) {
     execFileSync('identify', ['-format', '%w', src], { encoding: 'utf8' }).trim(),
   );
   if (width <= maxW && startBytes <= BUDGET) {
-    // The JPEG needs no further work, but it still wants a WebP sibling.
+    // The JPEG needs no further work, but it still wants its siblings.
     writeWebp(src, file, q, startBytes);
+    writeSmall(src, file, q, width);
     before += startBytes;
     after += startBytes;
     rows.push([file, startBytes, startBytes, 'jpeg kept']);
@@ -102,6 +122,9 @@ for (const file of readdirSync(DIR).filter((f) => /\.jpe?g$/i.test(f))) {
   const final = statSync(src).size;
 
   writeWebp(src, file, q, final);
+  writeSmall(src, file, q, Number(
+    execFileSync('identify', ['-format', '%w', src], { encoding: 'utf8' }).trim(),
+  ));
 
   before += startBytes;
   after += final;
@@ -117,6 +140,24 @@ for (const [f, s0, s1, note] of rows.slice(0, 10)) {
 console.log(
   `\ntotal ${kb(before)} -> ${kb(after)}  (${Math.round((1 - after / before) * 100)}% smaller, ${rows.length} files)`,
 );
+
+// Manifest consumed by the build to construct srcset without shelling out
+// to ImageMagick for every <img> on every build.
+const manifest = {};
+for (const f of readdirSync(DIR).filter((x) => /\.jpe?g$/i.test(x) && !/-\d+\.jpe?g$/i.test(x))) {
+  const stem = f.replace(/\.jpe?g$/i, '');
+  const w = Number(execFileSync('identify', ['-format', '%w', join(DIR, f)], { encoding: 'utf8' }).trim());
+  const h = Number(execFileSync('identify', ['-format', '%h', join(DIR, f)], { encoding: 'utf8' }).trim());
+  manifest[f] = {
+    width: w,
+    height: h,
+    webp: existsSync(join(DIR, `${stem}.webp`)),
+    small: existsSync(join(DIR, `${stem}-${SMALL_W}.jpg`)) ? SMALL_W : null,
+    smallWebp: existsSync(join(DIR, `${stem}-${SMALL_W}.webp`)),
+  };
+}
+writeFileSync('image-manifest.json', JSON.stringify(manifest, null, 1));
+console.log(`manifest: ${Object.keys(manifest).length} images`);
 
 const webpFiles = readdirSync(DIR).filter((f) => f.endsWith('.webp'));
 const webpBytes = webpFiles.reduce((n, f) => n + statSync(join(DIR, f)).size, 0);

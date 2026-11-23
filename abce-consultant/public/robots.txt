@@ -1,0 +1,7 @@
+# ABCE Consultant LDA
+User-agent: *
+Allow: /
+Disallow: /404.html
+Disallow: /credits.html
+
+Sitemap: https://www.abceconsu.com/sitemap.xml

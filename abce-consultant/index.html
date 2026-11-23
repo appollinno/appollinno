@@ -1,0 +1,200 @@
+<!--@page
+{
+  "title": "Home",
+  "path": "/index.html",
+  "darkHero": true,
+  "description": "ABCE Consultant LDA delivers comprehensive procurement, industrial supply and integrated logistics solutions for high-criticality industries across energy, mining and industrial sectors. Based in Maputo, Mozambique.",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/",
+    "publisher": { "@id": "https://www.abceconsu.com/#organization" }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="hero__media">
+        <img src="/assets/images/hero-industrial.jpg"
+             alt="Industrial processing facility at dusk"
+             width="1920" height="1080"
+             fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="hero__sweep" aria-hidden="true" data-hero-sweep></div>
+
+      <div class="container container--wide">
+        <div class="hero__content">
+          <h1 class="hero__title" id="hero-h">
+            <span class="line"><span>Engineering Confidence.</span></span>
+            <span class="line"><span>Delivering Excellence.</span></span>
+          </h1>
+          <hr class="hero__rule">
+          <p class="hero__sub">
+            Your trusted partner in comprehensive procurement, industrial supply, and
+            integrated logistics solutions for high-criticality industries.
+          </p>
+          <div class="cluster hero__actions">
+            <a class="btn btn--accent" href="#solutions">Explore our solutions</a>
+            <a class="btn btn--ghost" href="/contact.html#quote">Request a quotation</a>
+          </div>
+        </div>
+      </div>
+
+      <a class="scroll-cue" href="#intro">
+        <span class="scroll-cue__track" aria-hidden="true"></span>
+        <span>Scroll</span>
+      </a>
+    </section>
+
+    <!-- ================= INTRODUCTION ================= -->
+    <section class="section surface-paper" id="intro" aria-labelledby="intro-h">
+      <div class="container">
+        <div class="split split--5-7">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="intro-h">{{ site.positioning }}</h2>
+          </div>
+          <div class="prose" data-reveal>
+            <p class="lede">
+              {{ site.name }} supplies the equipment, materials and logistics that
+              keep energy, mining and industrial operations running — and takes
+              responsibility for the whole route from specification to site.
+            </p>
+            <p>
+              The companies we work for do not fail because a part does not exist.
+              They lose time because the right part is specified loosely, sourced
+              from an unverified supplier, shipped without the documentation it
+              needs, and then stopped at a border. We work the problem end to end:
+              we clarify what the item actually has to do, source it against the
+              standard that governs it, check it before it is accepted, and move it
+              through freight and customs to the place it is needed.
+            </p>
+            <p>
+              We operate from Maputo, Mozambique, with international sourcing and
+              freight reach, serving operations across the region and beyond.
+            </p>
+            <p><a class="link-action" href="/about.html">More about the company</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FIVE PRODUCT STREAMS ================= -->
+    <section class="section surface-mist" id="solutions" aria-labelledby="streams-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="streams-h">Five supply streams</h2>
+          <p class="lede">
+            Our catalogue is organised around what an industrial operation actually
+            buys: bulk materials for the civil works, pressure equipment for the
+            process, rigging for the lifts, power and control for the plant, and the
+            tooling and consumables that keep maintenance moving.
+          </p>
+        </div>
+
+        <div class="streams">
+          <!--@render products.streamRows -->
+        </div>
+
+        <p class="streams__action"><a class="btn btn--primary" href="/products.html">View the full product range</a></p>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES OVERVIEW ================= -->
+    <section class="section surface-paper" aria-labelledby="services-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="services-h">Procurement and logistics, as one scope</h2>
+          <p class="lede">
+            Ten services that together cover a requisition from the moment the
+            requirement is defined to the moment the material is issued to the job.
+          </p>
+        </div>
+
+        <!--@render services.overview -->
+
+        <p class="streams__action"><a class="btn btn--primary" href="/services.html">How we work</a></p>
+      </div>
+    </section>
+
+    <!-- ================= INDUSTRY EXPERTISE ================= -->
+    <section class="section surface-navy" aria-labelledby="industries-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="industries-h">Industry expertise</h2>
+          <p class="lede">
+            Each sector fails in its own way. What a mine needs from a supplier is
+            not what a refinery needs, and the difference is usually documentation,
+            metallurgy or the last hundred kilometres.
+          </p>
+        </div>
+
+        <!--@render industries.cards -->
+
+        <p class="streams__action"><a class="btn btn--accent" href="/industries.html">Sectors we serve</a></p>
+      </div>
+    </section>
+
+    <!-- ================= QUALITY & SAFETY ================= -->
+    <section class="section surface-paper" aria-labelledby="quality-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="quality-h">Quality and safety are the specification, not the sales pitch</h2>
+            <p class="lede">
+              In high-criticality service, an item that is nearly right is a hazard.
+              We source against the standard that governs the application, collect
+              the material and conformity documentation with the goods, and verify
+              the consignment against the purchase order before it is accepted.
+            </p>
+            <h3 class="subhead">Standards we work to</h3>
+            <ul class="item-list item-list--two-up">
+              <li>API Spec 5L, 6A and 6D</li>
+              <li>ASME pressure equipment, boilers, piping and flanges</li>
+              <li>ISO 9001, ISO 14001 and ISO 45001</li>
+              <li>ASTM and EN civil, structural and fastener standards</li>
+            </ul>
+            <p class="notice">
+              <strong>A distinction we keep clear.</strong> The standards above are
+              what we work to and source products against. They are not a claim that
+              {{ site.name }} itself holds certification to any of them. Where you
+              need evidence of a certification — ours or a manufacturer's — ask us
+              and we will tell you exactly what exists.
+            </p>
+            <p><a class="link-action" href="/quality.html">Quality and compliance in detail</a></p>
+          </div>
+          <div class="figure figure--tall" data-reveal>
+            <img class="figure__parallax" src="/assets/images/qual-inspection.jpg"
+                 alt="Dimensional inspection of a machined industrial component"
+                 width="900" height="1125" loading="lazy" decoding="async"
+                 sizes="(min-width: 56em) 28rem, 100vw">
+            <p class="figure__plate">Verification before acceptance</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

@@ -1,0 +1,9 @@
+/* Single stylesheet entry.
+   Order matters: tokens -> base -> components -> motion -> responsive.
+   Vite inlines these @imports into one hashed CSS file at build time, so the
+   browser makes one request while the source stays split by concern. */
+@import './variables.css';
+@import './global.css';
+@import './components.css';
+@import './animations.css';
+@import './responsive.css';

@@ -1,0 +1,111 @@
+/* ==========================================================================
+   ABCE Consultant LDA — design tokens
+   --------------------------------------------------------------------------
+   Visual concept: an engineering specification document. Precision,
+   structure and traceability. Cyan is an *indicator* colour (keylines,
+   datums, active states) — never a decorative gradient wash.
+   ========================================================================== */
+
+:root {
+  /* ---- Core palette ---------------------------------------------------- */
+  --ink:        #061527;  /* deepest blue-black — headings on light, hero base */
+  --navy:       #0B2545;  /* dark section ground */
+  --navy-lift:  #10305A;  /* raised surface on navy */
+  --blue:       #11467F;  /* primary corporate blue — 9.5:1 on white */
+  --blue-deep:  #0D3765;
+  --blue-bright:#1A61AE;
+  --cyan:       #00B8D4;  /* accent / indicator — 6.4:1 on navy */
+  --cyan-soft:  #5FD7E8;
+  --cyan-deep:  #007289;  /* accent as text: 5.6:1 on white, 5.0:1 on --mist */
+
+  /* ---- Neutrals -------------------------------------------------------- */
+  --paper:      #FFFFFF;
+  /* Sampled from the supplied logo PNG, which is opaque. Using it as the
+     header/plate colour makes the logo's own padding disappear, so the mark
+     reads as if it were transparent — without altering the file. */
+  --brand-bg:   #ECF4F6;
+  --mist:       #EEF2F6;  /* light grey surface */
+  --mist-deep:  #DFE6EE;
+  --rule:       #CBD6E2;  /* hairline on light */
+  --rule-dark:  rgba(255, 255, 255, 0.16); /* hairline on navy */
+  --slate:      #4A5B70;  /* secondary text on light — 7.1:1 on white */
+  --slate-soft: #5A6B80;  /* 5.5:1 on white, 4.9:1 on --mist */
+  --on-navy:    #D8E4F0;  /* body text on navy — 11.4:1 */
+  --on-navy-dim:#9FB3CA;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: 'Sora', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Modular scale: 1.2 at mobile widening to 1.26 at desktop. */
+  --fs-micro: 0.75rem;                              /* 12px  */
+  --fs-small: 0.8125rem;                            /* 13px  */
+  --fs-meta:  0.875rem;                             /* 14px  */
+  --fs-body:  1rem;                                 /* 16px  */
+  --fs-lead:  clamp(1.0625rem, 0.99rem + 0.33vw, 1.25rem);
+  --fs-h5:    clamp(1.0625rem, 1.01rem + 0.25vw, 1.1875rem);
+  --fs-h4:    clamp(1.1875rem, 1.1rem + 0.38vw, 1.4375rem);
+  --fs-h3:    clamp(1.375rem, 1.24rem + 0.6vw, 1.8125rem);
+  --fs-h2:    clamp(1.75rem, 1.47rem + 1.24vw, 2.75rem);
+  --fs-h1:    clamp(2.125rem, 1.6rem + 2.3vw, 3.75rem);
+  --fs-hero:  clamp(2.375rem, 1.62rem + 3.35vw, 4.75rem);
+  --fs-plate: clamp(1.5rem, 1.3rem + 0.9vw, 2.125rem);
+
+  --lh-tight:  1.06;
+  --lh-snug:   1.2;
+  --lh-normal: 1.45;
+  --lh-relaxed:1.68;
+
+  --tracking-tight: -0.022em;
+  --tracking-snug:  -0.012em;
+  --tracking-wide:  0.04em;
+
+  /* ---- Space scale (4px base) ------------------------------------------ */
+  --s-1:  0.25rem;
+  --s-2:  0.5rem;
+  --s-3:  0.75rem;
+  --s-4:  1rem;
+  --s-5:  1.5rem;
+  --s-6:  2rem;
+  --s-7:  2.5rem;
+  --s-8:  3rem;
+  --s-9:  4rem;
+  --s-10: 5rem;
+  --s-11: 6.5rem;
+  --s-12: 8rem;
+
+  /* Vertical rhythm for page sections — single owner of section padding. */
+  --section-y:      clamp(3.5rem, 2.2rem + 5.2vw, 7rem);
+  --section-y-tight:clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --measure: 68ch;          /* body copy line length cap */
+  --measure-narrow: 56ch;
+  --container: 76rem;       /* 1216px */
+  --container-wide: 88rem;  /* 1408px */
+  --gutter: clamp(1.25rem, 0.9rem + 1.4vw, 2.5rem);
+  --header-h: 4.5rem;
+
+  /* ---- Form ------------------------------------------------------------ */
+  --radius-sm: 2px;
+  --radius:    3px;
+  --radius-lg: 4px;
+
+  /* Hairlines do the work that shadows usually do. Shadow is reserved for
+     genuinely elevated things (sticky header, mobile nav, focused field). */
+  --shadow-lift: 0 1px 2px rgba(6, 21, 39, 0.06), 0 8px 24px rgba(6, 21, 39, 0.08);
+  --shadow-panel: 0 24px 64px rgba(6, 21, 39, 0.28);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur: 280ms;
+  --dur-slow: 560ms;
+
+  /* The header must sit ABOVE the open mobile panel: the panel is opaque and
+     full-screen, so a lower header would hide its own close button and leave
+     Escape as the only way out. */
+  --z-nav: 90;
+  --z-header: 95;
+  --z-skip: 100;
+}

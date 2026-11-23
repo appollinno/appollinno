@@ -1,0 +1,31 @@
+{
+  "name": "abce-consultant-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Corporate website for ABCE Consultant LDA - procurement, industrial supply and integrated logistics for high-criticality industries.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/sitemap.mjs && vite build",
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "icons": "node scripts/icons.mjs",
+    "seo": "node scripts/sitemap.mjs",
+    "images": "node scripts/optimise-images.mjs",
+    "shots": "node scripts/screenshots.mjs",
+    "shots:full": "node scripts/screenshots.mjs --full"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "lucide": "^0.544.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.57.0",
+    "lighthouse": "^12.8.2",
+    "vite": "^7.1.14"
+  }
+}

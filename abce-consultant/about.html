@@ -1,0 +1,200 @@
+<!--@page
+{
+  "title": "About Us",
+  "description": "ABCE Consultant LDA is a Maputo-based procurement and logistics company serving energy, mining and industrial operations. Our vision, mission, core values and operating philosophy.",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/about.html",
+    "about": { "@id": "https://www.abceconsu.com/#organization" }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/about-facility.jpg" alt="" width="1920" height="845" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/index.html">Home</a></li>
+              <li><span aria-current="page">About Us</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">A supplier judged on what arrives, not what is promised</h1>
+          <p class="lede">{{ site.name }} is a procurement and logistics company based in Maputo, Mozambique, supplying the equipment, materials and movement that high-criticality industries depend on.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OVERVIEW ================= -->
+    <section class="section surface-paper" aria-labelledby="overview-h">
+      <div class="container">
+        <div class="split split--5-7">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="overview-h">Company overview</h2>
+          </div>
+          <div class="prose" data-reveal>
+            <p class="lede">We exist because industrial supply goes wrong in predictable ways, and almost none of them are about availability.</p>
+            <p>A pump is ordered to the wrong casing material and corrodes within a season. A batch of flanges arrives without the material certificates the client's QA department requires, so it cannot be installed. A consignment clears the supplier's gate on time and then sits at a port because a packing list and an invoice disagree about the weight. In each case the part existed, the money was spent, and the work still stopped.</p>
+            <p>{{ site.name }} takes the whole chain as one scope: define the requirement properly, source it from suppliers assessed for that product, verify it against the specification before it is accepted, and move it through freight, documentation and customs to the site that needs it. One party is accountable for the outcome, which is the only arrangement under which the outcome is reliably good.</p>
+            <p>Our work spans five product streams — civil and structural bulk materials, mechanical and piping equipment, rigging and lifting gear, electrical systems, and tools and consumables — supported by ten procurement and logistics services.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISION & MISSION ================= -->
+    <section class="section surface-navy" aria-labelledby="vm-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="vm-h">Vision and mission</h2>
+        <div class="split split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h3 class="statement__head">Vision</h3>
+            <p class="statement">{{ site.vision }}</p>
+          </div>
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h3 class="statement__head">Mission</h3>
+            <p class="statement">{{ site.mission }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CORE VALUES ================= -->
+    <section class="section surface-ink" aria-labelledby="values-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="values-h">Core values</h2>
+          <p class="lede">Four commitments that decide how we behave when a decision is inconvenient.</p>
+        </div>
+        <!--@render company.values -->
+      </div>
+    </section>
+
+    <!-- ================= INDUSTRY EXPERTISE ================= -->
+    <section class="section surface-paper" aria-labelledby="expertise-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="expertise-h">Industry expertise</h2>
+            <p class="lede">We work for operations where a procurement error is measured in production hours, regulatory exposure or someone's safety.</p>
+            <ul class="item-list item-list--two-up">
+              <li>Energy — generation and transmission</li>
+              <li>Oil &amp; gas — upstream, midstream, downstream</li>
+              <li>Mining — remote and large-scale operations</li>
+              <li>Processing — continuous process plant</li>
+              <li>Industrial operations — manufacturing and heavy industry</li>
+              <li>Construction — civil and structural programmes</li>
+            </ul>
+            <p><a class="link-action" href="/industries.html">What we do for each sector</a></p>
+          </div>
+          <div class="figure figure--tall" data-reveal>
+            <img class="figure__parallax" src="/assets/images/about-team.jpg" alt="Industrial technicians reviewing engineering drawings on site" width="900" height="1125" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">Specification before supply</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OPERATIONAL PHILOSOPHY ================= -->
+    <section class="section surface-mist" aria-labelledby="philosophy-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="philosophy-h">Operational philosophy</h2>
+          <p class="lede">Four working principles. They are not slogans; each one describes something we do differently from a company that simply forwards enquiries to a trader.</p>
+        </div>
+        <ul class="grid grid--2">
+          <li class="card" data-reveal>
+            <h3 class="card__title">The specification comes first</h3>
+            <p class="card__body">Before an enquiry goes out we establish grade, rating, service conditions, area classification and the documentation the receiving system needs. Most supply failures are specification failures wearing a logistics costume.</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">Verify, then accept</h3>
+            <p class="card__body">Goods are checked against the purchase order and the datasheet before acceptance, with documentation collected alongside them. A non-conformance found at the supplier is an inconvenience; the same one found on site is an outage.</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">One chain, one owner</h3>
+            <p class="card__body">Procurement, inspection, freight, documentation and clearance are run together. Splitting them across parties creates the gaps that consignments fall into, and nobody who owns only one link can close them.</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">Plan backwards from the date</h3>
+            <p class="card__body">When a date cannot move, we plan the movement from that date backwards — supplier readiness, mode, routing, clearance and the final leg — and drive it, rather than reporting delays after they happen.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= WHY PARTNER ================= -->
+    <section class="section surface-paper" aria-labelledby="why-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="why-h">Why partner with {{ site.name }}?</h2>
+        </div>
+        <div class="split split--5-7">
+          <div class="figure figure--wide" data-reveal>
+            <img class="figure__parallax" src="/assets/images/svc-warehouse.jpg" alt="Industrial warehouse with racked materials ready for despatch" width="1024" height="576" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+          </div>
+          <ul class="spec-list" data-reveal>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Technical and logistics capability in the same company</h3>
+                <p class="spec-row__body">You are not translating between a technical buyer and a freight agent. The party that clarified the specification is the party that routes the cargo.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Standards-driven sourcing</h3>
+                <p class="spec-row__body">Products are sourced against the API, ASME, ISO, ASTM and EN specifications that govern the application, with the material and conformity documentation collected with the goods.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Local presence, international reach</h3>
+                <p class="spec-row__body">Based in Maputo with international sourcing and freight capability, so clearance and the final leg into the region are handled by people who do it routinely.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Breadth across five streams</h3>
+                <p class="spec-row__body">Bulk civil materials through to pressure equipment, rigging, electrical systems and consumables — consolidated into fewer orders, fewer shipments and fewer interfaces to manage.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Available when it breaks</h3>
+                <p class="spec-row__body">Urgent requirements are taken outside normal working hours, sourced and expedited, because equipment does not fail to a schedule.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

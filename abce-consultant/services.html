@@ -1,0 +1,102 @@
+<!--@page
+{
+  "title": "Services",
+  "description": "End-to-end procurement, certified product sourcing, quality inspection, global freight forwarding, customs clearance, documentation, warehousing, inventory management, critical delivery coordination and 24/7 emergency support.",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Services — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/services.html",
+    "about": { "@id": "https://www.abceconsu.com/#organization" }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/svc-freight.jpg" alt="" width="1280" height="841" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/index.html">Home</a></li>
+              <li><span aria-current="page">Services</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">From requisition to issued to the job</h1>
+          <p class="lede">Ten services that together cover the whole route. They are listed separately because they can be bought separately — but they are designed to be run as one chain, which is where the reliability comes from.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight surface-mist">
+      <div class="container">
+        <div data-section-index>
+          <!--@render services.index -->
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="services-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="services-h">Our services</h2>
+        <!--@render services.sections -->
+      </div>
+    </section>
+
+    <!-- ================= PROCUREMENT WORKFLOW ================= -->
+    <section class="section surface-navy" aria-labelledby="workflow-h">
+      <div class="container">
+        <div class="split split--4-8">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="workflow-h">The procurement workflow</h2>
+            <p class="lede">Six steps, run in order, on every requisition. The sequence is the control: each step exists to catch a failure that would otherwise only surface at the next one — or on site.</p>
+            <p><a class="btn btn--accent" href="/contact.html#quote">Start a requisition</a></p>
+          </div>
+          <div>
+            <!--@render services.workflow -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="urgent-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="urgent-h">When something has already stopped</h2>
+            <p class="lede">A breakdown does not wait for Monday. Urgent requirements are taken outside normal working hours, sourced immediately, and routed the fastest viable way rather than the cheapest.</p>
+            <p class="prose">Tell us what has failed, what it is installed in, and what the consequence of each further day of downtime is. That last part decides the routing, and it is the piece most enquiries leave out.</p>
+            <div class="cluster">
+              <a class="btn btn--primary" href="tel:+258842395576">Call +258 84 239 5576</a>
+              <a class="btn btn--ghost" href="mailto:{{ site.email }}">Email us</a>
+            </div>
+          </div>
+          <div class="figure figure--wide" data-reveal>
+            <img class="figure__parallax" src="/assets/images/svc-customs.jpg" alt="Stacked intermodal containers at a port terminal" width="1024" height="681" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">Clearance handled as part of the delivery</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

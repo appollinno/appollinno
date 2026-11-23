@@ -1,0 +1,42 @@
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header" id="site-header" data-header>
+    <div class="container container--wide site-header__inner">
+      <a class="brand" href="/index.html">
+        <span class="brand__frame"><img class="brand__mark" src="/assets/images/logo/abce-logo.png"
+             alt="{{ site.name }}" width="354" height="276" fetchpriority="high"></span>
+      </a>
+
+      <nav class="nav" aria-label="Main">
+        <ul class="nav__list">
+            {{ navLinks }}
+        </ul>
+      </nav>
+
+      <a class="btn btn--accent header__cta" href="/contact.html#quote">Request a quotation</a>
+
+      <button class="nav-toggle" type="button" id="nav-toggle"
+              aria-expanded="false" aria-controls="mobile-nav">
+        <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="visually-hidden">Open menu</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
+    <a class="brand brand--plated mobile-nav__brand" href="/index.html">
+      <span class="brand__frame"><img class="brand__mark" src="/assets/images/logo/abce-logo.png"
+           alt="{{ site.name }}" width="354" height="276" loading="lazy" decoding="async"></span>
+    </a>
+    <nav aria-label="Mobile">
+      <ul class="mobile-nav__list">
+            {{ navLinksMobile }}
+      </ul>
+    </nav>
+    <div class="mobile-nav__footer">
+      <a class="btn btn--accent btn--block" href="/contact.html#quote">Request a quotation</a>
+      <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      <p>{{ phoneLinks }}</p>
+      <p>{{ site.address.full }}</p>
+    </div>
+  </div>

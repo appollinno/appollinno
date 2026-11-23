@@ -1,0 +1,110 @@
+<!--@page
+{
+  "title": "Clients",
+  "description": "Organisations ABCE Consultant LDA lists among its clients, including AQUAREL, Saipem Mozambique, B2B Engineering, Merec Industries, Total Energies, Mercy Land, Puma Energy, CFM Centro and Dust Engineering.",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Clients — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/clients.html",
+    "about": { "@id": "https://www.abceconsu.com/#organization" }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/clients-industrial.jpg" alt="" width="1920" height="1275" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/index.html">Home</a></li>
+              <li><span aria-current="page">Clients</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">Who we work for</h1>
+          <p class="lede">Organisations across water treatment, energy, engineering, manufacturing, fuel distribution and rail logistics.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="roster-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="roster-h">Client organisations</h2>
+          <p class="lede">The organisations named in our corporate presentation. They are listed as text, in their own names, with nothing added.</p>
+        </div>
+
+        <!--@render clients.roster -->
+
+        <p class="notice" style="margin-block-start: var(--s-7)" data-reveal>
+          <strong>Why there are no logos here.</strong> Reproducing a client's logo
+          requires their permission and their approved artwork. We have neither in
+          this build, so these are presented as plain text rather than as
+          unauthorised or reconstructed marks. No contract value, duration,
+          endorsement or testimonial is implied by this list — it records only that
+          these organisations are named as clients in the company's own
+          presentation. Supply approved logo files and written permission and they
+          can be added.
+        </p>
+      </div>
+    </section>
+
+    <section class="section surface-navy" aria-labelledby="sectors-h">
+      <div class="container">
+        <div class="split split--5-7 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="sectors-h">The work behind the list</h2>
+            <p class="lede">Different clients call on different parts of the same chain.</p>
+          </div>
+          <ul class="spec-list" data-reveal>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Project supply</h3>
+                <p class="spec-row__body">Material packages phased to a construction or installation programme, consolidated to reduce the number of shipments and interfaces.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Maintenance and shutdown</h3>
+                <p class="spec-row__body">Spares, consumables and rigging staged against a planned outage date, with critical items identified and held ahead of demand.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Breakdown response</h3>
+                <p class="spec-row__body">Urgent sourcing and expedited movement when production has already stopped and the routing decision is driven by downtime cost.</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">Freight and clearance only</h3>
+                <p class="spec-row__body">Forwarding, documentation and customs clearance for goods a client has sourced themselves.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

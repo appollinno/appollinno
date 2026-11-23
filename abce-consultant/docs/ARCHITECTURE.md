@@ -131,6 +131,22 @@ reader, and what was done instead:
 
 ## Testing
 
+Two layers, deliberately separated.
+
+**Unit (Vitest, `tests/unit/*.test.js`, ~0.2 s).** The content model and the
+render layer are pure functions, so most content mistakes can be caught
+without starting a browser: a telephone `href` that no longer matches its
+display text, a category id that is not a valid URL fragment, an in-page
+index linking to a section that does not exist, an image referenced in data
+but missing from disk, a bare `&` escaping into markup, an `<img>` without
+intrinsic dimensions. These run in a fifth of a second, so they are the fast
+feedback loop while editing content.
+
+Playwright's default `testMatch` also collects `*.test.js`, which would drag
+the unit tests into the browser run — `playwright.config.js` pins
+`testMatch: '**/*.spec.js'` to keep the two layers apart.
+
+**End-to-end (Playwright, `tests/*.spec.js`).**
 `playwright.config.js` runs five viewport projects (1440, 1024, 768, 390, 375)
 against the **production build** served by `vite preview` — what is tested is
 what would deploy.
@@ -153,6 +169,15 @@ before they were fixed:
   `:focus-visible` for `element.focus()`, so a focus-indicator check written
   that way reports the base `outline: none` and fails on styles that are
   present. The test drives real `Tab` presses.
+
+## Linting
+
+`eslint.config.mjs` splits the repo into three environments rather than
+linting it as one, because the globals genuinely differ: `src/js/**` is
+browser code, `scripts/**` and the config files are Node, and the audit
+scripts are both — the bodies passed to `page.evaluate()` are browser code
+living inside a Node file. Ruflo's generated `.claude/**` tooling is excluded;
+it is not project source.
 
 ## Performance
 

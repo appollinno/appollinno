@@ -32,8 +32,8 @@ export async function initAnimations() {
 
   heroSequence(gsap);
   bannerSequence(gsap);
-  scrollReveals(gsap, ScrollTrigger);
-  parallax(gsap, ScrollTrigger);
+  scrollReveals(gsap);
+  parallax(gsap);
 
   keepTriggersAligned(ScrollTrigger);
 }
@@ -187,7 +187,7 @@ function bannerSequence(gsap) {
 }
 
 /* --------------------------------------------------------------- reveals */
-function scrollReveals(gsap, ScrollTrigger) {
+function scrollReveals(gsap) {
   const targets = document.querySelectorAll('[data-reveal]');
 
   targets.forEach((el) => {
@@ -228,7 +228,7 @@ function scrollReveals(gsap, ScrollTrigger) {
 }
 
 /* -------------------------------------------------------------- parallax */
-function parallax(gsap, ScrollTrigger) {
+function parallax(gsap) {
   // Hero background drifts slightly slower than the page. The media box is
   // overscanned by 8% in CSS so no edge is ever revealed.
   const heroMedia = document.querySelector('.hero__media');

@@ -31,8 +31,12 @@ Both servers bind to `127.0.0.1` only and are never exposed on the network.
 |---|---|
 | `npm run dev` | Dev server with hot reload on `http://localhost:5173` |
 | `npm run build` | Writes `sitemap.xml`, then builds the static site into `dist/` |
-| `npm run preview` | Serves the built site on `http://localhost:4173` with security headers |
-| `npm test` | Playwright suite — 420 checks across 5 viewports |
+| `npm run start` | Serves the built site on `http://localhost:4173` with security headers |
+| `npm run preview` | Alias of `start` (Vite's own name for it) |
+| `npm run lint` | ESLint across source, scripts and tests (`lint:fix` to autofix) |
+| `npm test` | Unit tests, then the end-to-end suite |
+| `npm run test:unit` | Vitest — 38 checks on the content model and render layer, ~0.2 s, no browser |
+| `npm run test:e2e` | Playwright — 435 checks across 5 viewports against the production build |
 | `npm run test:report` | Opens the generated Playwright HTML report |
 | `npm run lighthouse` | Real Lighthouse audit against the running preview |
 | `npm run shots` | Screenshots every page at 375/390/768/1024/1440/1920 |
@@ -40,8 +44,10 @@ Both servers bind to `127.0.0.1` only and are never exposed on the network.
 | `npm run icons` | Regenerates favicons and the Open Graph share card |
 | `npm run seo` | Regenerates `public/sitemap.xml` from the real page list |
 
-`npm test` builds the site and starts its own preview server, so it needs
-nothing running first. `npm run lighthouse` and `npm run shots` audit a
+`npm run test:unit` is pure Node — it imports the content modules directly and
+needs no browser or server, so it is the fastest way to catch a broken data
+change. `npm run test:e2e` builds the site and starts its own preview server,
+so it needs nothing running first. `npm run lighthouse` and `npm run shots` audit a
 *running* preview — start `npm run preview` in another shell first.
 
 ---
@@ -56,6 +62,8 @@ abce-consultant/
 ├── site.config.js            Company facts — the single source of truth
 ├── vite.config.js            Build + the HTML composition plugin
 ├── playwright.config.js      5 viewport projects, runs against the build
+├── eslint.config.mjs         Per-environment lint rules (browser / node / tests)
+├── vitest.config.mjs         Unit tests only — tests/unit/**
 ├── public/
 │   ├── assets/images/        Photography (JPEG + WebP) and the logo
 │   ├── assets/fonts/         Self-hosted Inter + Sora (latin subsets)
@@ -66,7 +74,7 @@ abce-consultant/
 │   ├── content/              Product, service, standards, industry, client data
 │   └── partials/             head-meta, header, footer, cta-band
 ├── scripts/                  Build-support tooling (images, icons, sitemap, audits)
-├── tests/                    Playwright specs
+├── tests/                    *.spec.js (Playwright) and unit/*.test.js (Vitest)
 └── docs/                     Reports, screenshots, attribution
 ```
 

@@ -7,6 +7,9 @@ import { chromiumLaunchOptions } from './scripts/chromium.mjs';
  */
 export default defineConfig({
   testDir: './tests',
+  // Unit tests live in tests/unit/*.test.js and belong to Vitest. Without
+  // this, Playwright's default testMatch would collect them too.
+  testMatch: '**/*.spec.js',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

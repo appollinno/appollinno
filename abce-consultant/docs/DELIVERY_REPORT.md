@@ -141,7 +141,16 @@ Products page, which is the heaviest, comes to 0.84 MB.
 
 ### Browser testing
 
-**396 passed, 24 skipped, 0 failed** — 420 checks across five viewports
+Two layers:
+
+- **Unit (Vitest):** 38 checks on the content model and render layer, no
+  browser, ~0.2 s. They assert the telephone `href`s match their display
+  text, every id is a valid URL fragment, every in-page index link resolves
+  to a section that exists, every image named in data exists on disk, content
+  is HTML-escaped, every `<img>` carries alt and intrinsic dimensions, and the
+  standards data never claims ABCE holds a certification.
+- **End-to-end (Playwright):** 409 passed, 26 skipped, 0 failed — 435 checks
+  across five viewports
 (1440, 1024, 768, 390, 375), run against the production build. The 24 skips
 are viewport-gated by design: mobile-menu tests do not run at desktop widths,
 and desktop-navigation tests do not run at mobile widths.
@@ -173,6 +182,7 @@ Everything below was discovered by driving the real site, not by inspection.
 | 12 | Alt text described the wrong photograph | A port container inspection was captioned "fabricated industrial components" | Alt text corrected to what is actually in the frame |
 | 13 | Content columns were the narrow side | Products and Industries put the heading, lede, imagery and lists in the 5fr column and the shorter content in 7fr | Content column is now 7fr; variety comes from the alternating surface colour |
 | 14 | Section headings sat flush against their content | Three blocks set their own top margin and the rest did not | `.section-head` owns the gap below it, once |
+| 16 | Two dead function parameters and a dead import | `scrollReveals`/`parallax` took a `ScrollTrigger` argument they never used; `vite.config.js` still imported `readdirSync` after the manifest moved | Removed; found by adding ESLint, which the project had been running without |
 | 15 | A 304 px thumbnail was downloading a 208 KB image | Several photographs serve both as a small thumbnail on one page and a wide band image on another; one file cannot be the right weight for both | Each photograph now has a 640 px variant, and the build emits `srcset` with width descriptors from `image-manifest.json`. That thumbnail went 208 KB → 51 KB, the home page's first view 724 KB → 569 KB, and its LCP 1.0 s → 0.8 s |
 
 ### Three test-harness defects also found and fixed
@@ -231,11 +241,15 @@ Replace them with the company's own photography when it exists.
 
 ```bash
 npm install
-npm run build && npm run preview     # http://localhost:4173
-npm test                             # 420 checks, 5 viewports
-npm run lighthouse                   # needs preview running
-npm run shots                        # 48 screenshots, 6 breakpoints
+npm run lint                 # ESLint — browser, Node and test environments
+npm run test:unit            # Vitest — 38 checks, ~0.2 s, no browser
+npm run build && npm start   # http://localhost:4173
+npm run test:e2e             # Playwright — 435 checks, 5 viewports
+npm run lighthouse           # needs the server running
+npm run shots                # 48 screenshots, 6 breakpoints
 ```
+
+`npm test` runs the unit layer then the end-to-end layer.
 
 `npm run test:report` opens the Playwright HTML report.
 

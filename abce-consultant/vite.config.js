@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, nav } from './site.config.js';

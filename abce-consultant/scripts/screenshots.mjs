@@ -19,6 +19,14 @@ const browser = await launchChromium();
 let shots = 0;
 const problems = [];
 
+/* Beyond the English light-theme grid, capture the two other states the site
+   can be in — Portuguese, and dark — at one desktop and one phone width.
+   Capturing every combination would be 192 files for little extra signal. */
+const VARIANTS = [
+  { label: 'pt', prefix: '/pt', scheme: 'light', widths: [390, 1440] },
+  { label: 'dark', prefix: '', scheme: 'dark', widths: [390, 1440] },
+];
+
 try {
   for (const width of WIDTHS) {
     const height = width <= 430 ? 844 : width <= 820 ? 1024 : 900;
@@ -68,6 +76,39 @@ try {
     }
     await ctx.close();
     console.log(`  ${width}px — ${PAGES.length} pages captured`);
+  }
+
+  for (const v of VARIANTS) {
+    for (const width of v.widths) {
+      const height = width <= 430 ? 844 : 900;
+      const ctx = await browser.newContext({
+        viewport: { width, height },
+        deviceScaleFactor: 1,
+        colorScheme: v.scheme,
+      });
+      for (const slug of PAGES) {
+        const page = await ctx.newPage();
+        const url = `${BASE}${v.prefix}/${slug === 'index' ? '' : slug + '.html'}`;
+        await page.goto(url, { waitUntil: 'load' });
+        await page.waitForTimeout(2000);
+        const overflow = await page.evaluate(() => ({
+          sw: document.documentElement.scrollWidth,
+          cw: document.documentElement.clientWidth,
+        }));
+        if (overflow.sw > overflow.cw + 1) {
+          problems.push(`${v.label}/${slug} @${width}: horizontal overflow`);
+        }
+        await page.screenshot({
+          path: `${OUT}/${v.label}-${slug}-${width}.jpg`,
+          type: 'jpeg',
+          quality: 82,
+        });
+        shots += 1;
+        await page.close();
+      }
+      await ctx.close();
+    }
+    console.log(`  ${v.label} — ${v.widths.length * PAGES.length} captured`);
   }
 } finally {
   await browser.close();

@@ -48,7 +48,11 @@ try {
     );
 
     const c = result.lhr.categories;
-    const name = path === '' ? 'index' : path.replace('.html', '');
+    // Flatten the path into a filename: 'pt/' and 'pt/products.html' must
+    // not become a directory or an empty name.
+    const name = (path === '' ? 'index' : path.replace(/\.html$/, ''))
+      .replace(/\/$/, '/index')
+      .replace(/\//g, '-');
     rows.push({
       page: name,
       performance: Math.round(c.performance.score * 100),

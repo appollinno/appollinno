@@ -126,9 +126,11 @@ entries, 6 industries and 9 client names are present and asserted by tests.
 
 | Page | Performance | Accessibility | Best Practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| Home | 100 | 100 | 100 | 100 | 0.8 s | 0.003 | 0 ms |
-| Products | 99 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
-| Contact | 100 | 100 | 100 | 100 | 0.7 s | 0 | 0 ms |
+| Home (EN) | 100 | 100 | 100 | 100 | 0.8 s | 0.003 | 0 ms |
+| Products (EN) | 99 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
+| Contact (EN) | 100 | 100 | 100 | 100 | 0.7 s | 0 | 0 ms |
+| Início (PT) | 100 | 100 | 100 | 100 | 0.8 s | 0.003 | 0 ms |
+| Produtos (PT) | 100 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
 
 All four brief targets (Performance 90+, Accessibility 95+, Best Practices
 95+, SEO 95+) are exceeded on every page audited. These are measured numbers
@@ -175,7 +177,7 @@ Two layers:
   to a section that exists, every image named in data exists on disk, content
   is HTML-escaped, every `<img>` carries alt and intrinsic dimensions, and the
   standards data never claims ABCE holds a certification.
-- **End-to-end (Playwright):** across five viewports
+- **End-to-end (Playwright):** **707 passed, 93 skipped, 0 failed** across five viewports
 (1440, 1024, 768, 390, 375), run against the production build. The 24 skips
 are viewport-gated by design: mobile-menu tests do not run at desktop widths,
 and desktop-navigation tests do not run at mobile widths.
@@ -207,6 +209,7 @@ Everything below was discovered by driving the real site, not by inspection.
 | 12 | Alt text described the wrong photograph | A port container inspection was captioned "fabricated industrial components" | Alt text corrected to what is actually in the frame |
 | 13 | Content columns were the narrow side | Products and Industries put the heading, lede, imagery and lists in the 5fr column and the shorter content in 7fr | Content column is now 7fr; variety comes from the alternating surface colour |
 | 14 | Section headings sat flush against their content | Three blocks set their own top margin and the rest did not | `.section-head` owns the gap below it, once |
+| 22 | The theme toggle sat off-screen between 1024 and 1279px | Adding the language switcher pushed the header bar to 1104px inside a 1024px viewport. `body { overflow-x: hidden }` clips that instead of making it scrollable, so the page looked correct while a control was unreachable — and the existing overflow test, which measures `document.scrollWidth`, could not see it | The quote button joins the bar only from 1280px (the nav's "Contact" covers it below that), and a new test measures the header bar itself at every viewport rather than the document |
 | 21 | Breadcrumbs said "Home" and linked to the English home from Portuguese pages | The breadcrumb's first item was hard-coded, missed when the pages were tokenised | Localised and locale-prefixed on all eight pages; caught by the Portuguese disclaimer test reading "Home" where it expected Portuguese |
 | 20 | Dark mode painted white text on a 4.1:1 blue button | `--blue` had to serve as both a link colour (wants to lighten on dark) and a button fill (wants to stay saturated) | Split into `--blue` and `--link`; the dark fill was darkened so the white label clears 4.5:1 |
 | 19 | Dark mode turned the `.surface-ink` bands light | `--ink` was both the text colour and the deepest surface, so inverting it inverted the bands | Split into `--ink` and `--ink-deep` |
@@ -285,9 +288,14 @@ npm run shots                # 48 screenshots, 6 breakpoints
 
 ## 8. Remaining limitations
 
-1. **The favicon is a letterboxed full lockup, so it is small at 32 px** (§1).
-   A mark-only square file would fix it.
-2. **Four core values are shown; the deck defines three** (§1) — your call.
+1. **Four core values are shown; the deck defines three** (§1) — your call.
+   Delete `'Operational Excellence'` from `localised.*.values` in
+   `site.config.js` and it disappears from both languages.
+2. **The Portuguese translation has not been reviewed by a native speaker.**
+   It uses European/Mozambican terminology throughout (*betume*, *lingas*,
+   *manilhas*, *varão*, *aprovisionamento*) and reads naturally, but a
+   commercial site should have a person from the company read it before it
+   goes live. Every string is in two files, so corrections are quick.
 3. **No backend.** The form is mailto-based until an endpoint is configured.
 4. **`site.url` is set to `https://www.abceconsu.com`.** Canonicals, the
    sitemap and Open Graph tags derive from it — correct it in
@@ -298,9 +306,10 @@ npm run shots                # 48 screenshots, 6 breakpoints
 7. **`about-facility.jpg` and `ind-processing.jpg` are two views of the same
    plant.** Different pages, different compositions, but worth swapping one
    if that bothers you. `sub-chain-hoist.jpg` is the only monochrome image.
-8. **English only.** Given Maputo, a Portuguese version is the obvious next
-   step; the content model is already separated from the markup, so it is a
-   translation job rather than a rebuild.
+8. **A third language would be cheap now.** The locale machinery is generic:
+   add an entry to `locales`, a `copy/<code>.js`, a `src/content/<code>/`
+   bundle and a folder of one-line page stubs. Nothing in the templates,
+   the renderers or `forms.js` would need to change.
 9. **No analytics, consent banner or cookies.** The site sets none and makes
    no third-party requests. Adding analytics will require a privacy notice.
 10. **Render-blocking CSS** is the one remaining Lighthouse hint. Inlining

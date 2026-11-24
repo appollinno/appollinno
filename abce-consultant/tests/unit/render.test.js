@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { blocks } from '../../src/content/render.js';
 import { categories } from '../../src/content/products.js';
 import { services } from '../../src/content/services.js';
@@ -65,18 +66,21 @@ describe('HTML escaping', () => {
 
 describe('internal link integrity', () => {
   it('every in-page index link has a matching section id', () => {
+    // An index may also point at a section defined by the page itself rather
+    // than by a block — the catalogue on products.html is one — so the page
+    // source counts as a source of ids too.
     const pairs = [
-      ['products.index', 'products.bands'],
-      ['services.index', 'services.sections'],
-      ['standards.index', 'standards.families'],
-      ['industries.index', 'industries.sections'],
+      ['products.index', 'products.bands', 'products.html'],
+      ['services.index', 'services.sections', 'services.html'],
+      ['standards.index', 'standards.families', 'quality.html'],
+      ['industries.index', 'industries.sections', 'industries.html'],
     ];
-    for (const [indexBlock, bodyBlock] of pairs) {
+    for (const [indexBlock, bodyBlock, pageFile] of pairs) {
       const targets = [...render(indexBlock).matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
-      const body = render(bodyBlock);
+      const haystack = render(bodyBlock) + readFileSync(pageFile, 'utf8');
       expect(targets.length, indexBlock).toBeGreaterThan(0);
-      const missing = targets.filter((t) => !body.includes(`id="${t}"`));
-      expect(missing, `${indexBlock} points at ids ${bodyBlock} does not define`).toEqual([]);
+      const missing = targets.filter((t) => !haystack.includes(`id="${t}"`));
+      expect(missing, `${indexBlock} points at ids nothing defines`).toEqual([]);
     }
   });
 

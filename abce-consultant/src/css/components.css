@@ -48,34 +48,34 @@
 
 .btn--primary {
   background: var(--blue);
-  color: var(--paper);
+  color: var(--on-dark);
 }
-.btn--primary:hover { background: var(--blue-bright); color: var(--paper); }
+.btn--primary:hover { background: var(--blue-bright); color: var(--on-dark); }
 
 .btn--accent {
   background: var(--cyan);
-  color: var(--ink);
+  color: var(--on-accent);
 }
-.btn--accent:hover { background: var(--cyan-soft); color: var(--ink); }
-.btn--accent::after { background: var(--ink); }
+.btn--accent:hover { background: var(--cyan-soft); color: var(--on-accent); }
+.btn--accent::after { background: var(--on-accent); }
 
 .btn--ghost {
   background: transparent;
-  color: var(--blue);
+  color: var(--link);
   border-color: var(--rule);
 }
-.btn--ghost:hover { border-color: var(--blue); color: var(--blue-deep); }
+.btn--ghost:hover { border-color: var(--link); color: var(--link-hover); }
 
 /* On navy grounds */
 :is(.surface-navy, .surface-ink) .btn--ghost,
 .hero .btn--ghost {
-  color: var(--paper);
+  color: var(--on-dark);
   border-color: rgba(255, 255, 255, 0.4);
 }
 :is(.surface-navy, .surface-ink) .btn--ghost:hover,
 .hero .btn--ghost:hover {
   border-color: var(--cyan);
-  color: var(--paper);
+  color: var(--on-dark);
   background: rgba(0, 184, 212, 0.1);
 }
 
@@ -106,9 +106,6 @@
 .link-action:hover { border-block-end-color: currentColor; }
 
 /* ---- Header ------------------------------------------------------------ */
-/* The supplied logo is an opaque PNG on a light ground, so the bar is solid
-   and matches that ground exactly. A translucent bar over the hero would
-   show the logo's background as a pale rectangle. */
 .site-header {
   position: fixed;
   inset-block-start: 0;
@@ -117,7 +114,8 @@
   min-height: var(--header-h);
   display: flex;
   align-items: center;
-  background: var(--brand-bg);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
   border-block-end: 1px solid transparent;
   transition: border-color var(--dur) var(--ease-out),
               box-shadow var(--dur) var(--ease-out);
@@ -139,56 +137,50 @@
    wordmark sits beside it — that would print the name twice. The accessible
    name comes from the image's alt text. */
 /* ---- Brand lockup ------------------------------------------------------ *
-   The supplied logo is a 354x276 opaque PNG whose artwork sits inside a wide
-   blank margin — shown whole at header height the wordmark is unreadable.
-   .brand__frame is a window onto the artwork region (62,66 - 286,230 in
-   source pixels). The image is never cropped into, stretched or recoloured;
-   only its empty surround is framed out. Adjust --logo-h to resize.
+   The logo is a transparent PNG, tightly cropped, so it needs no framing
+   and no background plate — it simply sits on whatever surface it is given.
+
+   On dark grounds the full lockup is not used: its "CONSULTANT LDA" line is
+   dark navy and falls below contrast on a dark background. There the mark
+   alone is paired with live text, which is both legible and selectable.
  * ----------------------------------------------------------------------- */
 .brand {
   display: inline-flex;
   align-items: center;
+  gap: var(--s-3);
   text-decoration: none;
   flex-shrink: 0;
 }
 
-.brand__frame {
-  --logo-h: 2.75rem;      /* rendered height of the artwork itself */
-  --logo-src-w: 354;
-  --logo-src-h: 276;
-  --logo-win-x: 62;
-  --logo-win-y: 66;
-  --logo-win-w: 224;
-  --logo-win-h: 164;
-
-  display: block;
-  position: relative;
-  overflow: hidden;
-  height: var(--logo-h);
-  width: calc(var(--logo-h) * var(--logo-win-w) / var(--logo-win-h));
-}
-
 .brand__mark {
-  position: absolute;
-  max-width: none;
+  display: block;
+  height: 2.75rem;
   width: auto;
-  height: calc(var(--logo-h) * var(--logo-src-h) / var(--logo-win-h));
-  /* Multiply by -1 at the end: `0px - <number>` mixes a length with a
-     plain number and makes the whole calc() invalid. */
-  left: calc(var(--logo-h) * var(--logo-win-x) / var(--logo-win-h) * -1);
-  top: calc(var(--logo-h) * var(--logo-win-y) / var(--logo-win-h) * -1);
 }
 
-/* On dark grounds the logo sits on a plate of its own background colour, so
-   the opaque PNG reads as a deliberate badge, not a stray pale rectangle. */
-.brand--plated .brand__frame {
-  --logo-h: 3.5rem;
-  padding: 0;
-  background: var(--brand-bg);
-  border-radius: var(--radius);
-  box-sizing: content-box;
-  padding-inline: var(--s-4);
-  padding-block: var(--s-3);
+/* Mark-only lockup for dark surfaces. */
+.brand--onDark .brand__mark { height: 2.5rem; }
+
+/* Header: the lockup in light, the mark plus live text in dark. */
+.site-header .brand__mark--icon,
+.site-header .brand__text { display: none; }
+:root[data-theme='dark'] .site-header .brand__mark--full { display: none; }
+:root[data-theme='dark'] .site-header .brand__mark--icon { display: block; height: 2.5rem; }
+:root[data-theme='dark'] .site-header .brand__text { display: flex; }
+.brand__text { display: flex; flex-direction: column; line-height: 1.12; }
+.brand__name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--on-dark);
+}
+.brand__sub {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-block-start: 3px;
 }
 
 /* ---- Desktop nav ------------------------------------------------------- */
@@ -265,8 +257,8 @@
   z-index: var(--z-nav);
   display: flex;
   flex-direction: column;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--ink-deep);
+  color: var(--on-dark);
   padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-7);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -296,7 +288,7 @@ body.nav-open { overflow: hidden; }
   font-family: var(--font-display);
   font-size: var(--fs-h4);
   font-weight: 600;
-  color: var(--paper);
+  color: var(--on-dark);
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease-out), padding-left var(--dur) var(--ease-out);
 }
@@ -314,7 +306,7 @@ body.nav-open { overflow: hidden; }
 /* Must exclude .btn: a bare descendant selector here outranks .btn--accent
    and would repaint the CTA's label in the link colour. */
 .mobile-nav__footer a:not(.btn) { color: var(--cyan-soft); }
-.mobile-nav__footer a:not(.btn):hover { color: var(--paper); }
+.mobile-nav__footer a:not(.btn):hover { color: var(--on-dark); }
 
 /* ---- Hero -------------------------------------------------------------- */
 .hero {
@@ -323,8 +315,8 @@ body.nav-open { overflow: hidden; }
   align-items: flex-end;
   min-height: 100svh;
   padding-block: calc(var(--header-h) + var(--s-9)) var(--s-9);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--ink-deep);
+  color: var(--on-dark);
   overflow: hidden;
   isolation: isolate;
 }
@@ -374,7 +366,7 @@ body.nav-open { overflow: hidden; }
   line-height: 0.98;
   letter-spacing: -0.03em;
   font-weight: 700;
-  color: var(--paper);
+  color: var(--on-dark);
   text-wrap: balance;
 }
 /* Each line is its own block so the load animation can stagger them. */
@@ -431,7 +423,7 @@ body.nav-open { overflow: hidden; }
   background: var(--cyan);
   animation: abce-cue 2.2s var(--ease-in-out) infinite;
 }
-.scroll-cue:hover { color: var(--paper); }
+.scroll-cue:hover { color: var(--on-dark); }
 
 /* The single cyan measurement sweep that runs once on load. */
 .hero__sweep {
@@ -450,7 +442,7 @@ body.nav-open { overflow: hidden; }
   position: relative;
   padding-block: calc(var(--header-h) + var(--s-8)) var(--s-8);
   background: var(--navy);
-  color: var(--paper);
+  color: var(--on-dark);
   overflow: hidden;
   isolation: isolate;
 }
@@ -463,14 +455,14 @@ body.nav-open { overflow: hidden; }
   background: linear-gradient(to right, rgba(6, 21, 39, 0.95), rgba(11, 37, 69, 0.74));
 }
 .banner__content { max-width: 50rem; }
-.banner h1 { color: var(--paper); }
+.banner h1 { color: var(--on-dark); }
 .banner .lede { color: rgba(255, 255, 255, 0.9); margin-block-start: var(--s-4); }
 
 /* Breadcrumb */
 .crumbs { margin-block-end: var(--s-5); font-size: var(--fs-small); }
 .crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
 .crumbs a { color: var(--cyan-soft); text-decoration: none; }
-.crumbs a:hover { color: var(--paper); text-decoration: underline; }
+.crumbs a:hover { color: var(--on-dark); text-decoration: underline; }
 .crumbs li + li::before {
   content: '/';
   margin-inline-end: var(--s-2);
@@ -560,7 +552,7 @@ body.nav-open { overflow: hidden; }
   width: 42%;
 }
 .spec-table td { color: var(--slate); }
-:is(.surface-navy, .surface-ink) .spec-table th { color: var(--paper); }
+:is(.surface-navy, .surface-ink) .spec-table th { color: var(--on-dark); }
 :is(.surface-navy, .surface-ink) .spec-table td { color: var(--on-navy); }
 :is(.surface-navy, .surface-ink) .spec-table th,
 :is(.surface-navy, .surface-ink) .spec-table td { border-block-end-color: var(--rule-dark); }
@@ -611,7 +603,7 @@ body.nav-open { overflow: hidden; }
   background: var(--navy-lift);
   border-color: var(--rule-dark);
 }
-.card--navy .card__title { color: var(--paper); }
+.card--navy .card__title { color: var(--on-dark); }
 .card--navy .card__body { color: var(--on-navy); }
 
 /* Interactive card: top keyline indicates the active target. */
@@ -662,7 +654,7 @@ body.nav-open { overflow: hidden; }
   max-width: 85%;
   padding: var(--s-4) var(--s-5);
   background: rgba(6, 21, 39, 0.88);
-  color: var(--paper);
+  color: var(--on-dark);
   font-size: var(--fs-small);
   border-block-start: 2px solid var(--cyan);
 }
@@ -688,7 +680,7 @@ body.nav-open { overflow: hidden; }
   font-size: var(--fs-plate);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--paper);
+  color: var(--on-dark);
   line-height: 1.1;
 }
 .plate__scope {
@@ -782,7 +774,7 @@ body.nav-open { overflow: hidden; }
   color: var(--on-navy-dim);
   margin-block-end: var(--s-1);
 }
-.contact-line__value { font-size: var(--fs-h5); font-family: var(--font-display); font-weight: 600; color: var(--paper); }
+.contact-line__value { font-size: var(--fs-h5); font-family: var(--font-display); font-weight: 600; color: var(--on-dark); }
 .contact-line__value a { color: inherit; text-decoration: none; }
 .contact-line__value a:hover { color: var(--cyan-soft); }
 .contact-line__value .sep { margin-inline: var(--s-3); color: var(--rule-dark); }
@@ -865,7 +857,7 @@ body.nav-open { overflow: hidden; }
 .cta-band {
   position: relative;
   background: var(--blue-deep);
-  color: var(--paper);
+  color: var(--on-dark);
   overflow: hidden;
   isolation: isolate;
 }
@@ -881,7 +873,7 @@ body.nav-open { overflow: hidden; }
   background-size: 5rem 5rem;
   mask-image: radial-gradient(120% 100% at 85% 20%, #000 0%, transparent 70%);
 }
-.cta-band h2 { color: var(--paper); }
+.cta-band h2 { color: var(--on-dark); }
 .cta-band__inner { display: grid; gap: var(--s-7); align-items: center; }
 .cta-band .lede { color: rgba(255, 255, 255, 0.92); }
 
@@ -892,14 +884,14 @@ body.nav-open { overflow: hidden; }
   font-family: var(--font-display);
   font-size: var(--fs-h3);
   font-weight: 700;
-  color: var(--paper);
+  color: var(--on-dark);
   letter-spacing: -0.02em;
 }
 .fact__label { margin-block-start: var(--s-2); font-size: var(--fs-meta); color: var(--on-navy-dim); }
 
 /* ---- Footer ------------------------------------------------------------ */
 .site-footer {
-  background: var(--ink);
+  background: var(--ink-deep);
   color: var(--on-navy);
   padding-block: var(--s-9) var(--s-6);
   font-size: var(--fs-meta);
@@ -914,7 +906,7 @@ body.nav-open { overflow: hidden; }
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--on-dark);
   margin-block-end: var(--s-4);
 }
 .footer-col ul { display: grid; gap: var(--s-3); }
@@ -952,7 +944,7 @@ body.nav-open { overflow: hidden; }
   border-inline-start-color: var(--cyan);
   color: var(--on-navy);
 }
-:is(.surface-navy, .surface-ink) .notice strong { color: var(--paper); }
+:is(.surface-navy, .surface-ink) .notice strong { color: var(--on-dark); }
 
 /* ---- Back to top ------------------------------------------------------- */
 .to-top {
@@ -965,7 +957,7 @@ body.nav-open { overflow: hidden; }
   display: grid;
   place-items: center;
   background: var(--blue);
-  color: var(--paper);
+  color: var(--on-brand);
   border: 0;
   border-radius: var(--radius);
   box-shadow: var(--shadow-lift);
@@ -992,7 +984,7 @@ body.nav-open { overflow: hidden; }
   font-size: var(--fs-h5);
   margin-block: var(--s-6) var(--s-4);
 }
-:is(.surface-navy, .surface-ink) .subhead { color: var(--paper); }
+:is(.surface-navy, .surface-ink) .subhead { color: var(--on-dark); }
 
 /* ---- Home: five streams ------------------------------------------------ */
 .streams__action { margin-block-start: var(--s-7); }
@@ -1012,7 +1004,7 @@ body.nav-open { overflow: hidden; }
   font-weight: 600;
   line-height: 1.28;
   letter-spacing: var(--tracking-snug);
-  color: var(--paper);
+  color: var(--on-dark);
   max-width: 24ch;
   text-wrap: balance;
 }
@@ -1046,7 +1038,7 @@ body.nav-open { overflow: hidden; }
   color: var(--ink);
   margin-block-end: var(--s-2);
 }
-:is(.surface-navy, .surface-ink) .spec-group__head { color: var(--paper); }
+:is(.surface-navy, .surface-ink) .spec-group__head { color: var(--on-dark); }
 .spec-group .item-list li:last-child { border-block-end: 0; }
 
 /* ---- Services: in-page index (ten entries, so a plain list would sprawl) */
@@ -1096,8 +1088,8 @@ body.nav-open { overflow: hidden; }
 /* ---- Quality: standards grid ------------------------------------------- */
 
 /* ---- Credits: breadcrumb on a light ground ----------------------------- */
-.crumbs--light a { color: var(--blue); }
-.crumbs--light a:hover { color: var(--blue-bright); }
+.crumbs--light a { color: var(--link); }
+.crumbs--light a:hover { color: var(--link-hover); }
 .crumbs--light [aria-current='page'] { color: var(--slate); }
 .crumbs--light li + li::before { color: var(--rule); }
 
@@ -1127,7 +1119,7 @@ body.nav-open { overflow: hidden; }
 :is(.surface-navy, .surface-ink) .detail-strip__cap { color: var(--on-navy-dim); }
 
 /* Logo at the head of the mobile panel */
-.mobile-nav__brand { align-self: flex-start; margin-block-end: var(--s-6); }
+.mobile-nav__brand { align-self: flex-start; margin-block-end: var(--s-7); }
 
 /* ---- Standards coverage pairs (from the company's own standards table) -- */
 .coverage {
@@ -1151,3 +1143,245 @@ body.nav-open { overflow: hidden; }
 :is(.surface-navy, .surface-ink) .coverage { border-block-start-color: var(--rule-dark); }
 :is(.surface-navy, .surface-ink) .coverage__row { border-block-end-color: var(--rule-dark); }
 :is(.surface-navy, .surface-ink) .coverage dd { color: var(--on-navy); }
+
+/* ---- Theme and language controls --------------------------------------- */
+.header-tools { display: flex; align-items: center; gap: var(--s-2); }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+.icon-btn:hover { border-color: var(--slate-soft); background: rgba(0, 184, 212, 0.08); }
+.icon-btn svg { width: 1.125rem; height: 1.125rem; }
+
+/* Only one of the two icons is shown, decided by the active theme. */
+.icon-btn .i-sun { display: none; }
+:root[data-theme='dark'] .icon-btn .i-sun { display: block; }
+:root[data-theme='dark'] .icon-btn .i-moon { display: none; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 2.75rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+.lang-switch:hover { border-color: var(--slate-soft); background: rgba(0, 184, 212, 0.08); color: var(--ink); }
+
+/* In dark mode the header bar is a dark translucent surface, not white. */
+:root[data-theme='dark'] .site-header { background: rgba(11, 22, 35, 0.92); }
+
+/* The hero scrim already darkens the photograph; in dark mode take it
+   further so the page does not brighten as you reach the top. */
+:root[data-theme='dark'] .hero__media img,
+:root[data-theme='dark'] .banner__media img { filter: brightness(0.82); }
+
+/* ---- Catalogue --------------------------------------------------------- */
+.catalogue { margin-block-start: var(--s-6); }
+
+.catalogue__controls {
+  display: grid;
+  gap: var(--s-5);
+  padding-block-end: var(--s-5);
+}
+.catalogue__controls[hidden] { display: none; }
+.catalogue__search { max-width: 32rem; }
+
+.catalogue__filters { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 2.75rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--slate);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.chip:hover { border-color: var(--slate-soft); color: var(--ink); }
+.chip__n { font-size: var(--fs-small); color: var(--slate-soft); }
+.chip[aria-pressed='true'] {
+  color: var(--on-dark);
+  background: var(--navy);
+  border-color: var(--navy);
+  font-weight: 600;
+}
+.chip[aria-pressed='true'] .chip__n { color: var(--cyan); }
+
+.catalogue__count {
+  font-size: var(--fs-meta);
+  color: var(--slate);
+  padding-block: var(--s-3);
+  border-block-start: 1px solid var(--rule);
+}
+.catalogue__count:empty { display: none; }
+
+.catalogue__list { display: grid; gap: 0; }
+
+.cat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+}
+.cat-item[hidden] { display: none; }
+.cat-item__text { display: flex; flex-direction: column; min-width: 0; }
+.cat-item__name { color: var(--ink); font-size: var(--fs-body); }
+.cat-item__meta { font-size: var(--fs-small); color: var(--slate-soft); margin-block-start: 2px; }
+
+.cat-item__add {
+  flex: 0 0 auto;
+  min-height: 2.25rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--link);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cat-item__add:hover { border-color: var(--link); background: rgba(0, 184, 212, 0.08); }
+.cat-item__add[aria-pressed='true'] {
+  color: var(--on-accent);
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.catalogue__empty { margin-block-start: var(--s-5); }
+.catalogue__empty[hidden] { display: none; }
+
+/* ---- Quotation request dock and panel ---------------------------------- */
+.request-dock {
+  position: fixed;
+  inset-block-end: var(--s-5);
+  inset-inline-end: var(--s-5);
+  z-index: 75;
+}
+.request-dock[hidden] { display: none; }
+
+.request-dock__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 3rem;
+  padding-inline: var(--s-5);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--on-dark);
+  background: var(--navy);
+  border: 1px solid var(--navy-lift);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.request-dock__btn:hover { background: var(--navy-lift); }
+.request-dock__btn svg { width: 1.125rem; height: 1.125rem; }
+.request-dock__n {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: 0.375rem;
+  font-size: var(--fs-small);
+  color: var(--on-accent);
+  background: var(--cyan);
+  border-radius: 999px;
+}
+
+.request-panel {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: min(34rem, calc(100vh - 4rem));
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+.request-panel::backdrop { background: rgba(6, 21, 39, 0.62); }
+.request-panel[open] { display: flex; flex-direction: column; }
+
+.request-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-5) var(--s-4);
+  border-block-end: 1px solid var(--rule);
+}
+.request-panel__head h2 { font-size: var(--fs-h5); }
+
+.request-panel__list { overflow-y: auto; padding-inline: var(--s-5); }
+.request-panel__list[hidden] { display: none; }
+
+.request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+}
+.request-item__text { display: flex; flex-direction: column; min-width: 0; }
+.request-item__name { font-size: var(--fs-meta); }
+.request-item__meta { font-size: var(--fs-small); color: var(--slate-soft); margin-block-start: 2px; }
+.request-item__remove {
+  flex: 0 0 auto;
+  min-height: 2.25rem;
+  padding-inline: var(--s-3);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--link);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.request-item__remove:hover { border-color: var(--link); }
+
+.request-panel__empty { padding: var(--s-6) var(--s-5); color: var(--slate); font-size: var(--fs-meta); }
+.request-panel__empty[hidden] { display: none; }
+
+.request-panel__foot {
+  margin-block-start: auto;
+  padding: var(--s-5);
+  border-block-start: 1px solid var(--rule);
+  display: grid;
+  gap: var(--s-4);
+}
+.request-panel__note { font-size: var(--fs-small); color: var(--slate); }
+.request-panel__note[hidden] { display: none; }

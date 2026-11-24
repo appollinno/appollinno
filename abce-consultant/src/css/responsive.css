@@ -65,7 +65,6 @@
 
   .nav { display: block; }
   .nav-toggle { display: none; }
-  .header__cta { display: inline-flex; }
 
   /* Hard-close the mobile panel so it can never trap focus on desktop. */
   .mobile-nav { display: none; }
@@ -75,11 +74,18 @@
   .roster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .plate-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-  .brand__frame { --logo-h: 3.5rem; }
+  .brand__mark { height: 3.25rem; }
 }
 
 /* ---- >= 1280px --------------------------------------------------------- */
 @media (min-width: 80em) {
+  /* The quote button only joins the bar once there is room for it beside the
+     navigation, the language switch and the theme toggle. Below this it would
+     push the toggle off the right edge — and body{overflow-x:hidden} would
+     hide that rather than reveal it. "Contact" in the nav covers the same
+     journey in the meantime. */
+  .header__cta { display: inline-flex; }
+
   .spec-row--media { grid-template-columns: 4rem 19rem 1fr; }
   .plate-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }

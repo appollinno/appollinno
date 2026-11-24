@@ -15,43 +15,20 @@
  * needs to change.
  */
 
+/**
+ * Validation rules. The messages are NOT here: each field carries its own
+ * `data-msg`, written by the build in the page's language. That keeps this
+ * module free of English and means another locale needs no change to it.
+ */
 const RULES = {
-  name: {
-    required: true,
-    test: (v) => v.trim().length >= 2,
-    message: 'Enter your name.',
-  },
-  company: {
-    required: true,
-    test: (v) => v.trim().length >= 2,
-    message: 'Enter your company or organisation.',
-  },
-  email: {
-    required: true,
-    // Deliberately permissive: the only reliable validator is a delivery attempt.
-    test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
-    message: 'Enter a valid email address, for example name@company.com.',
-  },
-  telephone: {
-    required: false,
-    test: (v) => v.trim() === '' || /^[+\d][\d\s()\-.]{6,}$/.test(v.trim()),
-    message: 'Enter a telephone number, or leave this blank.',
-  },
-  category: {
-    required: true,
-    test: (v) => v !== '',
-    message: 'Choose the category your enquiry relates to.',
-  },
-  subject: {
-    required: true,
-    test: (v) => v.trim().length >= 3,
-    message: 'Add a short subject.',
-  },
-  message: {
-    required: true,
-    test: (v) => v.trim().length >= 20,
-    message: 'Describe what you need — at least 20 characters, including specification and quantity if you have them.',
-  },
+  name: { test: (v) => v.trim().length >= 2 },
+  company: { test: (v) => v.trim().length >= 2 },
+  // Deliberately permissive: the only reliable validator is a delivery attempt.
+  email: { test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) },
+  telephone: { test: (v) => v.trim() === '' || /^[+\d][\d\s()\-.]{6,}$/.test(v.trim()) },
+  category: { test: (v) => v !== '' },
+  subject: { test: (v) => v.trim().length >= 3 },
+  message: { test: (v) => v.trim().length >= 20 },
 };
 
 export function initContactForm() {
@@ -84,8 +61,8 @@ export function initContactForm() {
       showStatus(
         status,
         'error',
-        'Check the form',
-        `${invalid.length} ${invalid.length === 1 ? 'field needs' : 'fields need'} attention. The first one has been focused.`,
+        form.dataset.msgInvalidTitle ?? '',
+        (form.dataset.msgInvalidBody ?? '').replace('{n}', String(invalid.length)),
       );
       invalid[0].focus();
       return;
@@ -144,7 +121,7 @@ function validateField(input) {
 
   wrap?.classList.toggle('has-error', !ok);
   input.setAttribute('aria-invalid', ok ? 'false' : 'true');
-  if (error) error.textContent = ok ? '' : rule.message;
+  if (error) error.textContent = ok ? '' : (input.dataset.msg ?? '');
 
   return ok;
 }
@@ -196,12 +173,12 @@ function handOffToMailClient({ data, status }) {
 
   window.location.href = href;
 
+  const form = document.querySelector('[data-contact-form]');
   showStatus(
     status,
     'ok',
-    'Your email program is opening with this enquiry',
-    `Nothing has been sent by this website — please press send in your email program. ` +
-      `If it did not open, use "Copy enquiry" below, or write to ${data_email()} directly.`,
+    form?.dataset.msgHandoffTitle ?? '',
+    (form?.dataset.msgHandoffBody ?? '').replace('{email}', data_email()),
   );
 }
 

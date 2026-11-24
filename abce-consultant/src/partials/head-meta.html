@@ -3,6 +3,11 @@
   <title>{{ page.metaTitle }}</title>
   <meta name="description" content="{{ page.description }}">
   <link rel="canonical" href="{{ page.canonical }}">
+
+  <!-- Each language is a separate, crawlable URL; these tie them together. -->
+  <link rel="alternate" hreflang="{{ page.selfLang }}" href="{{ page.canonical }}">
+  <link rel="alternate" hreflang="{{ page.altLang }}" href="{{ page.altHref }}">
+  <link rel="alternate" hreflang="x-default" href="{{ site.url }}/">
 <!--@if page.noindex -->
   <meta name="robots" content="noindex, follow">
 <!--@endif -->
@@ -14,7 +19,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ site.name }}">
-  <meta property="og:locale" content="en">
+  <meta property="og:locale" content="{{ lang }}">
   <meta property="og:title" content="{{ page.metaTitle }}">
   <meta property="og:description" content="{{ page.description }}">
   <meta property="og:url" content="{{ page.canonical }}">
@@ -53,6 +58,15 @@
           h.classList.add('js-motion');
         }
       } catch (e) { /* no matchMedia: leave content in its final state */ }
+
+      // Theme, before the first paint. Applied here rather than in the
+      // module so the page never paints light and then flips to dark.
+      try {
+        var stored = localStorage.getItem('abce-theme');
+        var dark = stored ? stored === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        h.setAttribute('data-theme', dark ? 'dark' : 'light');
+      } catch (e) { h.setAttribute('data-theme', 'light'); }
     })();
   </script>
 

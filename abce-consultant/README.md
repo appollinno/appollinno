@@ -1,8 +1,11 @@
 # ABCE Consultant LDA — corporate website
 
 Procurement, industrial supply and integrated logistics for high-criticality
-industries. Eight pages, built as a static multi-page site with Vite, vanilla
-ES modules and GSAP.
+industries. Eight pages in **English and Portuguese**, built as a static
+multi-page site with Vite, vanilla ES modules and GSAP.
+
+English is at `/`, Portuguese at `/pt/` — separate URLs, with `hreflang`
+alternates and a language switcher on every page.
 
 **Read [docs/DELIVERY_REPORT.md](docs/DELIVERY_REPORT.md) first** — it records
 what was measured, what is real, and what is still outstanding.
@@ -58,7 +61,9 @@ so it needs nothing running first. `npm run lighthouse` and `npm run shots` audi
 abce-consultant/
 ├── index.html  about.html  products.html  services.html
 ├── quality.html  industries.html  clients.html  contact.html
-├── credits.html  404.html
+├── credits.html  404.html        English pages — the templates
+├── pt/*.html                      one-line stubs that render the same
+│                                  templates against Portuguese content
 ├── site.config.js            Company facts — the single source of truth
 ├── vite.config.js            Build + the HTML composition plugin
 ├── playwright.config.js      5 viewport projects, runs against the build
@@ -71,7 +76,11 @@ abce-consultant/
 ├── src/
 │   ├── css/                  variables → global → components → animations → responsive
 │   ├── js/                   main, navigation, animations, products, forms
-│   ├── content/              Product, service, standards, industry, client data
+│   ├── content/              Content model, per locale
+│   │   ├── ui.js             Interface strings, both languages
+│   │   ├── copy/en.js pt.js  Page prose
+│   │   ├── index.js          contentFor(locale) + locale parity check
+│   │   └── pt/               Portuguese catalogue, services, standards…
 │   └── partials/             head-meta, header, footer, cta-band
 ├── scripts/                  Build-support tooling (images, icons, sitemap, audits)
 ├── tests/                    *.spec.js (Playwright) and unit/*.test.js (Vitest)
@@ -109,7 +118,11 @@ Almost nothing needs an HTML edit.
 
 | To change | Edit |
 |---|---|
-| Address, email, phone numbers, vision, mission, values | `site.config.js` |
+| Address, email, phone numbers | `site.config.js` (`site`) |
+| Positioning, vision, mission, values — per language | `site.config.js` (`localised`) |
+| Navigation labels — per language | `site.config.js` (`nav`) |
+| Interface strings (buttons, labels) — both languages | `src/content/ui.js` |
+| Page prose — per language | `src/content/copy/en.js`, `copy/pt.js` |
 | Product categories and their subcategories | `src/content/products.js` |
 | Services and the procurement workflow | `src/content/services.js` |
 | Standards (API / ASME / ISO / ASTM & EN) | `src/content/standards.js` |

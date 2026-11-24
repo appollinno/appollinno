@@ -60,7 +60,10 @@ img, picture, video, canvas, svg {
   max-width: 100%;
 }
 
-img { height: auto; background-color: var(--mist); }
+/* No blanket background here: it would paint a light rectangle behind any
+   transparent PNG, which is exactly what the logo is. Figures already give
+   their own placeholder tint via .figure. */
+img { height: auto; }
 
 input, button, textarea, select { font: inherit; color: inherit; }
 
@@ -86,12 +89,12 @@ h5 { font-size: var(--fs-h5); }
 
 /* ---- Links ------------------------------------------------------------- */
 a {
-  color: var(--blue);
+  color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
   transition: color var(--dur-fast) var(--ease-out);
 }
-a:hover { color: var(--blue-bright); }
+a:hover { color: var(--link-hover); }
 
 /* ---- Focus: one visible, high-contrast treatment everywhere ------------ */
 :focus-visible {
@@ -105,7 +108,7 @@ a:hover { color: var(--blue-bright); }
 /* Remove the default outline only where :focus-visible is supported. */
 :focus:not(:focus-visible) { outline: none; }
 
-::selection { background: var(--cyan); color: var(--ink); }
+::selection { background: var(--cyan); color: var(--on-accent); }
 
 /* ---- Accessibility helpers -------------------------------------------- */
 .visually-hidden {
@@ -166,16 +169,16 @@ a:hover { color: var(--blue-bright); }
   color: var(--on-navy);
 }
 .surface-ink {
-  background: var(--ink);
+  background: var(--ink-deep);
   color: var(--on-navy);
 }
 :is(.surface-navy, .surface-ink) h1, :is(.surface-navy, .surface-ink) h2, :is(.surface-navy, .surface-ink) h3,
 :is(.surface-navy, .surface-ink) h4, :is(.surface-navy, .surface-ink) h5,
 .surface-ink h1, .surface-ink h2, .surface-ink h3,
-.surface-ink h4, .surface-ink h5 { color: var(--paper); }
+.surface-ink h4, .surface-ink h5 { color: var(--on-dark); }
 
 :is(.surface-navy, .surface-ink) a:not(.btn) { color: var(--cyan-soft); }
-:is(.surface-navy, .surface-ink) a:not(.btn):hover { color: var(--paper); }
+:is(.surface-navy, .surface-ink) a:not(.btn):hover { color: var(--on-dark); }
 
 /* ---- Text utilities ---------------------------------------------------- */
 .lede {

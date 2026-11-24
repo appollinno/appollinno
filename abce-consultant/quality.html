@@ -1,19 +1,20 @@
 <!--@page
 {
-  "title": "Quality & Compliance",
-  "description": "The API, ASME, ISO, ASTM and EN standards ABCE Consultant LDA works to and sources products against, with a clear distinction between standards alignment, certified product sourcing, and certifications held by ABCE itself.",
+  "metaKey": "quality",
   "ogImage": "default",
   "jsonLd": {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Quality & Compliance — ABCE Consultant LDA",
     "url": "https://www.abceconsu.com/quality.html",
-    "about": { "@id": "https://www.abceconsu.com/#organization" }
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
   }
 }
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <!--@include head-meta.html -->
 </head>
@@ -31,12 +32,12 @@
         <div class="banner__content">
           <nav class="crumbs" aria-label="Breadcrumb">
             <ol>
-              <li><a href="/index.html">Home</a></li>
-              <li><span aria-current="page">Quality &amp; Compliance</span></li>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
             </ol>
           </nav>
-          <h1 id="page-h">The standard is part of the item</h1>
-          <p class="lede">In high-criticality service, a component is only as good as the specification it was made to and the documentation that proves it. These are the standards we work to and source against.</p>
+          <h1 id="page-h">{{ c.qual_h1 }}</h1>
+          <p class="lede">{{ c.qual_lede }}</p>
         </div>
       </div>
     </section>
@@ -47,32 +48,27 @@
         <div class="split split--5-7">
           <div data-reveal>
             <span class="datum" aria-hidden="true"></span>
-            <h2 id="scope-h">What these standards mean here — and what they do not</h2>
+            <h2 id="scope-h">{{ c.qual_scopeTitle }}</h2>
           </div>
           <div class="stack stack--lg" data-reveal>
-            <p class="lede">Standards language is routinely blurred in supplier marketing. We would rather be exact, because the difference changes what you can rely on.</p>
+            <p class="lede">{{ c.qual_scopeLede }}</p>
 
             <div class="plate-grid">
               <article class="plate">
-                <h3 class="plate__code">Standards alignment</h3>
+                <h3 class="plate__code">{{ c.qual_plate1 }}</h3>
                 <hr class="plate__rule">
-                <p class="plate__scope">The standards below are the frameworks our procurement, inspection and documentation practices are built around. This describes how we work.</p>
+                <p class="plate__scope">{{ c.qual_plate1Body }}</p>
               </article>
               <article class="plate">
-                <h3 class="plate__code">Certified product sourcing</h3>
+                <h3 class="plate__code">{{ c.qual_plate2 }}</h3>
                 <hr class="plate__rule">
-                <p class="plate__scope">Products are sourced to the specification that governs the application, and the manufacturer's material and conformity documentation is collected with the goods. The certification belongs to the product and its manufacturer.</p>
+                <p class="plate__scope">{{ c.qual_plate2Body }}</p>
               </article>
             </div>
 
             <p class="notice">
-              <strong>Neither of the above is a certification held by {{ site.name }}.</strong>
-              Nothing on this page states or implies that {{ site.name }} is itself
-              certified to ISO 9001, ISO 14001, ISO 45001, any API specification or any
-              other standard listed here. Where you require evidence of a certification
-              — ours or a manufacturer's — ask us and we will tell you precisely what
-              exists and provide it where it does. We will not supply a document we
-              cannot stand behind.
+              <strong>{{ c.qual_noticeStrong }}</strong>
+              {{ c.qual_notice }}
             </p>
           </div>
         </div>
@@ -95,42 +91,42 @@
         <div class="split split--7-5 split--center">
           <div data-reveal>
             <span class="datum" aria-hidden="true"></span>
-            <h2 id="practice-h">How the standard is actually enforced</h2>
-            <p class="lede">A specification only protects you if someone checks against it. Four points in our process where that happens.</p>
+            <h2 id="practice-h">{{ c.qual_practiceTitle }}</h2>
+            <p class="lede">{{ c.qual_practiceLede }}</p>
             <ol class="process">
               <li class="process__step">
                 <span class="process__num" aria-hidden="true"></span>
                 <div>
-                  <h3 class="process__title">At enquiry</h3>
-                  <p class="process__body">Grade, rating, service conditions and required documentation are established and written into the enquiry, so suppliers bid against the same requirement.</p>
+                  <h3 class="process__title">{{ c.qual_step1 }}</h3>
+                  <p class="process__body">{{ c.qual_step1Body }}</p>
                 </div>
               </li>
               <li class="process__step">
                 <span class="process__num" aria-hidden="true"></span>
                 <div>
-                  <h3 class="process__title">At bid evaluation</h3>
-                  <p class="process__body">Offers are compared on specification compliance first. A cheaper non-compliant offer is not a cheaper offer.</p>
+                  <h3 class="process__title">{{ c.qual_step2 }}</h3>
+                  <p class="process__body">{{ c.qual_step2Body }}</p>
                 </div>
               </li>
               <li class="process__step">
                 <span class="process__num" aria-hidden="true"></span>
                 <div>
-                  <h3 class="process__title">Before despatch</h3>
-                  <p class="process__body">Dimensional, marking, quantity and packing checks against the purchase order and datasheet, with the documentation pack assembled and checked for consistency.</p>
+                  <h3 class="process__title">{{ c.qual_step3 }}</h3>
+                  <p class="process__body">{{ c.qual_step3Body }}</p>
                 </div>
               </li>
               <li class="process__step">
                 <span class="process__num" aria-hidden="true"></span>
                 <div>
-                  <h3 class="process__title">On receipt</h3>
-                  <p class="process__body">Goods are received against the order, non-conformances are raised with the supplier, and records are issued with the consignment.</p>
+                  <h3 class="process__title">{{ c.qual_step4 }}</h3>
+                  <p class="process__body">{{ c.qual_step4Body }}</p>
                 </div>
               </li>
             </ol>
           </div>
           <div class="figure figure--tall" data-reveal>
-            <img class="figure__parallax" src="/assets/images/svc-inspection.jpg" alt="Cargo inspected inside a shipping container at a port terminal" width="900" height="1125" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
-            <p class="figure__plate">Checked against the order, not the invoice</p>
+            <img class="figure__parallax" src="/assets/images/svc-inspection.jpg" alt="{{ c.qual_inspAlt }}" width="900" height="1125" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">{{ c.qual_inspPlate }}</p>
           </div>
         </div>
       </div>
@@ -141,21 +137,21 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <span class="datum" aria-hidden="true"></span>
-          <h2 id="safety-h">Safety is a procurement decision</h2>
-          <p class="lede">Most of what determines whether a job is safe has already been decided by the time the material reaches site.</p>
+          <h2 id="safety-h">{{ c.qual_safetyTitle }}</h2>
+          <p class="lede">{{ c.qual_safetyLede }}</p>
         </div>
         <ul class="grid grid--3">
           <li class="card" data-reveal>
-            <h3 class="card__title">Load-rated hardware</h3>
-            <p class="card__body">Rigging and lifting equipment is load-rated. We source it with the manufacturer certification applicable to the item and confirm what documentation accompanies it before you order.</p>
+            <h3 class="card__title">{{ c.qual_safe1 }}</h3>
+            <p class="card__body">{{ c.qual_safe1Body }}</p>
           </li>
           <li class="card" data-reveal>
-            <h3 class="card__title">Classified areas</h3>
-            <p class="card__body">Equipment for hazardous areas is specified against your area classification, ingress protection and temperature class — not substituted for something that merely fits.</p>
+            <h3 class="card__title">{{ c.qual_safe2 }}</h3>
+            <p class="card__body">{{ c.qual_safe2Body }}</p>
           </li>
           <li class="card" data-reveal>
-            <h3 class="card__title">HSE supply</h3>
-            <p class="card__body">Safety supplies are part of the consumables stream, so the crews doing the work are equipped from the same controlled supply chain as the plant.</p>
+            <h3 class="card__title">{{ c.qual_safe3 }}</h3>
+            <p class="card__body">{{ c.qual_safe3Body }}</p>
           </li>
         </ul>
       </div>

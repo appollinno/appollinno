@@ -34,6 +34,31 @@ test.describe('Responsive layout', () => {
     });
   }
 
+  test('the header bar fits the viewport at every width', async ({ page }, testInfo) => {
+    // body { overflow-x: hidden } means a header that is too wide is clipped
+    // rather than scrollable, so the page looks fine while a control sits off
+    // the right edge, unreachable. Measure the bar itself, not the document.
+    await page.goto('/');
+    const r = await page.evaluate(() => {
+      const inner = document.querySelector('.site-header__inner');
+      const items = [...document.querySelectorAll(
+        '.site-header .brand, .site-header .nav, .site-header .header-tools > *',
+      )].filter((el) => el.getBoundingClientRect().width > 0);
+      return {
+        overflowing: items
+          .filter((el) => el.getBoundingClientRect().right > window.innerWidth + 1)
+          .map((el) => String(el.className) || el.tagName),
+        content: inner.scrollWidth,
+        box: inner.clientWidth,
+      };
+    });
+    expect(
+      r.overflowing,
+      `header controls past the right edge at ${testInfo.project.name}`,
+    ).toEqual([]);
+    expect(r.content, 'header content wider than its box').toBeLessThanOrEqual(r.box + 1);
+  });
+
   test('primary body copy never falls below 16px', async ({ page }) => {
     // Captions, hints and image plates are deliberately secondary and may be
     // smaller; running prose may not be.

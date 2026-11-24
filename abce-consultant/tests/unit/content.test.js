@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { site, nav } from '../../site.config.js';
 import { categories, categoryOptions } from '../../src/content/products.js';
 import { services, workflow } from '../../src/content/services.js';
@@ -245,7 +245,20 @@ describe('referenced imagery exists on disk', () => {
     expect(missing).toEqual([]);
   });
 
-  it('the supplied logo is in place', () => {
+  it('both supplied logo files are in place', () => {
     expect(existsSync('public/assets/images/logo/abce-logo.png')).toBe(true);
+    expect(existsSync('public/assets/images/logo/abce-mark.png')).toBe(true);
+  });
+
+  it('both logo files still carry a real alpha channel', () => {
+    // The design depends on transparency: it is what removed the background
+    // plate and the frame crop. An opaque replacement would silently
+    // reintroduce a pale rectangle on every page.
+    for (const f of ['abce-logo', 'abce-mark']) {
+      const buf = readFileSync(`public/assets/images/logo/${f}.png`);
+      expect(buf.subarray(1, 4).toString(), `${f} is not a PNG`).toBe('PNG');
+      // IHDR colour type lives at byte 25; 6 = RGBA, 4 = grey+alpha.
+      expect([4, 6], `${f} has no alpha channel`).toContain(buf[25]);
+    }
   });
 });

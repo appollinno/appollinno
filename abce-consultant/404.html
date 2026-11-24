@@ -1,13 +1,12 @@
 <!--@page
 {
-  "title": "Page not found",
-  "description": "The page you requested could not be found. Use the navigation to reach products, services, quality and compliance, industries, clients or contact information.",
+  "metaKey": "notFound",
   "ogImage": "default",
   "noindex": true
 }
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <!--@include head-meta.html -->
 </head>
@@ -18,25 +17,25 @@
     <section class="section surface-paper" style="padding-block-start: calc(var(--header-h) + var(--s-10))" aria-labelledby="page-h">
       <div class="container container--narrow">
         <span class="datum" aria-hidden="true"></span>
-        <h1 id="page-h">That page does not exist</h1>
-        <p class="lede" style="margin-block-start: var(--s-4)">The address may have changed, or the link that brought you here may be wrong. Everything on the site is reachable from the links below.</p>
+        <h1 id="page-h">{{ c.nf_h1 }}</h1>
+        <p class="lede" style="margin-block-start: var(--s-4)">{{ c.nf_lede }}</p>
 
         <ul class="grid grid--2" style="margin-block-start: var(--s-7)">
           <li class="card card--link">
-            <h2 class="card__title"><a class="card__link" href="/products.html">Products</a></h2>
-            <p class="card__body">Five supply streams: civil and structural, mechanical and piping, rigging and lifting, electrical, tools and consumables.</p>
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/products.html">{{ nav.2.label }}</a></h2>
+            <p class="card__body">{{ c.nf_products }}</p>
           </li>
           <li class="card card--link">
-            <h2 class="card__title"><a class="card__link" href="/services.html">Services</a></h2>
-            <p class="card__body">Procurement, sourcing, inspection, freight, customs, documentation, warehousing and inventory management.</p>
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/services.html">{{ nav.3.label }}</a></h2>
+            <p class="card__body">{{ c.nf_services }}</p>
           </li>
           <li class="card card--link">
-            <h2 class="card__title"><a class="card__link" href="/quality.html">Quality &amp; Compliance</a></h2>
-            <p class="card__body">The API, ASME, ISO, ASTM and EN standards we work to and source against.</p>
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/quality.html">{{ nav.4.label }}</a></h2>
+            <p class="card__body">{{ c.nf_quality }}</p>
           </li>
           <li class="card card--link">
-            <h2 class="card__title"><a class="card__link" href="/contact.html#quote">Contact</a></h2>
-            <p class="card__body">Office address, email, telephone numbers and the quotation request form.</p>
+            <h2 class="card__title"><a class="card__link" href="{{ quoteHref }}">{{ nav.7.label }}</a></h2>
+            <p class="card__body">{{ c.nf_contact }}</p>
           </li>
         </ul>
       </div>

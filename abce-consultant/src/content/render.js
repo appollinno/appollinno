@@ -6,12 +6,13 @@
  * Nothing here runs in the browser, so long lists cost no client-side JS and
  * are fully present in the HTML for crawlers and for no-JS visitors.
  */
-import { site } from '../../site.config.js';
-import { categories } from './products.js';
-import { services, workflow } from './services.js';
-import { families } from './standards.js';
-import { industries } from './industries.js';
-import { clients } from './clients.js';
+import { site, locales, localised } from '../../site.config.js';
+import { copy as copyEn } from './copy/en.js';
+import { copy as copyPt } from './copy/pt.js';
+
+const COPY = { en: copyEn, pt: copyPt };
+import { t } from './ui.js';
+import { contentFor } from './index.js';
 
 const esc = (s) =>
   String(s)
@@ -30,7 +31,9 @@ const img = (name, alt, { cls = '', width = 1920, height = 1080, lazy = true, si
  * ======================================================================== */
 
 /** Home page: the five streams as specification rows. */
-export function productStreamRows() {
+export function productStreamRows(locale = 'en') {
+  const { categories } = contentFor(locale);
+  const base = locales[locale].base;
   return `<ul class="spec-list">
 ${categories
   .map(
@@ -43,7 +46,7 @@ ${categories
           sizes: '(min-width: 56em) 19rem, 100vw',
         })}</div>
         <div class="spec-row__content">
-          <h3 class="spec-row__title"><a href="/products.html#${c.id}">${esc(c.name)}</a></h3>
+          <h3 class="spec-row__title"><a href="${base}/products.html#${c.id}">${esc(c.name)}</a></h3>
           <p class="spec-row__body">${esc(c.summary)}</p>
         </div>
       </li>`,
@@ -53,8 +56,10 @@ ${categories
 }
 
 /** Products page: in-page index. */
-export function productIndex() {
-  return `<nav class="cluster" aria-label="Product categories">
+export function productIndex(locale = 'en') {
+  const { categories } = contentFor(locale);
+  return `<nav class="cluster" aria-label="${esc(COPY[locale].prod_indexSr)}">
+      <a class="btn btn--primary" href="#catalogue">${esc(COPY[locale].prod_searchCta)}</a>
 ${categories
   .map(
     (c) =>
@@ -65,7 +70,9 @@ ${categories
 }
 
 /** Products page: one full band per category, alternating surface. */
-export function productBands() {
+export function productBands(locale = 'en') {
+  const { categories } = contentFor(locale);
+  const base = locales[locale].base;
   return categories
     .map((c, i) => {
       const dark = i % 2 === 1;
@@ -114,7 +121,7 @@ ${c.details
   .join('\n')}
           </ul>
           <p class="notice">${esc(c.note)}</p>
-          <p><a class="btn btn--${dark ? 'accent' : 'primary'}" href="/contact.html?category=${encodeURIComponent(
+          <p><a class="btn btn--${dark ? 'accent' : 'primary'}" href="${base}/contact.html?category=${encodeURIComponent(
             c.name,
           )}#quote">Request a quotation</a></p>
         </div>
@@ -128,8 +135,84 @@ ${groups}
     .join('\n\n');
 }
 
+
+/**
+ * The full catalogue as one filterable list.
+ *
+ * Every item is rendered server-side, so with JavaScript unavailable the
+ * visitor still gets the complete catalogue — the search box and the stream
+ * filters are revealed by script and are purely an enhancement.
+ */
+export function productCatalogue(locale = 'en') {
+  const tr = t(locale);
+  const { categories } = contentFor(locale);
+  const items = categories.flatMap((c) =>
+    c.groups.flatMap((g) =>
+      g.items.map((name) => ({ name, group: g.heading, stream: c })),
+    ),
+  );
+
+  const filters = [
+    `          <button class="chip" type="button" data-stream="all" aria-pressed="true">${esc(
+      tr('cat.all'),
+    )} <span class="chip__n tabular">${items.length}</span></button>`,
+    ...categories.map((c) => {
+      const n = c.groups.reduce((a, g) => a + g.items.length, 0);
+      return `          <button class="chip" type="button" data-stream="${c.id}" aria-pressed="false">${esc(
+        c.short,
+      )} <span class="chip__n tabular">${n}</span></button>`;
+    }),
+  ].join('\n');
+
+  const rows = items
+    .map(
+      (i) => `        <li class="cat-item" data-stream="${i.stream.id}" data-name="${esc(
+        i.name.toLowerCase(),
+      )}">
+          <span class="cat-item__text">
+            <span class="cat-item__name">${esc(i.name)}</span>
+            <span class="cat-item__meta">${esc(i.stream.short)} &middot; ${esc(i.group)}</span>
+          </span>
+          <button class="cat-item__add" type="button"
+                  data-add-item="${esc(i.name)}" data-add-stream="${esc(i.stream.name)}"
+                  data-label-add="${esc(tr('req.add'))}" data-label-added="${esc(tr('req.added'))}">
+            <span class="cat-item__addLabel">${esc(tr('req.add'))}</span>
+          </button>
+        </li>`,
+    )
+    .join('\n');
+
+  return `<div class="catalogue" data-catalogue
+      data-label-showing="${esc(tr('cat.showing'))}"
+      data-label-of="${esc(tr('cat.of'))}"
+      data-label-one="${esc(tr('cat.resultsOne'))}"
+      data-label-many="${esc(tr('cat.resultsMany'))}">
+      <div class="catalogue__controls" data-catalogue-controls hidden>
+        <div class="field catalogue__search">
+          <label class="field__label" for="cat-search">${esc(tr('cat.searchLabel'))}</label>
+          <input id="cat-search" type="search" autocomplete="off" spellcheck="false"
+                 placeholder="${esc(tr('cat.searchPlaceholder'))}" data-catalogue-search>
+        </div>
+        <div class="catalogue__filters" role="group" aria-label="${esc(tr('cat.searchLabel'))}">
+${filters}
+        </div>
+      </div>
+
+      <p class="catalogue__count" data-catalogue-count role="status" aria-live="polite"></p>
+
+      <ul class="catalogue__list" data-catalogue-list>
+${rows}
+      </ul>
+
+      <p class="notice catalogue__empty" data-catalogue-empty hidden>
+        <strong>${esc(tr('cat.none'))}</strong> ${esc(tr('cat.noneHint'))}
+      </p>
+    </div>`;
+}
+
 /** Contact form: service category options. */
-export function productSelectOptions() {
+export function productSelectOptions(locale = 'en') {
+  const { categories } = contentFor(locale);
   const extra = ['Logistics & freight forwarding', 'Customs clearance & documentation', 'Warehousing & inventory', 'Other / multiple categories'];
   return [...categories.map((c) => c.name), ...extra]
     .map((name) => `              <option value="${esc(name)}">${esc(name)}</option>`)
@@ -141,12 +224,14 @@ export function productSelectOptions() {
  * ======================================================================== */
 
 /** Home page: condensed services overview. */
-export function serviceOverview() {
+export function serviceOverview(locale = 'en') {
+  const { services } = contentFor(locale);
+  const base = locales[locale].base;
   return `<ul class="grid grid--3">
 ${services
   .map(
     (s) => `      <li class="card card--link" data-reveal>
-        <h3 class="card__title"><a class="card__link" href="/services.html#${s.id}">${esc(s.name)}</a></h3>
+        <h3 class="card__title"><a class="card__link" href="${base}/services.html#${s.id}">${esc(s.name)}</a></h3>
         <p class="card__body">${esc(s.summary)}</p>
       </li>`,
   )
@@ -155,7 +240,8 @@ ${services
 }
 
 /** Services page: full detail per service. */
-export function serviceSections() {
+export function serviceSections(locale = 'en') {
+  const { services } = contentFor(locale);
   return `<ul class="spec-list">
 ${services
   .map(
@@ -177,8 +263,9 @@ ${s.points.map((p) => `            <li>${esc(p)}</li>`).join('\n')}
 }
 
 /** Services page: in-page index. */
-export function serviceIndex() {
-  return `<nav class="service-index" aria-label="Services">
+export function serviceIndex(locale = 'en') {
+  const { services } = contentFor(locale);
+  return `<nav class="service-index" aria-label="${esc(COPY[locale].svc_srOnly)}">
       <ul class="service-index__list">
 ${services
   .map(
@@ -191,7 +278,8 @@ ${services
 }
 
 /** The six-step procurement workflow. */
-export function workflowSteps() {
+export function workflowSteps(locale = 'en') {
+  const { workflow } = contentFor(locale);
   return `<ol class="process">
 ${workflow
   .map(
@@ -211,7 +299,8 @@ ${workflow
  * Standards
  * ======================================================================== */
 
-export function standardFamilies() {
+export function standardFamilies(locale = 'en') {
+  const { families } = contentFor(locale);
   return families
     .map(
       (f, i) => `  <section class="section ${i % 2 === 1 ? 'surface-mist' : 'surface-paper'}" id="${f.id}" aria-labelledby="${f.id}-h">
@@ -246,8 +335,9 @@ ${f.entries
     .join('\n\n');
 }
 
-export function standardsIndex() {
-  return `<nav class="cluster" aria-label="Standards families">
+export function standardsIndex(locale = 'en') {
+  const { families } = contentFor(locale);
+  return `<nav class="cluster" aria-label="${esc(COPY[locale].qual_scopeTitle)}">
 ${families
   .map((f) => `      <a class="btn btn--ghost" href="#${f.id}">${esc(f.body)}</a>`)
   .join('\n')}
@@ -259,7 +349,9 @@ ${families
  * ======================================================================== */
 
 /** Home page: industry expertise, compact. */
-export function industryCards() {
+export function industryCards(locale = 'en') {
+  const { industries } = contentFor(locale);
+  const base = locales[locale].base;
   return `<ul class="grid grid--3">
 ${industries
   .map(
@@ -269,7 +361,7 @@ ${industries
           height: 342,
           sizes: '(min-width: 56em) 22rem, 100vw',
         })}</div>
-        <h3 class="card__title"><a class="card__link" href="/industries.html#${n.id}">${esc(n.name)}</a></h3>
+        <h3 class="card__title"><a class="card__link" href="${base}/industries.html#${n.id}">${esc(n.name)}</a></h3>
         <p class="card__body">${esc(n.summary)}</p>
       </li>`,
   )
@@ -278,7 +370,8 @@ ${industries
 }
 
 /** Industries page: full sections. */
-export function industrySections() {
+export function industrySections(locale = 'en') {
+  const { industries } = contentFor(locale);
   return industries
     .map(
       (n, i) => `  <section class="section ${i % 2 === 1 ? 'surface-mist' : 'surface-paper'}" id="${n.id}" aria-labelledby="${n.id}-h">
@@ -288,7 +381,7 @@ export function industrySections() {
           <span class="datum" aria-hidden="true"></span>
           <h2 id="${n.id}-h">${esc(n.name)}</h2>
           <p class="lede">${esc(n.summary)}</p>
-          <h3 class="subhead">Procurement and logistics capability</h3>
+          <h3 class="subhead">${esc(COPY[locale].ind_capHead)}</h3>
           <ul class="item-list">
 ${n.capabilities.map((c) => `            <li>${esc(c)}</li>`).join('\n')}
           </ul>
@@ -308,8 +401,9 @@ ${n.capabilities.map((c) => `            <li>${esc(c)}</li>`).join('\n')}
     .join('\n\n');
 }
 
-export function industryIndex() {
-  return `<nav class="cluster" aria-label="Industries served">
+export function industryIndex(locale = 'en') {
+  const { industries } = contentFor(locale);
+  return `<nav class="cluster" aria-label="${esc(COPY[locale].ind_h1)}">
 ${industries.map((n) => `      <a class="btn btn--ghost" href="#${n.id}">${esc(n.name)}</a>`).join('\n')}
     </nav>`;
 }
@@ -318,7 +412,8 @@ ${industries.map((n) => `      <a class="btn btn--ghost" href="#${n.id}">${esc(n
  * Clients & values
  * ======================================================================== */
 
-export function clientRoster() {
+export function clientRoster(locale = 'en') {
+  const { clients } = contentFor(locale);
   return `<ul class="roster">
 ${clients
   .map(
@@ -332,29 +427,73 @@ ${clients
     </ul>`;
 }
 
-export function valuesList() {
+export function valuesList(locale = 'en') {
   // Wording for the first three is the company's own, from the corporate
-  // presentation. Do not paraphrase them.
-  const detail = {
-    'Excellence in Execution':
-      'Commitment to delivering services with great attention to detail and efficiency.',
-    'Uncompromising Quality Assurance':
-      'A stringent quality control system that ensures only the best materials and services are provided.',
-    Safety:
-      'Alignment with global Health, Safety and Environmental (HSE) regulations to protect workers and stakeholders across all operations.',
-    'Operational Excellence':
-      'Procurement, inspection, freight and clearance run as one chain, because that is where delays actually come from.',
-  };
+  // presentation. Do not paraphrase them. Held in the copy modules so the
+  // Portuguese build gets its own version rather than this one.
+  const cp = COPY[locale];
+  const detail = [cp.val_excellence, cp.val_quality, cp.val_safety, cp.val_operational];
   return `<ul class="grid grid--2 values">
-${site.values
+${localised[locale].values
   .map(
-    (v) => `      <li class="card card--navy" data-reveal>
+    (v, i) => `      <li class="card card--navy" data-reveal>
         <h3 class="card__title">${esc(v)}</h3>
-        <p class="card__body">${esc(detail[v] ?? '')}</p>
+        <p class="card__body">${esc(detail[i] ?? '')}</p>
       </li>`,
   )
   .join('\n')}
     </ul>`;
+}
+
+
+/**
+ * The quotation request dock and panel, included on every page.
+ *
+ * A native <dialog> is used deliberately: modal focus containment, Escape
+ * to close and inertness of the page behind it come from the platform
+ * rather than from hand-written JavaScript that would have to be kept
+ * correct. The dock stays hidden until there is something in the list.
+ */
+export function requestDock(locale = 'en') {
+  const tr = t(locale);
+  const base = locales[locale].base;
+  return `<div class="request-dock" data-request-dock hidden>
+      <button class="request-dock__btn" type="button" data-request-open aria-haspopup="dialog">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6a1 1 0 0 1 1 1v1H8V4a1 1 0 0 1 1-1Z"/><path d="M8 5H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2"/><path d="m9 13 2 2 4-4"/></svg>
+        <span>${esc(tr('req.openList'))}</span>
+        <span class="request-dock__n tabular" data-request-count>0</span>
+      </button>
+    </div>
+
+    <dialog class="request-panel" data-request-panel aria-labelledby="request-panel-title"
+      data-label-remove="${esc(tr('req.remove'))}"
+      data-label-added="${esc(tr('req.itemAdded'))}"
+      data-label-removed="${esc(tr('req.itemRemoved'))}"
+      data-label-cleared="${esc(tr('req.empty'))}">
+      <div class="request-panel__head">
+        <h2 id="request-panel-title">${esc(tr('req.title'))}</h2>
+        <button class="icon-btn" type="button" data-request-close>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <span class="visually-hidden">${esc(tr('req.close'))}</span>
+        </button>
+      </div>
+
+      <ul class="request-panel__list" data-request-list></ul>
+
+      <p class="request-panel__empty" data-request-empty>
+        <strong>${esc(tr('req.empty'))}</strong><br>${esc(tr('req.emptyHint'))}
+      </p>
+
+      <div class="request-panel__foot">
+        <p class="request-panel__note" data-request-note>${esc(tr('req.sentTo'))}</p>
+        <div class="cluster">
+          <a class="btn btn--accent" href="${base}/contact.html#quote" data-request-continue>${esc(tr('req.send'))}</a>
+          <button class="btn btn--ghost" type="button" data-request-clear>${esc(tr('req.clearAll'))}</button>
+        </div>
+      </div>
+    </dialog>
+
+    <span class="visually-hidden" role="status" aria-live="polite" data-request-live></span>`;
 }
 
 /* ======================================================================== *
@@ -364,6 +503,7 @@ export const blocks = {
   'products.streamRows': productStreamRows,
   'products.index': productIndex,
   'products.bands': productBands,
+  'products.catalogue': productCatalogue,
   'products.selectOptions': productSelectOptions,
   'services.overview': serviceOverview,
   'services.sections': serviceSections,
@@ -376,4 +516,5 @@ export const blocks = {
   'industries.index': industryIndex,
   'clients.roster': clientRoster,
   'company.values': valuesList,
+  'request.dock': requestDock,
 };

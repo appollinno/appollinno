@@ -3,7 +3,7 @@
  * never drift from what is actually built. Run by `npm run seo`.
  */
 import { writeFileSync, existsSync } from 'node:fs';
-import { site } from '../site.config.js';
+import { site, locales } from '../site.config.js';
 
 // path, change frequency, priority. Excludes 404 and credits (both noindex).
 const PAGES = [
@@ -19,21 +19,37 @@ const PAGES = [
 
 const today = new Date().toISOString().slice(0, 10);
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${PAGES.map(
-  ([path, freq, pri]) => `  <url>
-    <loc>${site.url}${path}</loc>
+/* Both locales are listed, and each entry declares the other as its
+   alternate, so a crawler can find the Portuguese pages from the English
+   ones and serve the right language. */
+const entry = ([path, freq, pri], loc) => {
+  const self = `${site.url}${loc.base}${path}`;
+  const alts = Object.values(locales)
+    .map((l) => `    <xhtml:link rel="alternate" hreflang="${l.htmlLang}" href="${site.url}${l.base}${path}"/>`)
+    .join('\n');
+  return `  <url>
+    <loc>${self}</loc>
+${alts}
     <lastmod>${today}</lastmod>
     <changefreq>${freq}</changefreq>
     <priority>${pri}</priority>
-  </url>`,
-).join('\n')}
+  </url>`;
+};
+
+const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${Object.values(locales)
+  .flatMap((loc) => PAGES.map((pg) => entry(pg, loc)))
+  .join('\n')}
 </urlset>
 `;
 
 writeFileSync('public/sitemap.xml', xml);
-console.log(`sitemap.xml written with ${PAGES.length} URLs (origin: ${site.url})`);
+console.log(
+  `sitemap.xml written with ${PAGES.length * Object.keys(locales).length} URLs ` +
+  `across ${Object.keys(locales).length} locales (origin: ${site.url})`,
+);
 
 // Guard: every listed page must exist as a source file.
 const missing = PAGES.map(([p]) => (p === '/' ? 'index.html' : p.slice(1))).filter(

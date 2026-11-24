@@ -8,10 +8,19 @@
 
 :root {
   /* ---- Core palette ---------------------------------------------------- */
-  --ink:        #061527;  /* deepest blue-black — headings on light, hero base */
+  --ink:        #061527;  /* primary text colour (flips in dark mode) */
+  /* The deepest surface — hero base, footer, .surface-ink bands. A separate
+     token from --ink because --ink is a TEXT colour and inverts with the
+     theme, while this surface must stay dark in both. */
+  --ink-deep:   #061527;
   --navy:       #0B2545;  /* dark section ground */
   --navy-lift:  #10305A;  /* raised surface on navy */
-  --blue:       #11467F;  /* primary corporate blue — 9.5:1 on white */
+  --blue:       #11467F;  /* brand fill: button and badge backgrounds */
+  /* Link/text blue, kept separate from the fill. On a dark ground a link has
+     to get lighter while a button background has to stay saturated; one
+     token cannot do both. */
+  --link:       #11467F;  /* 9.5:1 on white */
+  --link-hover: #1A61AE;
   --blue-deep:  #0D3765;
   --blue-bright:#1A61AE;
   --cyan:       #00B8D4;  /* accent / indicator — 6.4:1 on navy */
@@ -20,10 +29,18 @@
 
   /* ---- Neutrals -------------------------------------------------------- */
   --paper:      #FFFFFF;
-  /* Sampled from the supplied logo PNG, which is opaque. Using it as the
-     header/plate colour makes the logo's own padding disappear, so the mark
-     reads as if it were transparent — without altering the file. */
-  --brand-bg:   #ECF4F6;
+
+  /* ---- Fixed-contrast pairs -------------------------------------------- *
+     These do NOT change with the theme, because the surface they sit on
+     does not either. --paper means "the page surface" and flips in dark
+     mode; text on a permanently dark ground (the hero, a navy band, the
+     footer) needs --on-dark, and text on the constant cyan accent needs
+     --on-accent. Using --paper for both is how dark mode ends up painting
+     dark text on a dark hero.
+   * --------------------------------------------------------------------- */
+  --on-dark:    #FFFFFF;  /* on hero / navy / ink surfaces */
+  --on-accent:  #061527;  /* on --cyan — 7.8:1 */
+  --on-brand:   #FFFFFF;  /* on --blue — 9.5:1 */
   --mist:       #EEF2F6;  /* light grey surface */
   --mist-deep:  #DFE6EE;
   --rule:       #CBD6E2;  /* hairline on light */
@@ -108,4 +125,49 @@
   --z-nav: 90;
   --z-header: 95;
   --z-skip: 100;
+}
+
+/* ==========================================================================
+   Dark theme
+   --------------------------------------------------------------------------
+   The palette tokens are redefined rather than the components rewritten:
+   every component already paints with --paper/--mist for surfaces and
+   --ink/--slate for text, so swapping those values flips the whole site.
+
+   `.surface-navy` and `.surface-ink` sections are deliberately dark in both
+   themes. In dark mode they are lifted slightly above the page background,
+   otherwise the section rhythm the layout depends on disappears.
+
+   Contrast was re-checked with axe in this theme, not assumed.
+   ========================================================================== */
+:root[data-theme='dark'] {
+  --paper:      #0B1623;   /* page surface */
+  --mist:       #111F30;   /* alternate band */
+  --mist-deep:  #16273B;
+
+  --ink:        #E9F0F7;   /* primary text — 15.0:1 on --paper */
+  --slate:      #AFC2D4;   /* secondary text — 8.9:1 */
+  --slate-soft: #8FA5BC;   /* tertiary text — 5.9:1 */
+
+  --rule:       rgba(255, 255, 255, 0.14);
+  --rule-dark:  rgba(255, 255, 255, 0.16);
+
+  /* Dark bands sit above the page, not below it. */
+  --navy:       #132742;
+  --navy-lift:  #1B3457;
+  --ink-deep:   #06101C;   /* still the deepest band, below --paper */
+
+  /* The accent needs to be lighter on a dark ground, not darker. */
+  --cyan-deep:  #5FD7E8;   /* 9.8:1 on --paper */
+  /* White on this fill must still clear 4.5:1, so the dark-theme blue is
+     darker, not lighter, than its light-theme counterpart. The hover state
+     deepens for the same reason. */
+  --blue:       #2470C0;   /* white on it: 5.1:1 */
+  --blue-deep:  #16365E;
+  --blue-bright:#1C5FA8;   /* white on it: 6.5:1 */
+  --link:       #6FB2F5;   /* 7.4:1 on --mist, 9.6:1 on --paper */
+  --link-hover: #9ACCFF;
+
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.44);
+  --shadow-panel: 0 24px 64px rgba(0, 0, 0, 0.66);
 }

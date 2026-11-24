@@ -112,22 +112,40 @@ test.describe('Internal links', () => {
 test.describe('Brand', () => {
   test('the supplied logo is used, at its original dimensions', async ({ page }) => {
     await page.goto('/');
-    const img = page.locator('.site-header .brand__mark');
+    const img = page.locator('.site-header .brand__mark--full');
     await expect(img).toHaveAttribute('src', '/assets/images/logo/abce-logo.png');
-    // The file must be served as supplied: 354x276, not re-encoded or resized.
+    // Served exactly as supplied: 210x150, not re-encoded or resized.
     const natural = await img.evaluate((i) => ({ w: i.naturalWidth, h: i.naturalHeight }));
-    expect(natural).toEqual({ w: 354, h: 276 });
+    expect(natural).toEqual({ w: 210, h: 150 });
     // And displayed without distortion.
     const box = await img.evaluate((i) => {
       const r = i.getBoundingClientRect();
-      return Math.abs(r.width / r.height - 354 / 276) < 0.01;
+      return Math.abs(r.width / r.height - 210 / 150) < 0.01;
     });
     expect(box, 'logo must keep its aspect ratio').toBe(true);
   });
 
+  test('nothing paints a background behind the transparent logo', async ({ page }) => {
+    // A blanket `img { background-color }` once drew a pale rectangle behind
+    // the logo on every page. Transparency is the whole point of this file.
+    await page.goto('/');
+    const bg = await page.locator('.site-header .brand__mark--full')
+      .evaluate((i) => getComputedStyle(i).backgroundColor);
+    expect(['rgba(0, 0, 0, 0)', 'transparent']).toContain(bg);
+  });
+
+  test('dark surfaces use the mark with live text, not the full lockup', async ({ page }) => {
+    // The lockup's "CONSULTANT LDA" line is dark navy and falls below
+    // contrast on a dark ground, so the footer pairs the mark with real text.
+    await page.goto('/');
+    const footerMark = page.locator('.site-footer .brand__mark');
+    await expect(footerMark).toHaveAttribute('src', '/assets/images/logo/abce-mark.png');
+    await expect(page.locator('.site-footer .brand__name')).toHaveText('ABCE Consultant');
+  });
+
   test('the logo carries the company name as its accessible name', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.site-header .brand__mark')).toHaveAttribute(
+    await expect(page.locator('.site-header .brand__mark--full')).toHaveAttribute(
       'alt', 'ABCE Consultant LDA',
     );
   });

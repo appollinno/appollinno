@@ -1,13 +1,12 @@
 <!--@page
 {
-  "title": "Photography credits",
-  "description": "Attribution for the photography used on the ABCE Consultant LDA website, sourced from Wikimedia Commons under CC0, public domain, CC BY and CC BY-SA licences.",
+  "metaKey": "credits",
   "ogImage": "default",
   "noindex": true
 }
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <!--@include head-meta.html -->
 </head>
@@ -19,21 +18,21 @@
       <div class="container container--narrow">
         <nav class="crumbs crumbs--light" aria-label="Breadcrumb" style="margin-block-end: var(--s-5)">
           <ol>
-            <li><a href="/index.html">Home</a></li>
-            <li><span aria-current="page">Photography credits</span></li>
+            <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+            <li><span aria-current="page">{{ page.title }}</span></li>
           </ol>
         </nav>
         <span class="datum" aria-hidden="true"></span>
-        <h1 id="page-h">Photography credits</h1>
+        <h1 id="page-h">{{ c.cred_h1 }}</h1>
         <div class="prose" style="margin-block-start: var(--s-5)">
-          <p class="lede">The industrial photography on this site is real, licensed photography — not stock mock-ups or generated imagery.</p>
-          <p>Every image is sourced from <a href="https://commons.wikimedia.org" rel="noopener noreferrer">Wikimedia Commons</a> under CC0, public domain, CC BY or CC BY-SA licences, and is self-hosted rather than hot-linked. CC BY and CC BY-SA require attribution, which is given in full below.</p>
-          <p>None of these photographs depicts {{ site.name }}, its premises, its personnel or its own consignments. They illustrate the categories of equipment, materials and operations described on each page. Replace them with the company's own photography when it is available.</p>
-          <p>The complete machine-readable record, including each file's source URL, author and licence, is at <code>public/assets/images/attribution.json</code> in the project, with a formatted table in <code>docs/IMAGE_ATTRIBUTION.md</code>.</p>
+          <p class="lede">{{ c.cred_lede }}</p>
+          <p>{{ c.cred_p1 }}</p>
+          <p>{{ c.cred_p2 }}</p>
+          <p>{{ c.cred_p3 }}</p>
         </div>
 
         <div id="credits-table" style="margin-block-start: var(--s-7)">
-          <p class="notice">The per-file credit table is maintained in <code>docs/IMAGE_ATTRIBUTION.md</code> and <code>attribution.json</code>. A build step can render it here once the company confirms whether it intends to keep this photography or substitute its own.</p>
+          <p class="notice">{{ c.cred_notice }}</p>
         </div>
       </div>
     </section>

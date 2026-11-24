@@ -52,6 +52,47 @@ page summary, the contact form's category dropdown and the test suite's
 48-item checklist all read from the same source. Adding a subcategory is a
 one-line change in one file.
 
+## Two languages, one set of templates
+
+English is served at the root, Portuguese under `/pt/` — separate, crawlable
+URLs rather than a client-side swap, so each language can be linked, shared
+and indexed in its own right.
+
+The Portuguese pages are **one-line stubs**:
+
+```html
+<!--@page { "locale": "pt", "template": "index" } -->
+```
+
+The build reads the named English file, discards its front-matter, and
+renders its markup against the Portuguese context. There is exactly one copy
+of every page's structure, so a layout change cannot land in one language and
+not the other — the failure mode that makes most bilingual sites drift.
+
+What varies by locale:
+
+| | Source |
+|---|---|
+| Interface strings (buttons, labels, announcements) | `src/content/ui.js` |
+| Page prose | `src/content/copy/{en,pt}.js` |
+| Catalogue, services, standards, industries | `src/content/{,pt/}*.js` via `contentFor(locale)` |
+| Company positioning, vision, mission, values | `localised` in `site.config.js` |
+| Navigation labels | `nav[].label` in `site.config.js` |
+
+What deliberately does **not** vary: the address, the email, the telephone
+numbers, the client names and the standards codes. A unit test asserts the
+client names are identical in both locales, because translating a proper
+name would be an error, not a feature.
+
+Form validation messages live on the fields as `data-msg` attributes written
+by the build, so `forms.js` contains no language of its own and a third
+locale would need no change to it.
+
+Links are locale-aware throughout: the renderers prefix internal hrefs with
+the locale base, and `hreflang` alternates plus a per-page language switcher
+tie the two versions together. The sitemap lists both and declares each as
+the other's alternate.
+
 ## CSS architecture
 
 Five files, loaded in a fixed order through `src/css/main.css`, which Vite
@@ -59,7 +100,7 @@ inlines into a single hashed stylesheet:
 
 | File | Owns |
 |---|---|
-| `variables.css` | Colour, type scale, spacing, motion tokens |
+| `variables.css` | Colour, type scale, spacing, motion tokens, dark theme |
 | `global.css` | Reset, base typography, layout primitives, focus |
 | `components.css` | Every component and page module |
 | `animations.css` | Keyframes, resting states, the reduced-motion contract |
@@ -74,6 +115,25 @@ Two rules keep the cascade predictable:
 2. **Single ownership of columns.** Everything is one column by default;
    `responsive.css` is the only file that creates multi-column layouts. There
    is exactly one place to look when a breakpoint misbehaves.
+
+### Theming
+
+The dark theme redefines the palette tokens rather than rewriting components:
+every component already paints with `--paper`/`--mist` for surfaces and
+`--ink`/`--slate` for text, so swapping those values flips the whole site.
+
+That only works once a token means exactly one thing. Three had been doing
+double duty and had to be split before dark mode was correct:
+
+| Was | Problem | Split into |
+|---|---|---|
+| `--paper` | both "page surface" and "white text on a dark hero" | `--paper` + `--on-dark` |
+| `--ink` | both "text colour" and "deepest surface" | `--ink` + `--ink-deep` |
+| `--blue` | both "link colour" and "button background" | `--blue` + `--link` |
+
+Without the split, dark mode painted dark text on the dark hero and turned
+the `.surface-ink` bands light. The dark theme is audited by axe on every
+page, which is how each of those was found.
 
 Dark-ground overrides are written as `:is(.surface-navy, .surface-ink)` rather
 than duplicated per surface. That is not a style preference — it was a real

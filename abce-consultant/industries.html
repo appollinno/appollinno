@@ -1,19 +1,20 @@
 <!--@page
 {
-  "title": "Industries",
-  "description": "Procurement and logistics capability for energy, oil and gas, mining, processing, industrial operations and construction — with the specific requirements each sector places on a supplier.",
+  "metaKey": "industries",
   "ogImage": "default",
   "jsonLd": {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Industries — ABCE Consultant LDA",
     "url": "https://www.abceconsu.com/industries.html",
-    "about": { "@id": "https://www.abceconsu.com/#organization" }
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
   }
 }
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <!--@include head-meta.html -->
 </head>
@@ -31,12 +32,12 @@
         <div class="banner__content">
           <nav class="crumbs" aria-label="Breadcrumb">
             <ol>
-              <li><a href="/index.html">Home</a></li>
-              <li><span aria-current="page">Industries</span></li>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
             </ol>
           </nav>
-          <h1 id="page-h">Six sectors, six different ways supply fails</h1>
-          <p class="lede">A mine, a refinery and a construction programme all buy steel. What they need from the supplier around it is not remotely the same.</p>
+          <h1 id="page-h">{{ c.ind_h1 }}</h1>
+          <p class="lede">{{ c.ind_lede }}</p>
         </div>
       </div>
     </section>

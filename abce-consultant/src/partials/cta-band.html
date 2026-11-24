@@ -3,12 +3,12 @@
       <div class="cta-band__inner split">
         <div data-reveal>
           <span class="datum" aria-hidden="true"></span>
-          <h2 id="cta-h">Tell us what the specification requires.</h2>
-          <p class="lede">Send us the item, the grade and the date it has to be on site. We will come back with a sourcing route, the documentation it carries and a delivered price.</p>
+          <h2 id="cta-h">{{ c.cta_title }}</h2>
+          <p class="lede">{{ c.cta_lede }}</p>
         </div>
         <div class="cluster cta-band__actions" data-reveal>
-          <a class="btn btn--accent" href="/contact.html#quote">Request a quotation</a>
-          <a class="btn btn--ghost" href="mailto:{{ site.email }}">Email {{ site.email }}</a>
+          <a class="btn btn--accent" href="{{ quoteHref }}">{{ t.cta_quote }}</a>
+          <a class="btn btn--ghost" href="mailto:{{ site.email }}">{{ c.cta_email }}</a>
         </div>
       </div>
     </div>

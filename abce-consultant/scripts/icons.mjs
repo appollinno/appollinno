@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { site } from '../site.config.js';
 
 const logoB64 = readFileSync('public/assets/images/logo/abce-logo.png').toString('base64');
+const markB64 = readFileSync('public/assets/images/logo/abce-mark.png').toString('base64');
 const interB64 = readFileSync('public/assets/fonts/inter-latin-var.woff2').toString('base64');
 const soraB64 = readFileSync('public/assets/fonts/sora-latin-var.woff2').toString('base64');
 
@@ -36,13 +37,14 @@ try {
     await page.setContent(
       `<!doctype html><meta charset="utf-8">
        <style>
-         /* The supplied logo is letterboxed into a square on its own
-            background colour. It is never cropped, stretched or recoloured. */
-         html,body{margin:0;width:${size}px;height:${size}px;background:#ECF4F6}
-         div{width:100%;height:100%;display:grid;place-items:center;padding:${pad ? Math.round(size * 0.04) : 0}px;box-sizing:border-box}
+         /* Built from the mark, not the full lockup: a stacked lockup
+            letterboxed into 32px is unreadable. The mark is transparent and
+            square-ish, so it stays sharp. Proportions are preserved. */
+         html,body{margin:0;width:${size}px;height:${size}px;background:#0B2545}
+         div{width:100%;height:100%;display:grid;place-items:center;padding:${Math.round(size * (pad ? 0.16 : 0.1))}px;box-sizing:border-box}
          img{max-width:100%;max-height:100%;display:block}
        </style>
-       <div><img src="data:image/png;base64,${logoB64}" alt=""></div>`,
+       <div><img src="data:image/png;base64,${markB64}" alt=""></div>`,
       { waitUntil: 'load' },
     );
     await page.screenshot({ path: file, type: 'png' });
@@ -72,7 +74,7 @@ try {
          -webkit-mask-image:radial-gradient(120% 90% at 16% 72%,#000 8%,transparent 70%)}
        .wrap{position:relative;height:100%;padding:72px 80px;display:flex;flex-direction:column;justify-content:space-between}
        .top{display:flex;align-items:center;gap:20px}
-       .top img.logo{height:118px;width:auto;display:block;background:#ECF4F6;border-radius:4px}
+       .top img.logo{height:104px;width:auto;display:block}
        h1{font-family:'Sora',sans-serif;font-size:67px;font-weight:700;line-height:1.02;letter-spacing:-.032em;max-width:17ch}
        .rule{width:150px;height:3px;background:linear-gradient(to right,#00B8D4,rgba(0,184,212,0));margin:26px 0 22px}
        p{font-size:22px;line-height:1.45;color:rgba(255,255,255,.88);max-width:46ch}

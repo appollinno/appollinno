@@ -1,19 +1,20 @@
 <!--@page
 {
-  "title": "Products",
-  "description": "Five industrial supply streams from ABCE Consultant LDA: civil and structural bulk materials, mechanical piping and flow control, rigging and lifting equipment, electrical systems, and tools, equipment and consumables.",
+  "metaKey": "products",
   "ogImage": "default",
   "jsonLd": {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Products — ABCE Consultant LDA",
     "url": "https://www.abceconsu.com/products.html",
-    "about": { "@id": "https://www.abceconsu.com/#organization" }
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
   }
 }
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <!--@include head-meta.html -->
 </head>
@@ -31,19 +32,19 @@
         <div class="banner__content">
           <nav class="crumbs" aria-label="Breadcrumb">
             <ol>
-              <li><a href="/index.html">Home</a></li>
-              <li><span aria-current="page">Products</span></li>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
             </ol>
           </nav>
-          <h1 id="page-h">Five supply streams, specified properly</h1>
-          <p class="lede">Bulk materials, pressure equipment, lifting gear, power and control systems, and the tooling and consumables that keep maintenance moving — sourced against the standard that governs the application.</p>
+          <h1 id="page-h">{{ c.prod_h1 }}</h1>
+          <p class="lede">{{ c.prod_lede }}</p>
         </div>
       </div>
     </section>
 
     <section class="section section--tight surface-mist" aria-labelledby="index-h">
       <div class="container">
-        <h2 class="visually-hidden" id="index-h">Jump to a product stream</h2>
+        <h2 class="visually-hidden" id="index-h">{{ c.prod_indexSr }}</h2>
         <div data-section-index>
           <!--@render products.index -->
         </div>
@@ -52,22 +53,34 @@
 
 <!--@render products.bands -->
 
+    <!-- ================= CATALOGUE ================= -->
+    <section class="section surface-paper" id="catalogue" aria-labelledby="catalogue-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="catalogue-h">{{ c.prod_catTitle }}</h2>
+          <p class="lede">{{ c.prod_catLede }}</p>
+        </div>
+        <!--@render products.catalogue -->
+      </div>
+    </section>
+
     <section class="section surface-mist" aria-labelledby="howto-h">
       <div class="container container--narrow">
         <div class="section-head" data-reveal>
           <span class="datum" aria-hidden="true"></span>
-          <h2 id="howto-h">What to send us with an enquiry</h2>
-          <p class="lede">The more of this you have, the faster and more accurate the quotation. If you only have some of it, send what you have — establishing the rest is part of the job.</p>
+          <h2 id="howto-h">{{ c.prod_howTitle }}</h2>
+          <p class="lede">{{ c.prod_howLede }}</p>
         </div>
         <table class="spec-table" data-reveal>
-          <caption>Enquiry checklist</caption>
+          <caption>{{ c.prod_howCaption }}</caption>
           <tbody>
-            <tr><th scope="row">Item and quantity</th><td>What the item is and how many, with units.</td></tr>
-            <tr><th scope="row">Specification or standard</th><td>The governing standard, grade, class or OEM part number if known.</td></tr>
-            <tr><th scope="row">Service conditions</th><td>Medium, pressure, temperature and, for electrical equipment, area classification.</td></tr>
-            <tr><th scope="row">Documentation required</th><td>Material certificates, test reports or conformity documents your QA department needs.</td></tr>
-            <tr><th scope="row">Delivery location</th><td>Port, site or warehouse, and whether inland transport is required.</td></tr>
-            <tr><th scope="row">Required on site date</th><td>The date the material has to be usable, not the date you would like it shipped.</td></tr>
+            <tr><th scope="row">{{ c.prod_row1h }}</th><td>{{ c.prod_row1d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row2h }}</th><td>{{ c.prod_row2d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row3h }}</th><td>{{ c.prod_row3d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row4h }}</th><td>{{ c.prod_row4d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row5h }}</th><td>{{ c.prod_row5d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row6h }}</th><td>{{ c.prod_row6d }}</td></tr>
           </tbody>
         </table>
       </div>

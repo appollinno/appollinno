@@ -76,6 +76,32 @@ The deck also confirmed the contact details already on the site, and the ISO
 row explicitly says *alignment* — which supports the standards-versus-
 certification distinction described in §5.
 
+## 1b. Second round: the reference site
+
+A single-page reference build was supplied later with four capabilities this
+site lacked. All four were brought in, and the transparent logo files it
+carried replaced the opaque one.
+
+| Brought in | What it does |
+|---|---|
+| **Portuguese / English** | Full bilingual site. English at `/`, Portuguese at `/pt/`, with `hreflang` alternates, per-language canonicals and a switcher that lands on the same page in the other language. |
+| **Searchable catalogue** | All 60 subcategories as one filterable list on the Products page, with accent-insensitive search and per-stream filters. Renders completely without JavaScript; the controls are revealed by script. |
+| **Quotation request list** | "Add" on any catalogue item builds a list that persists across pages, opens in a native `<dialog>`, and writes itself into the contact form's message. |
+| **Light / dark theme** | Follows the operating system, overridable, applied before first paint so the page never flashes. Audited by axe in **both** themes on every page. |
+
+### The transparent logo
+
+The reference bundle included `abce-logo.png` and `abce-mark.png` with real
+alpha channels — the same artwork as the opaque file supplied earlier. Both
+are installed byte-for-byte. Transparency removed two workarounds entirely:
+the `--brand-bg` plate and the frame that cropped out the opaque file's blank
+margin. It also gave a proper square mark for the favicon, which closes the
+limitation recorded in §1.
+
+The header shows the full lockup in light theme and the mark with live text
+in dark, because the lockup's "CONSULTANT LDA" line is dark navy and falls
+below contrast on a dark bar. The footer uses the mark for the same reason.
+
 ## 2. What was built
 
 Eight content pages plus a 404 and a photography-credits page.
@@ -149,8 +175,7 @@ Two layers:
   to a section that exists, every image named in data exists on disk, content
   is HTML-escaped, every `<img>` carries alt and intrinsic dimensions, and the
   standards data never claims ABCE holds a certification.
-- **End-to-end (Playwright):** 409 passed, 26 skipped, 0 failed — 435 checks
-  across five viewports
+- **End-to-end (Playwright):** across five viewports
 (1440, 1024, 768, 390, 375), run against the production build. The 24 skips
 are viewport-gated by design: mobile-menu tests do not run at desktop widths,
 and desktop-navigation tests do not run at mobile widths.
@@ -182,6 +207,11 @@ Everything below was discovered by driving the real site, not by inspection.
 | 12 | Alt text described the wrong photograph | A port container inspection was captioned "fabricated industrial components" | Alt text corrected to what is actually in the frame |
 | 13 | Content columns were the narrow side | Products and Industries put the heading, lede, imagery and lists in the 5fr column and the shorter content in 7fr | Content column is now 7fr; variety comes from the alternating surface colour |
 | 14 | Section headings sat flush against their content | Three blocks set their own top margin and the rest did not | `.section-head` owns the gap below it, once |
+| 21 | Breadcrumbs said "Home" and linked to the English home from Portuguese pages | The breadcrumb's first item was hard-coded, missed when the pages were tokenised | Localised and locale-prefixed on all eight pages; caught by the Portuguese disclaimer test reading "Home" where it expected Portuguese |
+| 20 | Dark mode painted white text on a 4.1:1 blue button | `--blue` had to serve as both a link colour (wants to lighten on dark) and a button fill (wants to stay saturated) | Split into `--blue` and `--link`; the dark fill was darkened so the white label clears 4.5:1 |
+| 19 | Dark mode turned the `.surface-ink` bands light | `--ink` was both the text colour and the deepest surface, so inverting it inverted the bands | Split into `--ink` and `--ink-deep` |
+| 18 | Dark mode painted dark text on the dark hero | `--paper` meant both "page surface" and "white text on a dark ground"; flipping it flipped both | Split into `--paper` and `--on-dark`, applied to 30 rules |
+| 17 | A transparent logo rendered with a pale box behind it | A blanket `img { background-color: var(--mist) }` painted a placeholder behind every image, including the logo | Removed; `.figure` already provides that tint where it is wanted |
 | 16 | Two dead function parameters and a dead import | `scrollReveals`/`parallax` took a `ScrollTrigger` argument they never used; `vite.config.js` still imported `readdirSync` after the manifest moved | Removed; found by adding ESLint, which the project had been running without |
 | 15 | A 304 px thumbnail was downloading a 208 KB image | Several photographs serve both as a small thumbnail on one page and a wide band image on another; one file cannot be the right weight for both | Each photograph now has a 640 px variant, and the build emits `srcset` with width descriptors from `image-manifest.json`. That thumbnail went 208 KB → 51 KB, the home page's first view 724 KB → 569 KB, and its LCP 1.0 s → 0.8 s |
 

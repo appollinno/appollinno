@@ -4,14 +4,20 @@
  * Everything here is progressive: the site is fully readable and navigable
  * with JavaScript disabled or failing. This file only adds behaviour.
  */
+import { initTheme } from './theme.js';
 import { initNavigation } from './navigation.js';
 import { initAnimations } from './animations.js';
 import { initSectionIndex, initCategoryPrefill } from './products.js';
+import { initCatalogue } from './catalogue.js';
+import { initRequestList } from './request.js';
 import { initContactForm } from './forms.js';
 
 function boot() {
+  initTheme();
   initNavigation();
   initSectionIndex();
+  initCatalogue();
+  initRequestList();
   initCategoryPrefill();
   initContactForm();
 

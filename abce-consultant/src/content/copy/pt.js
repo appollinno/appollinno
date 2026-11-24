@@ -80,6 +80,22 @@ export const copy = {
     "Descer",
   home_heroAlt:
     "Instalação de processamento industrial ao anoitecer",
+  home_coverageSr:
+    "O que o catálogo abrange, em números",
+  home_coverageCats:
+    "Categorias de fornecimento",
+  home_coverageGroups:
+    "Grupos de produtos",
+  home_coverageItems:
+    "Linhas de catálogo",
+  home_coverageServices:
+    "Serviços",
+  home_coverageIndustries:
+    "Indústrias servidas",
+  home_coverageStandards:
+    "Entidades normativas",
+  home_coverageNote:
+    "Cada número conta o que está publicado neste site, não é uma estimativa. O catálogo não é exaustivo — pergunte por aquilo que não encontrar.",
   home_introLede:
     "A ABCE Consultant LDA fornece o equipamento, os materiais e a logística que mantêm em funcionamento as operações de energia, mineração e indústria — e assume a responsabilidade por todo o percurso, da especificação à obra.",
   home_introP1:

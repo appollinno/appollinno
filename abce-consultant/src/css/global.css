@@ -181,6 +181,12 @@ a:hover { color: var(--link-hover); }
 :is(.surface-navy, .surface-ink) a:not(.btn):hover { color: var(--on-dark); }
 
 /* ---- Text utilities ---------------------------------------------------- */
+/* Headings use `balance` (above) to even out their few lines. Running copy
+   wants `pretty` instead, which only works the last few lines and so leaves
+   no single-word last line, without the cost of rebalancing a long
+   paragraph. Unsupported browsers simply wrap as before. */
+p, .lede, .card__body, .spec-row__body { text-wrap: pretty; }
+
 .lede {
   font-size: var(--fs-lead);
   line-height: var(--lh-normal);

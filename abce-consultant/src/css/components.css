@@ -125,6 +125,21 @@
   box-shadow: var(--shadow-lift);
 }
 
+/* Read-position indicator, drawn on the header's bottom edge. It rests at
+   scaleX(0) and is only ever given width by GSAP, which does not run under
+   reduced motion — so there it simply stays invisible rather than needing a
+   separate hiding rule. */
+.site-header__progress {
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline: 0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
 .site-header__inner {
   display: flex;
   align-items: center;
@@ -341,9 +356,38 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   z-index: -1;
   background:
+    /* Vignette. Last in the stack so it sits under the two directional
+       ramps: it only has to round off the corners of the frame, and over
+       them it would grey the headline's ground. */
     linear-gradient(to right, rgba(6, 21, 39, 0.88) 0%, rgba(6, 21, 39, 0.52) 48%, rgba(11, 37, 69, 0.14) 100%),
-    linear-gradient(to top, rgba(6, 21, 39, 0.9) 0%, rgba(6, 21, 39, 0.1) 52%, rgba(6, 21, 39, 0.52) 100%);
+    linear-gradient(to top, rgba(6, 21, 39, 0.9) 0%, rgba(6, 21, 39, 0.1) 52%, rgba(6, 21, 39, 0.52) 100%),
+    radial-gradient(125% 95% at 50% 45%, transparent 48%, rgba(6, 21, 39, 0.55) 100%);
 }
+
+/* Registration marks — the corner ticks of a drawing sheet, framing the
+   hero composition. Drawn as eight 1px background slivers on one element:
+   no extra DOM, no request, nothing to paint beyond the hero. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-6);
+  z-index: -1;
+  pointer-events: none;
+  --tick: rgba(0, 184, 212, 0.38);
+  --arm: 1.5rem;
+  background:
+    linear-gradient(var(--tick), var(--tick)) left top / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left top / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right top / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right top / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left bottom / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left bottom / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right bottom / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right bottom / var(--arm) 1px no-repeat;
+}
+
+/* Inner-page banners are short; corner marks there would crowd the title. */
+.hero--inner::after { display: none; }
 
 /* The engineering datum grid — faint, large, and only over the hero. */
 .hero__grid {
@@ -470,6 +514,99 @@ body.nav-open { overflow: hidden; }
 }
 .crumbs [aria-current='page'] { color: rgba(255, 255, 255, 0.78); }
 
+/* ---- Catalogue coverage band ------------------------------------------- *
+   A datasheet strip directly beneath the hero: the dark ground carries on,
+   the page states its scope in figures, and only then opens into the
+   editorial intro. Every figure is COUNTED from the content model at build
+   time (see coverageBand in src/content/render.js), so it cannot drift away
+   from the catalogue it summarises, and each one links to the page a reader
+   can check it against.
+ * ------------------------------------------------------------------------ */
+.coverage {
+  padding-block: var(--s-7);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.coverage__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-5) var(--s-4);
+}
+
+.coverage__item { min-width: 0; }
+
+/* The hairline between figures reads as a datasheet column rule. It is drawn
+   on the item rather than as a gap border so the first column in each row
+   stays flush with the container edge at every breakpoint. */
+.coverage__item + .coverage__item { border-inline-start: 1px solid rgba(255, 255, 255, 0.1); padding-inline-start: var(--s-4); }
+.coverage__item:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+
+.coverage__link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  text-decoration: none;
+  color: inherit;
+}
+
+.coverage__n {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 1.35rem + 2.1vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.coverage__label {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: var(--lh-snug);
+  color: var(--on-navy-dim);
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* The underline is the affordance: nothing moves, a keyline simply arrives. */
+.coverage__label::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  margin-block-start: var(--s-2);
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.coverage__link:hover .coverage__n,
+.coverage__link:focus-visible .coverage__n { color: var(--cyan-soft); }
+.coverage__link:hover .coverage__label,
+.coverage__link:focus-visible .coverage__label { color: var(--on-dark); }
+.coverage__link:hover .coverage__label::after,
+.coverage__link:focus-visible .coverage__label::after { transform: scaleX(1); }
+
+/* `.surface-ink a:not(.btn)` would otherwise tint the whole link cyan-soft
+   and flatten the numeral/label hierarchy. */
+:is(.surface-navy, .surface-ink) .coverage__link { color: inherit; }
+:is(.surface-navy, .surface-ink) .coverage__link:hover { color: inherit; }
+
+.coverage__note {
+  margin-block-start: var(--s-6);
+  padding-block-start: var(--s-4);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(--fs-meta);
+  color: var(--on-navy-dim);
+  max-width: var(--measure);
+}
+
 /* ---- Spec row list ----------------------------------------------------- *
    The site's primary way of presenting a set of capabilities. Full-width
    rows separated by hairlines, like line items on a specification — handles
@@ -526,6 +663,57 @@ body.nav-open { overflow: hidden; }
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border-radius: var(--radius);
+}
+
+/* ---- Featured stream rows (home) --------------------------------------- *
+   The home page's centrepiece. Same spec-row bones as the services list, but
+   given editorial weight: the reference number is set at display size as the
+   row's anchor, and a chevron arrives on hover to say the row is a door.
+
+   The thumbnail is NOT scaled on hover: GSAP already owns `transform` on
+   .figure__parallax for the scroll drift, and a competing CSS transform on
+   the same element would fight it. The tint overlay below is painted on the
+   wrapper instead, which nothing else touches.
+ * ------------------------------------------------------------------------ */
+.spec-row--media { padding-block: var(--s-7); }
+
+.spec-row--media .spec-row__index {
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.375rem);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  /* Optically align the numeral with the cap-height of the title beside it. */
+  padding-block-start: 0.06em;
+}
+
+/* The figure gets a cyan edge on hover, matching the row's keyline. */
+.spec-row--media .figure--wide {
+  position: relative;
+  overflow: hidden;
+}
+.spec-row--media .figure--wide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  pointer-events: none;
+}
+.spec-row--media:hover .figure--wide::after,
+.spec-row--media:focus-within .figure--wide::after { opacity: 1; }
+
+/* Chevron drawn from two borders rather than shipped as an icon — it is pure
+   decoration, so it costs no request and carries aria-hidden. */
+.spec-row__go { display: none; }
+
+.spec-row--media .spec-row__title { text-wrap: balance; }
+
+/* On a dark band the chevron and the figure keyline both need the lighter
+   accent; --cyan-deep is a text-on-light token and goes muddy here. */
+:is(.surface-navy, .surface-ink) .spec-row__go {
+  border-block-start-color: var(--cyan);
+  border-inline-end-color: var(--cyan);
 }
 
 /* ---- Spec table (subcategory listings) --------------------------------- */
@@ -621,7 +809,21 @@ body.nav-open { overflow: hidden; }
 }
 .card--link:hover::before,
 .card--link:focus-within::before { transform: scaleX(1); }
-.card--link:hover { border-color: var(--rule); }
+
+/* The lift is shadow and border only, deliberately NOT a transform: these
+   cards carry data-reveal, so GSAP owns their `transform` and writes an
+   inline translate when the reveal finishes. A CSS hover transform would be
+   outranked by that inline style and silently do nothing. */
+.card--link:hover,
+.card--link:focus-within {
+  border-color: var(--mist-deep);
+  box-shadow: var(--shadow-lift);
+}
+.card--navy.card--link:hover,
+.card--navy.card--link:focus-within {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+}
 .card__link { text-decoration: none; color: inherit; }
 .card__link::after { content: ''; position: absolute; inset: 0; }
 

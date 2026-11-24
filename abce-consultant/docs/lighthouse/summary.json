@@ -28,25 +28,5 @@
     "lcp": "0.7 s",
     "cls": "0",
     "tbt": "0 ms"
-  },
-  {
-    "page": "pt-index",
-    "performance": 100,
-    "accessibility": 100,
-    "bestPractices": 100,
-    "seo": 100,
-    "lcp": "0.8 s",
-    "cls": "0.003",
-    "tbt": "0 ms"
-  },
-  {
-    "page": "pt-products",
-    "performance": 100,
-    "accessibility": 100,
-    "bestPractices": 100,
-    "seo": 100,
-    "lcp": "0.8 s",
-    "cls": "0",
-    "tbt": "0 ms"
   }
 ]

@@ -34,6 +34,15 @@
 
 /* ---- >= 768px : tablet portrait (a required test width) ---------------- */
 @media (min-width: 48em) {
+  /* Coverage band: 2 -> 3 figures per row. The column rule has to be
+     re-enabled on the items that are no longer first in their row. */
+  .coverage__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .coverage__item:nth-child(odd) {
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.1);
+    padding-inline-start: var(--s-4);
+  }
+  .coverage__item:nth-child(3n + 1) { border-inline-start: 0; padding-inline-start: 0; }
+
   .process__step { grid-template-columns: 2.75rem 1fr; }
   .cta-band__inner { grid-template-columns: 7fr 5fr; }
   .cta-band__actions { justify-content: flex-end; }
@@ -50,9 +59,36 @@
 
   .grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-  /* Spec rows gain a thumbnail column at the width where it earns its place. */
-  .spec-row--media { grid-template-columns: 3.5rem 15rem 1fr; align-items: start; }
-  .spec-row--media .spec-row__content { grid-column: 3; }
+  /* Spec rows gain a thumbnail column at the width where it earns its place.
+     The first column is sized for the display-weight reference numeral, and
+     the last leaves room for the chevron so long titles never run under it. */
+  .spec-row--media { grid-template-columns: 4.5rem 15rem 1fr; align-items: start; }
+  /* The thumbnail is taller than two or three lines of summary, so starting
+     both at the top leaves a visible well of dead space on every row. The
+     text is centred against the image instead; the index stays top-aligned
+     because it reads as a label on the title, not on the row. */
+  .spec-row--media .spec-row__content {
+    grid-column: 3;
+    padding-inline-end: var(--s-7);
+    align-self: center;
+  }
+
+  /* The chevron only appears where there is margin for it to live in. */
+  .spec-row--media .spec-row__go {
+    display: block;
+    position: absolute;
+    inset-inline-end: var(--s-3);
+    inset-block-start: 50%;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-block-start: 2px solid var(--cyan-deep);
+    border-inline-end: 2px solid var(--cyan-deep);
+    opacity: 0;
+    transform: translateY(-50%) rotate(45deg);
+    transition: opacity var(--dur) var(--ease-out), inset-inline-end var(--dur) var(--ease-out);
+  }
+  .spec-row--media:hover .spec-row__go,
+  .spec-row--media:focus-within .spec-row__go { opacity: 1; inset-inline-end: var(--s-1); }
 
   .site-footer__top { grid-template-columns: 2.2fr 1fr 1fr 1.4fr; gap: var(--s-7); }
 }
@@ -68,6 +104,15 @@
 
   /* Hard-close the mobile panel so it can never trap focus on desktop. */
   .mobile-nav { display: none; }
+
+  /* Coverage band: all six figures on one datasheet line. */
+  .coverage { padding-block: var(--s-8); }
+  .coverage__list { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5); }
+  .coverage__item:nth-child(3n + 1) {
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.1);
+    padding-inline-start: var(--s-4);
+  }
+  .coverage__item:nth-child(6n + 1) { border-inline-start: 0; padding-inline-start: 0; }
 
   .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -86,7 +131,7 @@
      journey in the meantime. */
   .header__cta { display: inline-flex; }
 
-  .spec-row--media { grid-template-columns: 4rem 19rem 1fr; }
+  .spec-row--media { grid-template-columns: 5rem 19rem 1fr; }
   .plate-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 

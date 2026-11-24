@@ -38,8 +38,8 @@ Both servers bind to `127.0.0.1` only and are never exposed on the network.
 | `npm run preview` | Alias of `start` (Vite's own name for it) |
 | `npm run lint` | ESLint across source, scripts and tests (`lint:fix` to autofix) |
 | `npm test` | Unit tests, then the end-to-end suite |
-| `npm run test:unit` | Vitest — 38 checks on the content model and render layer, ~0.2 s, no browser |
-| `npm run test:e2e` | Playwright — 435 checks across 5 viewports against the production build |
+| `npm run test:unit` | Vitest — 63 checks on the content model and render layer, ~0.5 s, no browser |
+| `npm run test:e2e` | Playwright — 707 checks across 5 viewports against the production build |
 | `npm run test:report` | Opens the generated Playwright HTML report |
 | `npm run lighthouse` | Real Lighthouse audit against the running preview |
 | `npm run shots` | Screenshots every page at 375/390/768/1024/1440/1920 |

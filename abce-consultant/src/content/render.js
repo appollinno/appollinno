@@ -49,6 +49,7 @@ ${categories
           <h3 class="spec-row__title"><a href="${base}/products.html#${c.id}">${esc(c.name)}</a></h3>
           <p class="spec-row__body">${esc(c.summary)}</p>
         </div>
+        <span class="spec-row__go" aria-hidden="true"></span>
       </li>`,
   )
   .join('\n')}
@@ -427,6 +428,50 @@ ${clients
     </ul>`;
 }
 
+/**
+ * Catalogue coverage, counted from the content model at build time.
+ *
+ * Deliberately NOT hand-written numbers. Every figure here is derived from
+ * the same data the catalogue page renders, so adding a product group or a
+ * service updates this band automatically and the two can never disagree.
+ * Nothing is estimated, rounded or claimed beyond what the site publishes —
+ * each figure is checkable by counting the page it points at.
+ */
+export function coverageBand(locale = 'en') {
+  const cp = COPY[locale];
+  const { categories, services, industries, families } = contentFor(locale);
+  const base = locales[locale].base;
+
+  const groups = categories.reduce((n, c) => n + c.groups.length, 0);
+  const items = categories.reduce(
+    (n, c) => n + c.groups.reduce((m, g) => m + g.items.length, 0),
+    0,
+  );
+
+  const figures = [
+    [categories.length, cp.home_coverageCats, `${base}/products.html`],
+    [groups, cp.home_coverageGroups, `${base}/products.html`],
+    [items, cp.home_coverageItems, `${base}/products.html#catalogue`],
+    [services.length, cp.home_coverageServices, `${base}/services.html`],
+    [industries.length, cp.home_coverageIndustries, `${base}/industries.html`],
+    [families.length, cp.home_coverageStandards, `${base}/quality.html`],
+  ];
+
+  return `<ul class="coverage__list" aria-label="${esc(cp.home_coverageSr)}">
+${figures
+  .map(
+    ([n, label, href]) => `        <li class="coverage__item">
+          <a class="coverage__link" href="${href}">
+            <span class="coverage__n tabular">${n}</span>
+            <span class="coverage__label">${esc(label)}</span>
+          </a>
+        </li>`,
+  )
+  .join('\n')}
+      </ul>
+      <p class="coverage__note">${esc(cp.home_coverageNote)}</p>`;
+}
+
 export function valuesList(locale = 'en') {
   // Wording for the first three is the company's own, from the corporate
   // presentation. Do not paraphrase them. Held in the copy modules so the
@@ -516,5 +561,6 @@ export const blocks = {
   'industries.index': industryIndex,
   'clients.roster': clientRoster,
   'company.values': valuesList,
+  'company.coverage': coverageBand,
   'request.dock': requestDock,
 };

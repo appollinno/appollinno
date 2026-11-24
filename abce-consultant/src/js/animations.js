@@ -34,6 +34,7 @@ export async function initAnimations() {
   bannerSequence(gsap);
   scrollReveals(gsap);
   parallax(gsap);
+  readProgress(gsap);
 
   keepTriggersAligned(ScrollTrigger);
 }
@@ -224,6 +225,31 @@ function scrollReveals(gsap) {
       scrollTrigger: { trigger: group, start: 'top 85%', once: true },
       onComplete: () => items.forEach((el) => el.classList.add('reveal-done')),
     });
+  });
+}
+
+/* -------------------------------------------------------- read progress */
+/**
+ * The cyan rule on the header's bottom edge, tracking read position.
+ *
+ * Scrubbed rather than stepped, and deliberately given no `once`: it has to
+ * run backwards when the visitor scrolls up. On a page shorter than the
+ * viewport there is nothing to scroll, so the trigger never advances and the
+ * bar correctly stays at scaleX(0).
+ */
+function readProgress(gsap) {
+  const bar = document.querySelector('[data-progress]');
+  if (!bar) return;
+
+  gsap.to(bar, {
+    scaleX: 1,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: document.documentElement,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.25,
+    },
   });
 }
 

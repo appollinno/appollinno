@@ -81,6 +81,22 @@ export const copy = {
     "Scroll",
   home_heroAlt:
     "Industrial processing facility at dusk",
+  home_coverageSr:
+    "What the catalogue covers, in numbers",
+  home_coverageCats:
+    "Supply categories",
+  home_coverageGroups:
+    "Product groups",
+  home_coverageItems:
+    "Catalogue line items",
+  home_coverageServices:
+    "Services",
+  home_coverageIndustries:
+    "Industries served",
+  home_coverageStandards:
+    "Standards bodies",
+  home_coverageNote:
+    "Every figure counts what is published on this site, not an estimate. The catalogue is not exhaustive — ask for anything you do not see.",
   home_introLede:
     "ABCE Consultant LDA supplies the equipment, materials and logistics that keep energy, mining and industrial operations running — and takes responsibility for the whole route from specification to site.",
   home_introP1:

@@ -6,6 +6,7 @@ import { services } from '../../src/content/services.js';
 
 const names = Object.keys(blocks);
 const render = (n) => blocks[n]();
+const render2 = (n, locale) => blocks[n](locale);
 
 describe('the content block registry', () => {
   it('exposes every block the pages ask for', () => {
@@ -17,6 +18,7 @@ describe('the content block registry', () => {
       'services.index', 'services.workflow', 'standards.families',
       'standards.index', 'industries.cards', 'industries.sections',
       'industries.index', 'clients.roster', 'company.values',
+      'company.coverage',
     ]) {
       expect(names, `block "${n}"`).toContain(n);
     }
@@ -144,5 +146,64 @@ describe('markup shape', () => {
 
   it('the client roster uses no images', () => {
     expect(render('clients.roster')).not.toMatch(/<img/);
+  });
+
+  /* ---------------------------------------------------------------------- *
+   * Coverage band.
+   *
+   * The whole point of this block is that its figures are COUNTED, never
+   * typed. These tests fail if anyone replaces a derived count with a
+   * literal, which is exactly the drift that would turn an honest figure
+   * into a claim.
+   * ---------------------------------------------------------------------- */
+  describe('the coverage band', () => {
+    const figures = (locale) =>
+      [...render2('company.coverage', locale).matchAll(/class="coverage__n tabular">(\d+)</g)]
+        .map((m) => Number(m[1]));
+
+    it('states six figures', () => {
+      expect(figures('en')).toHaveLength(6);
+    });
+
+    it('counts match the content model, not hard-coded numbers', () => {
+      const groups = categories.reduce((n, c) => n + c.groups.length, 0);
+      const items = categories.reduce(
+        (n, c) => n + c.groups.reduce((m, g) => m + g.items.length, 0),
+        0,
+      );
+      const [cats, grp, itm, svc] = figures('en');
+      expect(cats).toBe(categories.length);
+      expect(grp).toBe(groups);
+      expect(itm).toBe(items);
+      expect(svc).toBe(services.length);
+    });
+
+    it('the line-item figure agrees with the catalogue it links to', () => {
+      // The catalogue prints its own total in the "All products" chip. If
+      // these two ever disagree, one of them is lying to the reader.
+      const [, , items] = figures('en');
+      const chip = render('products.catalogue').match(
+        /data-stream="all"[^>]*>[^<]*<span class="chip__n tabular">(\d+)</,
+      );
+      expect(chip, 'catalogue "all" chip not found').not.toBeNull();
+      expect(Number(chip[1])).toBe(items);
+    });
+
+    it('both locales report identical figures', () => {
+      // Counts describe the catalogue, not the language. A difference here
+      // means the two content trees have drifted apart.
+      expect(figures('pt')).toEqual(figures('en'));
+    });
+
+    it('every figure links to a page that can be counted against it', () => {
+      const hrefs = [...render2('company.coverage', 'en').matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+      expect(hrefs).toHaveLength(6);
+      for (const h of hrefs) expect(h).toMatch(/^\/(products|services|industries|quality)\.html/);
+    });
+
+    it('the Portuguese band links into the Portuguese tree', () => {
+      const hrefs = [...render2('company.coverage', 'pt').matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+      for (const h of hrefs) expect(h).toMatch(/^\/pt\//);
+    });
   });
 });

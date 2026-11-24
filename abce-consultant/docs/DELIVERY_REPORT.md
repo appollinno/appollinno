@@ -102,6 +102,37 @@ The header shows the full lockup in light theme and the mark with live text
 in dark, because the lockup's "CONSULTANT LDA" line is dark navy and falls
 below contrast on a dark bar. The footer uses the mark for the same reason.
 
+## 1c. Third round: the visual pass
+
+The request was to raise the site's visual quality using the AnimatedWebs
+skill. That skill is not available in this environment, and the connected
+AnimatedWebs account is on the free plan: nil prompt credits, so the
+build-from-template path cannot run, and every UI component in the library is
+Pro-gated for source. The one free surface, the style references, returns
+measurements captured off live marketing sites — the Polestar sheet reports
+30px "headlines" — and this site already has a coherent token system built
+around its own brand. Nothing there was worth importing.
+
+So the pass was done directly, against what the page itself was getting
+wrong. The page was competent but rhythmically flat: hero, then section after
+section at the same density, with the five supply streams — the commercial
+centrepiece — presented at the same weight as everything around them.
+
+| Change | Why |
+|---|---|
+| **Coverage band under the hero** | The page went from a cinematic hero straight into three paragraphs of prose. A datasheet strip of counted figures gives the reader the scope of the catalogue before the prose, and changes the page's density early. Figures are counted at build time, never typed (§5). |
+| **Supply streams rebuilt as an editorial list** | Reference numbers raised to display size as the row anchor, a chevron and a cyan figure keyline on hover, and the summary centred against the thumbnail — previously every row carried about 90px of dead space because short text was top-aligned against a taller image. |
+| **Hero depth** | A vignette in the scrim, and registration marks at the four corners of the frame — the corner ticks of a drawing sheet. Eight 1px background slivers on one pseudo-element: no extra DOM, no request. |
+| **Read-position indicator** | A cyan rule on the header's bottom edge, scrubbed by the ScrollTrigger already loaded. Decorative, `aria-hidden`, and never drawn at all under reduced motion. |
+| **Card lift, paragraph orphans** | Interactive cards gain a shadow and border on hover; running copy gets `text-wrap: pretty`. |
+
+Two things were deliberately **not** done. Surface boundaries were left hard:
+the design concept is an engineering specification document, and softening
+every section edge into a gradient would have worked against it. And the card
+hover lift is shadow and border only, not a transform — these cards carry
+`data-reveal`, so GSAP writes an inline `transform` when the reveal finishes
+and a CSS hover transform would be outranked by it and silently do nothing.
+
 ## 2. What was built
 
 Eight content pages plus a 404 and a photography-credits page.
@@ -142,8 +173,8 @@ with `npm run preview` then `npm run lighthouse`.
 
 | Asset | Size |
 |---|---|
-| Initial JavaScript | 13 KB (GSAP's 114 KB loads lazily, and never under reduced motion) |
-| CSS | 36 KB, one hashed file |
+| Initial JavaScript | 18 KB (GSAP's 112 KB loads lazily, and never under reduced motion) |
+| CSS | 47 KB, one hashed file |
 | Fonts | 76 KB total — Inter + Sora variable, latin subset, self-hosted |
 | Photography | 35 images, each in two widths × JPEG and WebP |
 | Third-party requests | None |
@@ -154,11 +185,11 @@ scrolling), by category:
 | | Default | Reduced motion |
 |---|---|---|
 | Images | 302 KB | 302 KB |
-| JavaScript | 125 KB | 13 KB |
+| JavaScript | 130 KB | 18 KB |
 | Fonts | 72 KB | 72 KB |
-| CSS | 36 KB | 36 KB |
+| CSS | 47 KB | 47 KB |
 | HTML | 34 KB | 34 KB |
-| **Total** | **569 KB** | **457 KB** |
+| **Total** | **585 KB** | **473 KB** |
 
 Those are uncompressed bodies — `vite preview` does not gzip. Behind a server
 with gzip or brotli the text assets drop to roughly 8 KB of CSS, 8 KB of HTML
@@ -171,7 +202,7 @@ Products page, which is the heaviest, comes to 0.84 MB.
 
 Two layers:
 
-- **Unit (Vitest):** 38 checks on the content model and render layer, no
+- **Unit (Vitest):** 63 checks on the content model and render layer, no
   browser, ~0.2 s. They assert the telephone `href`s match their display
   text, every id is a valid URL fragment, every in-page index link resolves
   to a section that exists, every image named in data exists on disk, content
@@ -236,7 +267,7 @@ Worth recording, because each one produced a *false* result:
 
 ## 5. Accuracy safeguards built into the site
 
-Three places where the obvious implementation would have misled the reader:
+Four places where the obvious implementation would have misled the reader:
 
 **The contact form never claims to have sent anything.** There is no backend.
 It validates, hands the enquiry to the visitor's own mail client, and says in
@@ -254,6 +285,19 @@ removed without the suite failing.
 permission; neither exists in this build, so the nine clients are text. The
 map is omitted because the street address was supplied but its coordinates
 were not verified, and a map pinned to the wrong building is worse than none.
+
+**The figures on the home page are counted, not claimed.** The coverage band
+under the hero ("5 supply categories, 23 product groups, 60 catalogue line
+items, 10 services, 6 industries served, 4 standards bodies") is generated by
+`coverageBand()` in `src/content/render.js`, which counts the same content
+model the catalogue page renders from. No figure is typed in by hand, so none
+can drift away from the pages it summarises, and adding a product group
+updates the band on the next build. Each figure links to the page a reader can
+count it against, and the band says in plain words that the numbers describe
+what this site publishes rather than estimating the business — and that the
+catalogue is not exhaustive. There is deliberately no figure for anything that
+would have to be asserted rather than counted: no years in business, no
+tonnage shipped, no client count, no delivery statistics.
 
 ## 6. Photography
 
@@ -275,11 +319,11 @@ Replace them with the company's own photography when it exists.
 ```bash
 npm install
 npm run lint                 # ESLint — browser, Node and test environments
-npm run test:unit            # Vitest — 38 checks, ~0.2 s, no browser
+npm run test:unit            # Vitest — 63 checks, ~0.5 s, no browser
 npm run build && npm start   # http://localhost:4173
-npm run test:e2e             # Playwright — 435 checks, 5 viewports
-npm run lighthouse           # needs the server running
-npm run shots                # 48 screenshots, 6 breakpoints
+npm run test:e2e             # Playwright — 707 checks, 5 viewports
+npm run lighthouse           # needs `npm start` already running in another shell
+npm run shots                # 80 screenshots, 6 breakpoints + PT + dark
 ```
 
 `npm test` runs the unit layer then the end-to-end layer.

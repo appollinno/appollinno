@@ -44,6 +44,11 @@
         <span class="visually-hidden">{{ t.nav_open }}</span>
       </button>
     </div>
+
+    <!-- Read-position indicator. Decorative: the same information is already
+         available from the scrollbar, so it is aria-hidden and is never
+         drawn at all under prefers-reduced-motion. -->
+    <span class="site-header__progress" aria-hidden="true" data-progress></span>
   </header>
 
   <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>

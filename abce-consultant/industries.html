@@ -1,0 +1,60 @@
+<!--@page
+{
+  "metaKey": "industries",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Industries — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/industries.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/ind-oil-gas.jpg" alt="" width="1280" height="853" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.ind_h1 }}</h1>
+          <p class="lede">{{ c.ind_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight surface-mist">
+      <div class="container">
+        <div data-section-index>
+          <!--@render industries.index -->
+        </div>
+      </div>
+    </section>
+
+<!--@render industries.sections -->
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

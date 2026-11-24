@@ -1,0 +1,173 @@
+/* ==========================================================================
+   ABCE Consultant LDA — design tokens
+   --------------------------------------------------------------------------
+   Visual concept: an engineering specification document. Precision,
+   structure and traceability. Cyan is an *indicator* colour (keylines,
+   datums, active states) — never a decorative gradient wash.
+   ========================================================================== */
+
+:root {
+  /* ---- Core palette ---------------------------------------------------- */
+  --ink:        #061527;  /* primary text colour (flips in dark mode) */
+  /* The deepest surface — hero base, footer, .surface-ink bands. A separate
+     token from --ink because --ink is a TEXT colour and inverts with the
+     theme, while this surface must stay dark in both. */
+  --ink-deep:   #061527;
+  --navy:       #0B2545;  /* dark section ground */
+  --navy-lift:  #10305A;  /* raised surface on navy */
+  --blue:       #11467F;  /* brand fill: button and badge backgrounds */
+  /* Link/text blue, kept separate from the fill. On a dark ground a link has
+     to get lighter while a button background has to stay saturated; one
+     token cannot do both. */
+  --link:       #11467F;  /* 9.5:1 on white */
+  --link-hover: #1A61AE;
+  --blue-deep:  #0D3765;
+  --blue-bright:#1A61AE;
+  --cyan:       #00B8D4;  /* accent / indicator — 6.4:1 on navy */
+  --cyan-soft:  #5FD7E8;
+  --cyan-deep:  #007289;  /* accent as text: 5.6:1 on white, 5.0:1 on --mist */
+
+  /* ---- Neutrals -------------------------------------------------------- */
+  --paper:      #FFFFFF;
+
+  /* ---- Fixed-contrast pairs -------------------------------------------- *
+     These do NOT change with the theme, because the surface they sit on
+     does not either. --paper means "the page surface" and flips in dark
+     mode; text on a permanently dark ground (the hero, a navy band, the
+     footer) needs --on-dark, and text on the constant cyan accent needs
+     --on-accent. Using --paper for both is how dark mode ends up painting
+     dark text on a dark hero.
+   * --------------------------------------------------------------------- */
+  --on-dark:    #FFFFFF;  /* on hero / navy / ink surfaces */
+  --on-accent:  #061527;  /* on --cyan — 7.8:1 */
+  --on-brand:   #FFFFFF;  /* on --blue — 9.5:1 */
+  --mist:       #EEF2F6;  /* light grey surface */
+  --mist-deep:  #DFE6EE;
+  --rule:       #CBD6E2;  /* hairline on light */
+  --rule-dark:  rgba(255, 255, 255, 0.16); /* hairline on navy */
+  --slate:      #4A5B70;  /* secondary text on light — 7.1:1 on white */
+  --slate-soft: #5A6B80;  /* 5.5:1 on white, 4.9:1 on --mist */
+  --on-navy:    #D8E4F0;  /* body text on navy — 11.4:1 */
+  --on-navy-dim:#9FB3CA;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: 'Sora', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Modular scale: 1.2 at mobile widening to 1.26 at desktop. */
+  --fs-micro: 0.75rem;                              /* 12px  */
+  --fs-small: 0.8125rem;                            /* 13px  */
+  --fs-meta:  0.875rem;                             /* 14px  */
+  --fs-body:  1rem;                                 /* 16px  */
+  --fs-lead:  clamp(1.0625rem, 0.99rem + 0.33vw, 1.25rem);
+  --fs-h5:    clamp(1.0625rem, 1.01rem + 0.25vw, 1.1875rem);
+  --fs-h4:    clamp(1.1875rem, 1.1rem + 0.38vw, 1.4375rem);
+  --fs-h3:    clamp(1.375rem, 1.24rem + 0.6vw, 1.8125rem);
+  --fs-h2:    clamp(1.75rem, 1.47rem + 1.24vw, 2.75rem);
+  --fs-h1:    clamp(2.125rem, 1.6rem + 2.3vw, 3.75rem);
+  --fs-hero:  clamp(2.375rem, 1.62rem + 3.35vw, 4.75rem);
+  --fs-plate: clamp(1.5rem, 1.3rem + 0.9vw, 2.125rem);
+
+  --lh-tight:  1.06;
+  --lh-snug:   1.2;
+  --lh-normal: 1.45;
+  --lh-relaxed:1.68;
+
+  --tracking-tight: -0.022em;
+  --tracking-snug:  -0.012em;
+  --tracking-wide:  0.04em;
+
+  /* ---- Space scale (4px base) ------------------------------------------ */
+  --s-1:  0.25rem;
+  --s-2:  0.5rem;
+  --s-3:  0.75rem;
+  --s-4:  1rem;
+  --s-5:  1.5rem;
+  --s-6:  2rem;
+  --s-7:  2.5rem;
+  --s-8:  3rem;
+  --s-9:  4rem;
+  --s-10: 5rem;
+  --s-11: 6.5rem;
+  --s-12: 8rem;
+
+  /* Vertical rhythm for page sections — single owner of section padding. */
+  --section-y:      clamp(3.5rem, 2.2rem + 5.2vw, 7rem);
+  --section-y-tight:clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --measure: 68ch;          /* body copy line length cap */
+  --measure-narrow: 56ch;
+  --container: 76rem;       /* 1216px */
+  --container-wide: 88rem;  /* 1408px */
+  --gutter: clamp(1.25rem, 0.9rem + 1.4vw, 2.5rem);
+  --header-h: 4.5rem;
+
+  /* ---- Form ------------------------------------------------------------ */
+  --radius-sm: 2px;
+  --radius:    3px;
+  --radius-lg: 4px;
+
+  /* Hairlines do the work that shadows usually do. Shadow is reserved for
+     genuinely elevated things (sticky header, mobile nav, focused field). */
+  --shadow-lift: 0 1px 2px rgba(6, 21, 39, 0.06), 0 8px 24px rgba(6, 21, 39, 0.08);
+  --shadow-panel: 0 24px 64px rgba(6, 21, 39, 0.28);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur: 280ms;
+  --dur-slow: 560ms;
+
+  /* The header must sit ABOVE the open mobile panel: the panel is opaque and
+     full-screen, so a lower header would hide its own close button and leave
+     Escape as the only way out. */
+  --z-nav: 90;
+  --z-header: 95;
+  --z-skip: 100;
+}
+
+/* ==========================================================================
+   Dark theme
+   --------------------------------------------------------------------------
+   The palette tokens are redefined rather than the components rewritten:
+   every component already paints with --paper/--mist for surfaces and
+   --ink/--slate for text, so swapping those values flips the whole site.
+
+   `.surface-navy` and `.surface-ink` sections are deliberately dark in both
+   themes. In dark mode they are lifted slightly above the page background,
+   otherwise the section rhythm the layout depends on disappears.
+
+   Contrast was re-checked with axe in this theme, not assumed.
+   ========================================================================== */
+:root[data-theme='dark'] {
+  --paper:      #0B1623;   /* page surface */
+  --mist:       #111F30;   /* alternate band */
+  --mist-deep:  #16273B;
+
+  --ink:        #E9F0F7;   /* primary text — 15.0:1 on --paper */
+  --slate:      #AFC2D4;   /* secondary text — 8.9:1 */
+  --slate-soft: #8FA5BC;   /* tertiary text — 5.9:1 */
+
+  --rule:       rgba(255, 255, 255, 0.14);
+  --rule-dark:  rgba(255, 255, 255, 0.16);
+
+  /* Dark bands sit above the page, not below it. */
+  --navy:       #132742;
+  --navy-lift:  #1B3457;
+  --ink-deep:   #06101C;   /* still the deepest band, below --paper */
+
+  /* The accent needs to be lighter on a dark ground, not darker. */
+  --cyan-deep:  #5FD7E8;   /* 9.8:1 on --paper */
+  /* White on this fill must still clear 4.5:1, so the dark-theme blue is
+     darker, not lighter, than its light-theme counterpart. The hover state
+     deepens for the same reason. */
+  --blue:       #2470C0;   /* white on it: 5.1:1 */
+  --blue-deep:  #16365E;
+  --blue-bright:#1C5FA8;   /* white on it: 6.5:1 */
+  --link:       #6FB2F5;   /* 7.4:1 on --mist, 9.6:1 on --paper */
+  --link-hover: #9ACCFF;
+
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.44);
+  --shadow-panel: 0 24px 64px rgba(0, 0, 0, 0.66);
+}

@@ -1,0 +1,201 @@
+<!--@page
+{
+  "metaKey": "about",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/about.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/about-facility.jpg" alt="" width="1920" height="845" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.about_h1 }}</h1>
+          <p class="lede">{{ c.about_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OVERVIEW ================= -->
+    <section class="section surface-paper" aria-labelledby="overview-h">
+      <div class="container">
+        <div class="split split--5-7">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="overview-h">{{ c.about_overviewTitle }}</h2>
+          </div>
+          <div class="prose" data-reveal>
+            <p class="lede">{{ c.about_overviewLede }}</p>
+            <p>{{ c.about_overviewP1 }}</p>
+            <p>{{ c.about_overviewP2 }}</p>
+            <p>{{ c.about_overviewP3 }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISION & MISSION ================= -->
+    <section class="section surface-navy" aria-labelledby="vm-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="vm-h">Vision and mission</h2>
+        <div class="split split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h3 class="statement__head">{{ c.about_visionHead }}</h3>
+            <p class="statement">{{ site.vision }}</p>
+          </div>
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h3 class="statement__head">{{ c.about_missionHead }}</h3>
+            <p class="statement">{{ site.mission }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CORE VALUES ================= -->
+    <section class="section surface-ink" aria-labelledby="values-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="values-h">{{ c.about_valuesTitle }}</h2>
+          <p class="lede">{{ c.about_valuesLede }}</p>
+        </div>
+        <!--@render company.values -->
+      </div>
+    </section>
+
+    <!-- ================= INDUSTRY EXPERTISE ================= -->
+    <section class="section surface-paper" aria-labelledby="expertise-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="expertise-h">{{ c.about_expertiseTitle }}</h2>
+            <p class="lede">{{ c.about_expertiseLede }}</p>
+            <ul class="item-list item-list--two-up">
+              <li>{{ c.about_sector1 }}</li>
+              <li>{{ c.about_sector2 }}</li>
+              <li>{{ c.about_sector3 }}</li>
+              <li>{{ c.about_sector4 }}</li>
+              <li>{{ c.about_sector5 }}</li>
+              <li>{{ c.about_sector6 }}</li>
+            </ul>
+            <p><a class="link-action" href="{{ base }}/industries.html">{{ c.about_expertiseLink }}</a></p>
+          </div>
+          <div class="figure figure--tall" data-reveal>
+            <img class="figure__parallax" src="/assets/images/about-team.jpg" alt="{{ c.about_teamAlt }}" width="900" height="1125" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">{{ c.about_teamPlate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OPERATIONAL PHILOSOPHY ================= -->
+    <section class="section surface-mist" aria-labelledby="philosophy-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="philosophy-h">{{ c.about_philosophyTitle }}</h2>
+          <p class="lede">{{ c.about_philosophyLede }}</p>
+        </div>
+        <ul class="grid grid--2">
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.about_phil1Title }}</h3>
+            <p class="card__body">{{ c.about_phil1Body }}</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.about_phil2Title }}</h3>
+            <p class="card__body">{{ c.about_phil2Body }}</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.about_phil3Title }}</h3>
+            <p class="card__body">{{ c.about_phil3Body }}</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.about_phil4Title }}</h3>
+            <p class="card__body">{{ c.about_phil4Body }}</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= WHY PARTNER ================= -->
+    <section class="section surface-paper" aria-labelledby="why-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="why-h">{{ c.about_whyTitle }}</h2>
+        </div>
+        <div class="split split--5-7">
+          <div class="figure figure--wide" data-reveal>
+            <img class="figure__parallax" src="/assets/images/svc-warehouse.jpg" alt="{{ c.about_whyAlt }}" width="1024" height="576" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+          </div>
+          <ul class="spec-list" data-reveal>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.about_why1Title }}</h3>
+                <p class="spec-row__body">{{ c.about_why1Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.about_why2Title }}</h3>
+                <p class="spec-row__body">{{ c.about_why2Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.about_why3Title }}</h3>
+                <p class="spec-row__body">{{ c.about_why3Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.about_why4Title }}</h3>
+                <p class="spec-row__body">{{ c.about_why4Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.about_why5Title }}</h3>
+                <p class="spec-row__body">{{ c.about_why5Body }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

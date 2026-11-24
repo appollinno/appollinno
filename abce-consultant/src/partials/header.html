@@ -1,0 +1,74 @@
+  <a class="skip-link" href="#main">{{ t.skip_main }}</a>
+
+  <header class="site-header" id="site-header" data-header>
+    <div class="container container--wide site-header__inner">
+      <a class="brand" href="{{ homeHref }}">
+        <!-- Light theme shows the supplied lockup. Dark theme shows the mark
+             with live text, because the lockup's "CONSULTANT LDA" line is
+             dark navy and falls below contrast on a dark bar. Whichever is
+             not in use is display:none, so only one contributes the link's
+             accessible name. -->
+        <img class="brand__mark brand__mark--full" src="/assets/images/logo/abce-logo.png"
+             alt="{{ site.name }}" width="210" height="150" fetchpriority="high">
+        <img class="brand__mark brand__mark--icon" src="/assets/images/logo/abce-mark.png"
+             alt="" width="103" height="90">
+        <span class="brand__text">
+          <span class="brand__name">ABCE Consultant</span>
+          <span class="brand__sub">LDA &middot; Maputo</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="{{ t.nav_main }}">
+        <ul class="nav__list">
+            {{ navLinks }}
+        </ul>
+      </nav>
+
+      <div class="header-tools">
+        <a class="btn btn--accent header__cta" href="{{ quoteHref }}">{{ t.cta_quote }}</a>
+        <a class="lang-switch" href="{{ page.switchHref }}" lang="{{ page.altLang }}"
+           hreflang="{{ page.altLang }}" aria-label="{{ t.lang_switchTo }}">{{ page.switchLabel }}</a>
+        <button class="icon-btn" type="button" data-theme-toggle
+                aria-pressed="false"
+                data-label-dark="{{ t.theme_toDark }}"
+                data-label-light="{{ t.theme_toLight }}">
+          <svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <span class="visually-hidden">{{ t.theme_toDark }}</span>
+        </button>
+      </div>
+
+      <button class="nav-toggle" type="button" id="nav-toggle"
+              aria-expanded="false" aria-controls="mobile-nav">
+        <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="visually-hidden">{{ t.nav_open }}</span>
+      </button>
+    </div>
+
+    <!-- Read-position indicator. Decorative: the same information is already
+         available from the scrollbar, so it is aria-hidden and is never
+         drawn at all under prefers-reduced-motion. -->
+    <span class="site-header__progress" aria-hidden="true" data-progress></span>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav" data-mobile-nav hidden>
+    <a class="brand brand--onDark mobile-nav__brand" href="{{ homeHref }}">
+      <img class="brand__mark" src="/assets/images/logo/abce-mark.png"
+           alt="" width="103" height="90" loading="lazy" decoding="async">
+      <span class="brand__text">
+        <span class="brand__name">ABCE Consultant</span>
+        <span class="brand__sub">LDA &middot; Maputo</span>
+      </span>
+    </a>
+    <nav aria-label="{{ t.nav_mobile }}">
+      <ul class="mobile-nav__list">
+            {{ navLinksMobile }}
+      </ul>
+    </nav>
+    <div class="mobile-nav__footer">
+      <a class="btn btn--accent btn--block" href="{{ quoteHref }}">{{ t.cta_quote }}</a>
+      <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+      <p>{{ phoneLinks }}</p>
+      <p>{{ site.address.full }}</p>
+    </div>
+  </div>

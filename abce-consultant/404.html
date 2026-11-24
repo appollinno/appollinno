@@ -1,0 +1,47 @@
+<!--@page
+{
+  "metaKey": "notFound",
+  "ogImage": "default",
+  "noindex": true
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+    <section class="section surface-paper" style="padding-block-start: calc(var(--header-h) + var(--s-10))" aria-labelledby="page-h">
+      <div class="container container--narrow">
+        <span class="datum" aria-hidden="true"></span>
+        <h1 id="page-h">{{ c.nf_h1 }}</h1>
+        <p class="lede" style="margin-block-start: var(--s-4)">{{ c.nf_lede }}</p>
+
+        <ul class="grid grid--2" style="margin-block-start: var(--s-7)">
+          <li class="card card--link">
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/products.html">{{ nav.2.label }}</a></h2>
+            <p class="card__body">{{ c.nf_products }}</p>
+          </li>
+          <li class="card card--link">
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/services.html">{{ nav.3.label }}</a></h2>
+            <p class="card__body">{{ c.nf_services }}</p>
+          </li>
+          <li class="card card--link">
+            <h2 class="card__title"><a class="card__link" href="{{ base }}/quality.html">{{ nav.4.label }}</a></h2>
+            <p class="card__body">{{ c.nf_quality }}</p>
+          </li>
+          <li class="card card--link">
+            <h2 class="card__title"><a class="card__link" href="{{ quoteHref }}">{{ nav.7.label }}</a></h2>
+            <p class="card__body">{{ c.nf_contact }}</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

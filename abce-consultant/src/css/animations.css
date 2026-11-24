@@ -1,0 +1,87 @@
+/* ==========================================================================
+   Motion
+   --------------------------------------------------------------------------
+   Principle: one orchestrated moment on load (the hero), restrained
+   scroll reveals, and motion that answers a person's action. Every
+   non-essential animation is removed under prefers-reduced-motion.
+
+   GSAP drives the scroll and load choreography (src/js/animations.js).
+   This file owns: keyframes, the pre-animation resting states, and the
+   reduced-motion contract.
+   ========================================================================== */
+
+/* ---- Keyframes --------------------------------------------------------- */
+@keyframes abce-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* The scroll cue's travelling tick. */
+@keyframes abce-cue {
+  0%   { transform: translateY(0); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateY(260%); opacity: 0; }
+}
+
+/* ---- Resting states for scroll reveals -------------------------------- *
+   Applied only when JS is available AND motion is allowed, so content is
+   never left invisible if GSAP fails to load or is blocked.
+ * ----------------------------------------------------------------------- */
+html.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  will-change: opacity, transform;
+}
+html.js-motion [data-reveal='fade'] {
+  transform: none;
+}
+html.js-motion [data-reveal='rule'] {
+  opacity: 1;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Hero load sequence resting states. */
+html.js-motion .hero__title .line > span { transform: translateY(104%); }
+html.js-motion .hero__sub,
+html.js-motion .hero__actions,
+html.js-motion .scroll-cue { opacity: 0; }
+html.js-motion .hero__rule { transform: scaleX(0); }
+
+/* Once the hero sequence has run, drop will-change to free the compositor. */
+.reveal-done { will-change: auto !important; }
+
+/* ---- Reduced motion ---------------------------------------------------- *
+   The contract: nothing moves on its own. Content is immediately in its
+   final state; transitions that merely confirm an action are kept but
+   shortened, because removing them entirely makes the UI feel broken.
+ * ----------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-cue__track::after { animation: none; opacity: 1; top: 0; height: 100%; }
+
+  html.js-motion [data-reveal],
+  html.js-motion .hero__sub,
+  html.js-motion .hero__actions,
+  html.js-motion .scroll-cue {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html.js-motion .hero__title .line > span { transform: none !important; }
+  html.js-motion .hero__rule,
+  html.js-motion [data-reveal='rule'] { transform: none !important; }
+
+  .hero__sweep { display: none; }
+
+  /* Parallax is disabled in JS too; this is the belt-and-braces guard. */
+  .figure__parallax,
+  .hero__media { transform: none !important; }
+}

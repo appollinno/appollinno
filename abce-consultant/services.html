@@ -1,0 +1,103 @@
+<!--@page
+{
+  "metaKey": "services",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Services — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/services.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/svc-freight.jpg" alt="" width="1280" height="841" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.svc_h1 }}</h1>
+          <p class="lede">{{ c.svc_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight surface-mist">
+      <div class="container">
+        <div data-section-index>
+          <!--@render services.index -->
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="services-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="services-h">{{ c.svc_srOnly }}</h2>
+        <!--@render services.sections -->
+      </div>
+    </section>
+
+    <!-- ================= PROCUREMENT WORKFLOW ================= -->
+    <section class="section surface-navy" aria-labelledby="workflow-h">
+      <div class="container">
+        <div class="split split--4-8">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="workflow-h">{{ c.svc_workflowTitle }}</h2>
+            <p class="lede">{{ c.svc_workflowLede }}</p>
+            <p><a class="btn btn--accent" href="{{ quoteHref }}">{{ c.svc_workflowCta }}</a></p>
+          </div>
+          <div>
+            <!--@render services.workflow -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="urgent-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="urgent-h">{{ c.svc_urgentTitle }}</h2>
+            <p class="lede">{{ c.svc_urgentLede }}</p>
+            <p class="prose">{{ c.svc_urgentBody }}</p>
+            <div class="cluster">
+              <a class="btn btn--primary" href="tel:+258842395576">{{ c.svc_urgentCall }}</a>
+              <a class="btn btn--ghost" href="mailto:{{ site.email }}">{{ c.svc_urgentEmail }}</a>
+            </div>
+          </div>
+          <div class="figure figure--wide" data-reveal>
+            <img class="figure__parallax" src="/assets/images/svc-customs.jpg" alt="{{ c.svc_urgentAlt }}" width="1024" height="681" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">{{ c.svc_urgentPlate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

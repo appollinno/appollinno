@@ -1,0 +1,43 @@
+<!--@page
+{
+  "metaKey": "credits",
+  "ogImage": "default",
+  "noindex": true
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+    <section class="section surface-paper" style="padding-block-start: calc(var(--header-h) + var(--s-9))" aria-labelledby="page-h">
+      <div class="container container--narrow">
+        <nav class="crumbs crumbs--light" aria-label="Breadcrumb" style="margin-block-end: var(--s-5)">
+          <ol>
+            <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+            <li><span aria-current="page">{{ page.title }}</span></li>
+          </ol>
+        </nav>
+        <span class="datum" aria-hidden="true"></span>
+        <h1 id="page-h">{{ c.cred_h1 }}</h1>
+        <div class="prose" style="margin-block-start: var(--s-5)">
+          <p class="lede">{{ c.cred_lede }}</p>
+          <p>{{ c.cred_p1 }}</p>
+          <p>{{ c.cred_p2 }}</p>
+          <p>{{ c.cred_p3 }}</p>
+        </div>
+
+        <div id="credits-table" style="margin-block-start: var(--s-7)">
+          <p class="notice">{{ c.cred_notice }}</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

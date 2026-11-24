@@ -1,0 +1,185 @@
+<!--@page
+{
+  "metaKey": "home",
+  "path": "/index.html",
+  "darkHero": true,
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/",
+    "publisher": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="hero__media">
+        <img src="/assets/images/hero-industrial.jpg"
+             alt="{{ c.home_heroAlt }}"
+             width="1920" height="1080"
+             fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero__scrim" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="hero__sweep" aria-hidden="true" data-hero-sweep></div>
+
+      <div class="container container--wide">
+        <div class="hero__content">
+          <h1 class="hero__title" id="hero-h">
+            <span class="line"><span>{{ c.home_heroLine1 }}</span></span>
+            <span class="line"><span>{{ c.home_heroLine2 }}</span></span>
+          </h1>
+          <hr class="hero__rule">
+          <p class="hero__sub">
+            {{ c.home_heroSub }}
+          </p>
+          <div class="cluster hero__actions">
+            <a class="btn btn--accent" href="#solutions">{{ c.home_heroCta1 }}</a>
+            <a class="btn btn--ghost" href="{{ quoteHref }}">{{ t.cta_quote }}</a>
+          </div>
+        </div>
+      </div>
+
+      <a class="scroll-cue" href="#intro">
+        <span class="scroll-cue__track" aria-hidden="true"></span>
+        <span>{{ c.home_scroll }}</span>
+      </a>
+    </section>
+
+    <!-- ================= CATALOGUE COVERAGE ================= -->
+    <section class="coverage surface-ink" aria-label="{{ c.home_coverageSr }}">
+      <div class="container container--wide">
+        <!--@render company.coverage -->
+      </div>
+    </section>
+
+    <!-- ================= INTRODUCTION ================= -->
+    <section class="section surface-paper" id="intro" aria-labelledby="intro-h">
+      <div class="container">
+        <div class="split split--5-7">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="intro-h">{{ site.positioning }}</h2>
+          </div>
+          <div class="prose" data-reveal>
+            <p class="lede">
+              {{ c.home_introLede }}
+            </p>
+            <p>
+              {{ c.home_introP1 }}
+            </p>
+            <p>
+              {{ c.home_introP2 }}
+            </p>
+            <p><a class="link-action" href="{{ base }}/about.html">{{ c.home_introLink }}</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FIVE PRODUCT STREAMS ================= -->
+    <section class="section surface-mist" id="solutions" aria-labelledby="streams-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="streams-h">{{ c.home_streamsTitle }}</h2>
+          <p class="lede">
+            {{ c.home_streamsLede }}
+          </p>
+        </div>
+
+        <div class="streams">
+          <!--@render products.streamRows -->
+        </div>
+
+        <p class="streams__action"><a class="btn btn--primary" href="{{ base }}/products.html">{{ c.home_streamsCta }}</a></p>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES OVERVIEW ================= -->
+    <section class="section surface-paper" aria-labelledby="services-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="services-h">{{ c.home_servicesTitle }}</h2>
+          <p class="lede">
+            {{ c.home_servicesLede }}
+          </p>
+        </div>
+
+        <!--@render services.overview -->
+
+        <p class="streams__action"><a class="btn btn--primary" href="{{ base }}/services.html">{{ c.home_servicesCta }}</a></p>
+      </div>
+    </section>
+
+    <!-- ================= INDUSTRY EXPERTISE ================= -->
+    <section class="section surface-navy" aria-labelledby="industries-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="industries-h">{{ c.home_industriesTitle }}</h2>
+          <p class="lede">
+            {{ c.home_industriesLede }}
+          </p>
+        </div>
+
+        <!--@render industries.cards -->
+
+        <p class="streams__action"><a class="btn btn--accent" href="{{ base }}/industries.html">{{ c.home_industriesCta }}</a></p>
+      </div>
+    </section>
+
+    <!-- ================= QUALITY & SAFETY ================= -->
+    <section class="section surface-paper" aria-labelledby="quality-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="quality-h">{{ c.home_qualityTitle }}</h2>
+            <p class="lede">
+              {{ c.home_qualityLede }}
+            </p>
+            <h3 class="subhead">{{ c.home_qualitySub }}</h3>
+            <ul class="item-list item-list--two-up">
+              <li>{{ c.home_qualityStd1 }}</li>
+              <li>{{ c.home_qualityStd2 }}</li>
+              <li>{{ c.home_qualityStd3 }}</li>
+              <li>{{ c.home_qualityStd4 }}</li>
+            </ul>
+            <p class="notice">
+              <strong>{{ c.home_qualityNoticeStrong }}</strong> {{ c.home_qualityNotice }}
+            </p>
+            <p><a class="link-action" href="{{ base }}/quality.html">{{ c.home_qualityLink }}</a></p>
+          </div>
+          <div class="figure figure--tall" data-reveal>
+            <img class="figure__parallax" src="/assets/images/qual-inspection.jpg"
+                 alt="{{ c.home_qualityAlt }}"
+                 width="900" height="1125" loading="lazy" decoding="async"
+                 sizes="(min-width: 56em) 28rem, 100vw">
+            <p class="figure__plate">{{ c.home_qualityPlate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

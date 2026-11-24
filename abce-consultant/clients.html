@@ -1,0 +1,104 @@
+<!--@page
+{
+  "metaKey": "clients",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Clients — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/clients.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/clients-industrial.jpg" alt="" width="1920" height="1275" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.cli_h1 }}</h1>
+          <p class="lede">{{ c.cli_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section surface-paper" aria-labelledby="roster-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="roster-h">{{ c.cli_rosterTitle }}</h2>
+          <p class="lede">{{ c.cli_rosterLede }}</p>
+        </div>
+
+        <!--@render clients.roster -->
+
+        <p class="notice" style="margin-block-start: var(--s-7)" data-reveal>
+          <strong>{{ c.cli_noticeStrong }}</strong> {{ c.cli_notice }}
+        </p>
+      </div>
+    </section>
+
+    <section class="section surface-navy" aria-labelledby="sectors-h">
+      <div class="container">
+        <div class="split split--5-7 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="sectors-h">{{ c.cli_workTitle }}</h2>
+            <p class="lede">{{ c.cli_workLede }}</p>
+          </div>
+          <ul class="spec-list" data-reveal>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.cli_work1Title }}</h3>
+                <p class="spec-row__body">{{ c.cli_work1Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.cli_work2Title }}</h3>
+                <p class="spec-row__body">{{ c.cli_work2Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.cli_work3Title }}</h3>
+                <p class="spec-row__body">{{ c.cli_work3Body }}</p>
+              </div>
+            </li>
+            <li class="spec-row">
+              <div class="spec-row__content">
+                <h3 class="spec-row__title">{{ c.cli_work4Title }}</h3>
+                <p class="spec-row__body">{{ c.cli_work4Body }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

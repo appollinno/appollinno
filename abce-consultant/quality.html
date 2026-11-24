@@ -1,0 +1,165 @@
+<!--@page
+{
+  "metaKey": "quality",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Quality & Compliance — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/quality.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/qual-standards.jpg" alt="" width="1920" height="1282" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.qual_h1 }}</h1>
+          <p class="lede">{{ c.qual_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= THE DISTINCTION — stated before anything else ===== -->
+    <section class="section surface-navy" aria-labelledby="scope-h">
+      <div class="container">
+        <div class="split split--5-7">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="scope-h">{{ c.qual_scopeTitle }}</h2>
+          </div>
+          <div class="stack stack--lg" data-reveal>
+            <p class="lede">{{ c.qual_scopeLede }}</p>
+
+            <div class="plate-grid">
+              <article class="plate">
+                <h3 class="plate__code">{{ c.qual_plate1 }}</h3>
+                <hr class="plate__rule">
+                <p class="plate__scope">{{ c.qual_plate1Body }}</p>
+              </article>
+              <article class="plate">
+                <h3 class="plate__code">{{ c.qual_plate2 }}</h3>
+                <hr class="plate__rule">
+                <p class="plate__scope">{{ c.qual_plate2Body }}</p>
+              </article>
+            </div>
+
+            <p class="notice">
+              <strong>{{ c.qual_noticeStrong }}</strong>
+              {{ c.qual_notice }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight surface-mist">
+      <div class="container">
+        <div data-section-index>
+          <!--@render standards.index -->
+        </div>
+      </div>
+    </section>
+
+<!--@render standards.families -->
+
+    <!-- ================= INSPECTION PRACTICE ================= -->
+    <section class="section surface-ink" aria-labelledby="practice-h">
+      <div class="container">
+        <div class="split split--7-5 split--center">
+          <div data-reveal>
+            <span class="datum" aria-hidden="true"></span>
+            <h2 id="practice-h">{{ c.qual_practiceTitle }}</h2>
+            <p class="lede">{{ c.qual_practiceLede }}</p>
+            <ol class="process">
+              <li class="process__step">
+                <span class="process__num" aria-hidden="true"></span>
+                <div>
+                  <h3 class="process__title">{{ c.qual_step1 }}</h3>
+                  <p class="process__body">{{ c.qual_step1Body }}</p>
+                </div>
+              </li>
+              <li class="process__step">
+                <span class="process__num" aria-hidden="true"></span>
+                <div>
+                  <h3 class="process__title">{{ c.qual_step2 }}</h3>
+                  <p class="process__body">{{ c.qual_step2Body }}</p>
+                </div>
+              </li>
+              <li class="process__step">
+                <span class="process__num" aria-hidden="true"></span>
+                <div>
+                  <h3 class="process__title">{{ c.qual_step3 }}</h3>
+                  <p class="process__body">{{ c.qual_step3Body }}</p>
+                </div>
+              </li>
+              <li class="process__step">
+                <span class="process__num" aria-hidden="true"></span>
+                <div>
+                  <h3 class="process__title">{{ c.qual_step4 }}</h3>
+                  <p class="process__body">{{ c.qual_step4Body }}</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="figure figure--tall" data-reveal>
+            <img class="figure__parallax" src="/assets/images/svc-inspection.jpg" alt="{{ c.qual_inspAlt }}" width="900" height="1125" loading="lazy" decoding="async" sizes="(min-width: 56em) 26rem, 100vw">
+            <p class="figure__plate">{{ c.qual_inspPlate }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SAFETY ================= -->
+    <section class="section surface-paper" aria-labelledby="safety-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="safety-h">{{ c.qual_safetyTitle }}</h2>
+          <p class="lede">{{ c.qual_safetyLede }}</p>
+        </div>
+        <ul class="grid grid--3">
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.qual_safe1 }}</h3>
+            <p class="card__body">{{ c.qual_safe1Body }}</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.qual_safe2 }}</h3>
+            <p class="card__body">{{ c.qual_safe2Body }}</p>
+          </li>
+          <li class="card" data-reveal>
+            <h3 class="card__title">{{ c.qual_safe3 }}</h3>
+            <p class="card__body">{{ c.qual_safe3Body }}</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

@@ -1,0 +1,1589 @@
+/* ==========================================================================
+   Components
+   Convention: block__element--modifier. Components never set outer margin;
+   their parent uses gap. .section owns vertical rhythm.
+   ========================================================================== */
+
+/* ---- Buttons ----------------------------------------------------------- *
+   Square-shouldered, 3px radius: precision hardware, not soft SaaS pill.
+   Hover is answered with a cyan keyline growing along the bottom edge.
+ * ----------------------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  padding: 0.9375rem var(--s-6);
+  min-height: 3rem;
+  font-family: var(--font-body);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.btn:hover::after,
+.btn:focus-visible::after { transform: scaleX(1); }
+
+.btn--primary {
+  background: var(--blue);
+  color: var(--on-dark);
+}
+.btn--primary:hover { background: var(--blue-bright); color: var(--on-dark); }
+
+.btn--accent {
+  background: var(--cyan);
+  color: var(--on-accent);
+}
+.btn--accent:hover { background: var(--cyan-soft); color: var(--on-accent); }
+.btn--accent::after { background: var(--on-accent); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--link);
+  border-color: var(--rule);
+}
+.btn--ghost:hover { border-color: var(--link); color: var(--link-hover); }
+
+/* On navy grounds */
+:is(.surface-navy, .surface-ink) .btn--ghost,
+.hero .btn--ghost {
+  color: var(--on-dark);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+:is(.surface-navy, .surface-ink) .btn--ghost:hover,
+.hero .btn--ghost:hover {
+  border-color: var(--cyan);
+  color: var(--on-dark);
+  background: rgba(0, 184, 212, 0.1);
+}
+
+.btn--block { width: 100%; }
+.btn[aria-disabled='true'],
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn[aria-disabled='true']::after,
+.btn:disabled::after { display: none; }
+
+.btn__spinner {
+  width: 1rem; height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: abce-spin 0.7s linear infinite;
+}
+
+/* Text link that reads as an action without a trailing arrow glyph. */
+.link-action {
+  display: inline-block;
+  font-weight: 600;
+  font-size: var(--fs-meta);
+  text-decoration: none;
+  padding-block-end: 2px;
+  border-block-end: 2px solid var(--cyan);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.link-action:hover { border-block-end-color: currentColor; }
+
+/* ---- Header ------------------------------------------------------------ */
+.site-header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--z-header);
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-block-end: 1px solid transparent;
+  transition: border-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
+}
+.site-header.is-stuck {
+  border-block-end-color: var(--rule);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Read-position indicator, drawn on the header's bottom edge. It rests at
+   scaleX(0) and is only ever given width by GSAP, which does not run under
+   reduced motion — so there it simply stays invisible rather than needing a
+   separate hiding rule. */
+.site-header__progress {
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline: 0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  width: 100%;
+}
+
+/* The logo lockup already contains "ABCE CONSULTANT LDA", so no text
+   wordmark sits beside it — that would print the name twice. The accessible
+   name comes from the image's alt text. */
+/* ---- Brand lockup ------------------------------------------------------ *
+   The logo is a transparent PNG, tightly cropped, so it needs no framing
+   and no background plate — it simply sits on whatever surface it is given.
+
+   On dark grounds the full lockup is not used: its "CONSULTANT LDA" line is
+   dark navy and falls below contrast on a dark background. There the mark
+   alone is paired with live text, which is both legible and selectable.
+ * ----------------------------------------------------------------------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brand__mark {
+  display: block;
+  height: 2.75rem;
+  width: auto;
+}
+
+/* Mark-only lockup for dark surfaces. */
+.brand--onDark .brand__mark { height: 2.5rem; }
+
+/* Header: the lockup in light, the mark plus live text in dark. */
+.site-header .brand__mark--icon,
+.site-header .brand__text { display: none; }
+:root[data-theme='dark'] .site-header .brand__mark--full { display: none; }
+:root[data-theme='dark'] .site-header .brand__mark--icon { display: block; height: 2.5rem; }
+:root[data-theme='dark'] .site-header .brand__text { display: flex; }
+.brand__text { display: flex; flex-direction: column; line-height: 1.12; }
+.brand__name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--on-dark);
+}
+.brand__sub {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-block-start: 3px;
+}
+
+/* ---- Desktop nav ------------------------------------------------------- */
+.nav { display: none; }
+.nav__list { display: flex; align-items: center; gap: var(--s-2); }
+.nav__link {
+  position: relative;
+  display: block;
+  padding: var(--s-2) var(--s-3);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--slate);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--s-3);
+  inset-block-end: 0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.nav__link:hover::after,
+.nav__link.is-active::after { transform: scaleX(1); }
+.nav__link:hover { color: var(--ink); }
+.nav__link.is-active { color: var(--ink); font-weight: 600; }
+
+.header__cta { display: none; }
+
+/* ---- Mobile nav -------------------------------------------------------- */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.nav-toggle__bars {
+  position: relative;
+  display: block;
+  width: 1.125rem;
+  height: 0.75rem;
+}
+.nav-toggle__bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur-fast) linear;
+}
+.nav-toggle__bars span:nth-child(1) { top: 0; }
+.nav-toggle__bars span:nth-child(2) { top: 5px; }
+.nav-toggle__bars span:nth-child(3) { top: 10px; }
+.nav-toggle[aria-expanded='true'] .nav-toggle__bars span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.nav-toggle[aria-expanded='true'] .nav-toggle__bars span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded='true'] .nav-toggle__bars span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-deep);
+  color: var(--on-dark);
+  padding: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-7);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: var(--shadow-panel);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-1.5rem);
+  transition: opacity var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out),
+              visibility var(--dur) step-end;
+}
+.mobile-nav.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out),
+              visibility 0s;
+}
+body.nav-open { overflow: hidden; }
+
+.mobile-nav__list { border-block-start: 1px solid var(--rule-dark); }
+.mobile-nav__item { border-block-end: 1px solid var(--rule-dark); }
+.mobile-nav__link {
+  display: block;
+  padding: var(--s-4) 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  color: var(--on-dark);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out), padding-left var(--dur) var(--ease-out);
+}
+.mobile-nav__link:hover,
+.mobile-nav__link.is-active { color: var(--cyan); padding-left: var(--s-3); }
+
+.mobile-nav__footer {
+  margin-block-start: auto;
+  padding-block-start: var(--s-7);
+  display: grid;
+  gap: var(--s-3);
+  font-size: var(--fs-meta);
+  color: var(--on-navy-dim);
+}
+/* Must exclude .btn: a bare descendant selector here outranks .btn--accent
+   and would repaint the CTA's label in the link colour. */
+.mobile-nav__footer a:not(.btn) { color: var(--cyan-soft); }
+.mobile-nav__footer a:not(.btn):hover { color: var(--on-dark); }
+
+/* ---- Hero -------------------------------------------------------------- */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding-block: calc(var(--header-h) + var(--s-9)) var(--s-9);
+  background: var(--ink-deep);
+  color: var(--on-dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero--inner { min-height: 60svh; align-items: center; }
+
+.hero__media {
+  position: absolute;
+  inset: -8% 0 -8% 0;   /* overscan so parallax never reveals an edge */
+  z-index: -2;
+}
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+/* Deep navy overlay: a vertical ramp plus a left-weighted wash so the
+   left-aligned headline always sits on the darkest part of the frame. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* Vignette. Last in the stack so it sits under the two directional
+       ramps: it only has to round off the corners of the frame, and over
+       them it would grey the headline's ground. */
+    linear-gradient(to right, rgba(6, 21, 39, 0.88) 0%, rgba(6, 21, 39, 0.52) 48%, rgba(11, 37, 69, 0.14) 100%),
+    linear-gradient(to top, rgba(6, 21, 39, 0.9) 0%, rgba(6, 21, 39, 0.1) 52%, rgba(6, 21, 39, 0.52) 100%),
+    radial-gradient(125% 95% at 50% 45%, transparent 48%, rgba(6, 21, 39, 0.55) 100%);
+}
+
+/* Registration marks — the corner ticks of a drawing sheet, framing the
+   hero composition. Drawn as eight 1px background slivers on one element:
+   no extra DOM, no request, nothing to paint beyond the hero. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--header-h) + var(--s-5)) var(--gutter) var(--s-6);
+  z-index: -1;
+  pointer-events: none;
+  --tick: rgba(0, 184, 212, 0.38);
+  --arm: 1.5rem;
+  background:
+    linear-gradient(var(--tick), var(--tick)) left top / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left top / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right top / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right top / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left bottom / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) left bottom / var(--arm) 1px no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right bottom / 1px var(--arm) no-repeat,
+    linear-gradient(var(--tick), var(--tick)) right bottom / var(--arm) 1px no-repeat;
+}
+
+/* Inner-page banners are short; corner marks there would crowd the title. */
+.hero--inner::after { display: none; }
+
+/* The engineering datum grid — faint, large, and only over the hero. */
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(to right, rgba(0, 184, 212, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 184, 212, 0.1) 1px, transparent 1px);
+  background-size: 7.5rem 7.5rem;
+  mask-image: radial-gradient(130% 90% at 18% 70%, #000 10%, transparent 72%);
+}
+
+.hero__content { position: relative; max-width: 62rem; }
+
+.hero__title {
+  font-size: var(--fs-hero);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: var(--on-dark);
+  text-wrap: balance;
+}
+/* Each line is its own block so the load animation can stagger them. */
+.hero__title .line { display: block; overflow: hidden; }
+.hero__title .line > span { display: block; }
+
+.hero__sub {
+  margin-block-start: var(--s-5);
+  max-width: 44rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-normal);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero__actions { margin-block-start: var(--s-7); }
+
+.hero__rule {
+  width: 100%;
+  max-width: 22rem;
+  height: 2px;
+  margin-block-start: var(--s-6);
+  background: linear-gradient(to right, var(--cyan), rgba(0, 184, 212, 0));
+  border: 0;
+  transform-origin: left;
+}
+
+/* Scroll cue */
+.scroll-cue {
+  position: absolute;
+  inset-block-end: var(--s-5);
+  inset-inline-end: var(--gutter);
+  z-index: 2;
+  display: none;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+}
+.scroll-cue__track {
+  position: relative;
+  width: 1px;
+  height: 3.5rem;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+.scroll-cue__track::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: -60%;
+  height: 60%;
+  background: var(--cyan);
+  animation: abce-cue 2.2s var(--ease-in-out) infinite;
+}
+.scroll-cue:hover { color: var(--on-dark); }
+
+/* The single cyan measurement sweep that runs once on load. */
+.hero__sweep {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, var(--cyan) 18%, var(--cyan) 82%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Page banner (inner page headers) ---------------------------------- */
+.banner {
+  position: relative;
+  padding-block: calc(var(--header-h) + var(--s-8)) var(--s-8);
+  background: var(--navy);
+  color: var(--on-dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+.banner__media { position: absolute; inset: 0; z-index: -2; }
+.banner__media img { width: 100%; height: 100%; object-fit: cover; }
+.banner__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to right, rgba(6, 21, 39, 0.95), rgba(11, 37, 69, 0.74));
+}
+.banner__content { max-width: 50rem; }
+.banner h1 { color: var(--on-dark); }
+.banner .lede { color: rgba(255, 255, 255, 0.9); margin-block-start: var(--s-4); }
+
+/* Breadcrumb */
+.crumbs { margin-block-end: var(--s-5); font-size: var(--fs-small); }
+.crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.crumbs a { color: var(--cyan-soft); text-decoration: none; }
+.crumbs a:hover { color: var(--on-dark); text-decoration: underline; }
+.crumbs li + li::before {
+  content: '/';
+  margin-inline-end: var(--s-2);
+  color: rgba(255, 255, 255, 0.4);
+}
+.crumbs [aria-current='page'] { color: rgba(255, 255, 255, 0.78); }
+
+/* ---- Catalogue coverage band ------------------------------------------- *
+   A datasheet strip directly beneath the hero: the dark ground carries on,
+   the page states its scope in figures, and only then opens into the
+   editorial intro. Every figure is COUNTED from the content model at build
+   time (see coverageBand in src/content/render.js), so it cannot drift away
+   from the catalogue it summarises, and each one links to the page a reader
+   can check it against.
+ * ------------------------------------------------------------------------ */
+.coverage {
+  padding-block: var(--s-7);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.coverage__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-5) var(--s-4);
+}
+
+.coverage__item { min-width: 0; }
+
+/* The hairline between figures reads as a datasheet column rule. It is drawn
+   on the item rather than as a gap border so the first column in each row
+   stays flush with the container edge at every breakpoint. */
+.coverage__item + .coverage__item { border-inline-start: 1px solid rgba(255, 255, 255, 0.1); padding-inline-start: var(--s-4); }
+.coverage__item:nth-child(odd) { border-inline-start: 0; padding-inline-start: 0; }
+
+.coverage__link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  text-decoration: none;
+  color: inherit;
+}
+
+.coverage__n {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 1.35rem + 2.1vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.coverage__label {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: var(--lh-snug);
+  color: var(--on-navy-dim);
+  transition: color var(--dur) var(--ease-out);
+}
+
+/* The underline is the affordance: nothing moves, a keyline simply arrives. */
+.coverage__label::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 2px;
+  margin-block-start: var(--s-2);
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.coverage__link:hover .coverage__n,
+.coverage__link:focus-visible .coverage__n { color: var(--cyan-soft); }
+.coverage__link:hover .coverage__label,
+.coverage__link:focus-visible .coverage__label { color: var(--on-dark); }
+.coverage__link:hover .coverage__label::after,
+.coverage__link:focus-visible .coverage__label::after { transform: scaleX(1); }
+
+/* `.surface-ink a:not(.btn)` would otherwise tint the whole link cyan-soft
+   and flatten the numeral/label hierarchy. */
+:is(.surface-navy, .surface-ink) .coverage__link { color: inherit; }
+:is(.surface-navy, .surface-ink) .coverage__link:hover { color: inherit; }
+
+.coverage__note {
+  margin-block-start: var(--s-6);
+  padding-block-start: var(--s-4);
+  border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(--fs-meta);
+  color: var(--on-navy-dim);
+  max-width: var(--measure);
+}
+
+/* ---- Spec row list ----------------------------------------------------- *
+   The site's primary way of presenting a set of capabilities. Full-width
+   rows separated by hairlines, like line items on a specification — handles
+   an awkward count (5 product streams) far better than a card grid, and
+   keeps the long subcategory lists legible.
+ * ----------------------------------------------------------------------- */
+.spec-list { border-block-start: 1px solid var(--rule); }
+:is(.surface-navy, .surface-ink) .spec-list { border-block-start-color: var(--rule-dark); }
+
+.spec-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3) var(--s-6);
+  padding-block: var(--s-6);
+  border-block-end: 1px solid var(--rule);
+}
+:is(.surface-navy, .surface-ink) .spec-row { border-block-end-color: var(--rule-dark); }
+
+/* The indicator keyline that answers hover/focus on an interactive row. */
+.spec-row--link::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--cyan);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur) var(--ease-out);
+}
+.spec-row--link:hover::before,
+.spec-row--link:focus-within::before { transform: scaleY(1); }
+.spec-row--link { transition: padding-inline-start var(--dur) var(--ease-out); }
+.spec-row--link:hover,
+.spec-row--link:focus-within { padding-inline-start: var(--s-5); }
+
+.spec-row__index {
+  font-family: var(--font-display);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--cyan-deep);
+  font-variant-numeric: tabular-nums;
+}
+:is(.surface-navy, .surface-ink) .spec-row__index { color: var(--cyan); }
+
+.spec-row__title { font-size: var(--fs-h4); }
+.spec-row__title a { color: inherit; text-decoration: none; }
+.spec-row__title a::after { content: ''; position: absolute; inset: 0; }
+.spec-row__body { color: var(--slate); max-width: var(--measure); }
+:is(.surface-navy, .surface-ink) .spec-row__body { color: var(--on-navy); }
+.spec-row__thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+/* ---- Featured stream rows (home) --------------------------------------- *
+   The home page's centrepiece. Same spec-row bones as the services list, but
+   given editorial weight: the reference number is set at display size as the
+   row's anchor, and a chevron arrives on hover to say the row is a door.
+
+   The thumbnail is NOT scaled on hover: GSAP already owns `transform` on
+   .figure__parallax for the scroll drift, and a competing CSS transform on
+   the same element would fight it. The tint overlay below is painted on the
+   wrapper instead, which nothing else touches.
+ * ------------------------------------------------------------------------ */
+.spec-row--media { padding-block: var(--s-7); }
+
+.spec-row--media .spec-row__index {
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.375rem);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  /* Optically align the numeral with the cap-height of the title beside it. */
+  padding-block-start: 0.06em;
+}
+
+/* The figure gets a cyan edge on hover, matching the row's keyline. */
+.spec-row--media .figure--wide {
+  position: relative;
+  overflow: hidden;
+}
+.spec-row--media .figure--wide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  pointer-events: none;
+}
+.spec-row--media:hover .figure--wide::after,
+.spec-row--media:focus-within .figure--wide::after { opacity: 1; }
+
+/* Chevron drawn from two borders rather than shipped as an icon — it is pure
+   decoration, so it costs no request and carries aria-hidden. */
+.spec-row__go { display: none; }
+
+.spec-row--media .spec-row__title { text-wrap: balance; }
+
+/* On a dark band the chevron and the figure keyline both need the lighter
+   accent; --cyan-deep is a text-on-light token and goes muddy here. */
+:is(.surface-navy, .surface-ink) .spec-row__go {
+  border-block-start-color: var(--cyan);
+  border-inline-end-color: var(--cyan);
+}
+
+/* ---- Spec table (subcategory listings) --------------------------------- */
+.spec-table { width: 100%; border-collapse: collapse; font-size: var(--fs-meta); }
+.spec-table caption {
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate-soft);
+  padding-block-end: var(--s-3);
+}
+.spec-table th,
+.spec-table td {
+  text-align: left;
+  padding: var(--s-3) var(--s-4) var(--s-3) 0;
+  border-block-end: 1px solid var(--rule);
+  vertical-align: top;
+}
+.spec-table th {
+  font-weight: 600;
+  color: var(--ink);
+  width: 42%;
+}
+.spec-table td { color: var(--slate); }
+:is(.surface-navy, .surface-ink) .spec-table th { color: var(--on-dark); }
+:is(.surface-navy, .surface-ink) .spec-table td { color: var(--on-navy); }
+:is(.surface-navy, .surface-ink) .spec-table th,
+:is(.surface-navy, .surface-ink) .spec-table td { border-block-end-color: var(--rule-dark); }
+
+/* Plain itemised list of parts/materials — hairline separated, two-up. */
+.item-list { display: grid; gap: 0; }
+.item-list li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+  color: var(--slate);
+  /* These are content bullets (capabilities, subcategories), not labels —
+     they belong at the base reading size like the rest of the body copy. */
+  font-size: var(--fs-body);
+}
+.item-list li::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  margin-block-start: 0.5em;
+  background: var(--cyan);
+}
+:is(.surface-navy, .surface-ink) .item-list li { color: var(--on-navy); border-block-end-color: var(--rule-dark); }
+
+/* ---- Cards ------------------------------------------------------------- *
+   Hairline-bordered, not shadow-stacked. Only genuinely elevated things
+   get a shadow on this site.
+ * ----------------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  height: 100%;
+}
+.card__title { font-size: var(--fs-h5); }
+/* Body copy, not a label: keep it at the base 16px. 14px is too small for
+   paragraph text on a phone, which is where much of this will be read. */
+.card__body { color: var(--slate); font-size: var(--fs-body); }
+.card--navy {
+  background: var(--navy-lift);
+  border-color: var(--rule-dark);
+}
+.card--navy .card__title { color: var(--on-dark); }
+.card--navy .card__body { color: var(--on-navy); }
+
+/* Interactive card: top keyline indicates the active target. */
+.card--link { transition: border-color var(--dur) var(--ease-out); }
+.card--link::before {
+  content: '';
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline: -1px;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.card--link:hover::before,
+.card--link:focus-within::before { transform: scaleX(1); }
+
+/* The lift is shadow and border only, deliberately NOT a transform: these
+   cards carry data-reveal, so GSAP owns their `transform` and writes an
+   inline translate when the reveal finishes. A CSS hover transform would be
+   outranked by that inline style and silently do nothing. */
+.card--link:hover,
+.card--link:focus-within {
+  border-color: var(--mist-deep);
+  box-shadow: var(--shadow-lift);
+}
+.card--navy.card--link:hover,
+.card--navy.card--link:focus-within {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+}
+.card__link { text-decoration: none; color: inherit; }
+.card__link::after { content: ''; position: absolute; inset: 0; }
+
+.card__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--cyan-deep);
+  flex: 0 0 auto;
+}
+.card--navy .card__icon { color: var(--cyan); }
+
+/* ---- Media figure with parallax inner image ---------------------------- */
+.figure {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--mist);
+}
+.figure img { width: 100%; height: 100%; object-fit: cover; }
+.figure--tall { aspect-ratio: 4 / 5; }
+.figure--wide { aspect-ratio: 16 / 9; }
+.figure--square { aspect-ratio: 1 / 1; }
+.figure__parallax { will-change: transform; }
+
+/* Caption plate over media — reads like an equipment label. */
+.figure__plate {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  max-width: 85%;
+  padding: var(--s-4) var(--s-5);
+  background: rgba(6, 21, 39, 0.88);
+  color: var(--on-dark);
+  font-size: var(--fs-small);
+  border-block-start: 2px solid var(--cyan);
+}
+
+/* ---- Nameplate (standards) -------------------------------------------- *
+   Evokes the stamped specification plate on a valve body or pressure
+   vessel: the code set large, its scope beneath, inside a bordered block
+   with a cut corner.
+ * ----------------------------------------------------------------------- */
+.plate-grid { display: grid; gap: var(--s-5); }
+
+.plate {
+  position: relative;
+  padding: var(--s-6);
+  background: var(--navy-lift);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius);
+  /* cut corner, top-right */
+  clip-path: polygon(0 0, calc(100% - 1.25rem) 0, 100% 1.25rem, 100% 100%, 0 100%);
+}
+.plate__code {
+  font-family: var(--font-display);
+  font-size: var(--fs-plate);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--on-dark);
+  line-height: 1.1;
+}
+.plate__scope {
+  margin-block-start: var(--s-3);
+  color: var(--on-navy);
+  font-size: var(--fs-meta);
+}
+.plate__rule {
+  width: 2.5rem;
+  height: 2px;
+  margin-block: var(--s-4);
+  background: var(--cyan);
+  border: 0;
+}
+.plate--light {
+  background: var(--paper);
+  border-color: var(--rule);
+}
+.plate--light .plate__code { color: var(--ink); }
+.plate--light .plate__scope { color: var(--slate); }
+
+/* ---- Numbered process (legitimate sequence — procurement workflow) ----- */
+.process { counter-reset: step; display: grid; gap: 0; }
+.process__step {
+  counter-increment: step;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-4) var(--s-5);
+  padding-block: var(--s-6);
+  border-block-end: 1px solid var(--rule);
+}
+.process__step:first-child { border-block-start: 1px solid var(--rule); }
+:is(.surface-navy, .surface-ink) .process__step { border-color: var(--rule-dark); }
+
+.process__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+}
+.process__num::before { content: counter(step, decimal-leading-zero); }
+.process__title { font-size: var(--fs-h5); }
+.process__body { margin-block-start: var(--s-2); color: var(--slate); max-width: var(--measure); }
+:is(.surface-navy, .surface-ink) .process__body { color: var(--on-navy); }
+
+/* ---- Client roster (text-based, no invented logos) -------------------- */
+.roster { display: grid; gap: var(--s-4); }
+.roster__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-5);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  border-inline-start: 3px solid var(--cyan);
+}
+.roster__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-h5);
+  font-weight: 600;
+  color: var(--ink);
+}
+.roster__note { display: block; font-family: var(--font-body); font-size: var(--fs-small); font-weight: 400; color: var(--slate); margin-block-start: 2px; }
+
+/* ---- Contact details --------------------------------------------------- */
+.contact-lines { display: grid; gap: var(--s-5); }
+.contact-line { display: grid; grid-template-columns: auto 1fr; gap: var(--s-4); align-items: start; }
+.contact-line__icon {
+  width: 2.5rem; height: 2.5rem;
+  display: grid; place-items: center;
+  flex: 0 0 auto;
+  color: var(--cyan);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius);
+}
+.contact-line__label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-navy-dim);
+  margin-block-end: var(--s-1);
+}
+.contact-line__value { font-size: var(--fs-h5); font-family: var(--font-display); font-weight: 600; color: var(--on-dark); }
+.contact-line__value a { color: inherit; text-decoration: none; }
+.contact-line__value a:hover { color: var(--cyan-soft); }
+.contact-line__value .sep { margin-inline: var(--s-3); color: var(--rule-dark); }
+
+/* ---- Forms ------------------------------------------------------------- */
+.form { display: grid; gap: var(--s-5); }
+.form__grid { display: grid; gap: var(--s-5); }
+.field { display: grid; gap: var(--s-2); }
+.field__label {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--ink);
+}
+.field__req { color: var(--cyan-deep); margin-inline-start: 2px; }
+.field__hint { font-size: var(--fs-small); color: var(--slate-soft); }
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.8125rem var(--s-4);
+  min-height: 3rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+.field textarea { min-height: 9rem; resize: vertical; line-height: var(--lh-normal); }
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%234A5B70' stroke-width='1.6'%3E%3Cpath d='M4 6.5 8 10.5l4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--s-4) center;
+  background-size: 1rem;
+  padding-inline-end: var(--s-8);
+}
+.field input:hover,
+.field select:hover,
+.field textarea:hover { border-color: var(--slate-soft); }
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--cyan-deep);
+  box-shadow: 0 0 0 3px rgba(0, 184, 212, 0.18);
+  outline: none;
+}
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible { outline: 3px solid var(--cyan); outline-offset: 1px; }
+
+.field__error {
+  display: none;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: #B3261E;
+}
+.field.has-error input,
+.field.has-error select,
+.field.has-error textarea { border-color: #B3261E; }
+.field.has-error .field__error { display: block; }
+
+.form__note { font-size: var(--fs-small); color: var(--slate); max-width: var(--measure); }
+
+.form-status {
+  padding: var(--s-5);
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--cyan);
+  background: var(--mist);
+  font-size: var(--fs-meta);
+  color: var(--ink);
+}
+.form-status[hidden] { display: none; }
+.form-status--error { border-inline-start-color: #B3261E; }
+.form-status strong { display: block; margin-block-end: var(--s-2); font-family: var(--font-display); }
+
+/* ---- CTA band ---------------------------------------------------------- */
+.cta-band {
+  position: relative;
+  background: var(--blue-deep);
+  color: var(--on-dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+.cta-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, rgba(0, 184, 212, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 184, 212, 0.1) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+  mask-image: radial-gradient(120% 100% at 85% 20%, #000 0%, transparent 70%);
+}
+.cta-band h2 { color: var(--on-dark); }
+.cta-band__inner { display: grid; gap: var(--s-7); align-items: center; }
+.cta-band .lede { color: rgba(255, 255, 255, 0.92); }
+
+/* ---- Stat / fact strip (no fabricated metrics — labelled facts only) --- */
+.facts { display: grid; gap: 0; border-block-start: 1px solid var(--rule-dark); }
+.fact { padding-block: var(--s-5); border-block-end: 1px solid var(--rule-dark); }
+.fact__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  color: var(--on-dark);
+  letter-spacing: -0.02em;
+}
+.fact__label { margin-block-start: var(--s-2); font-size: var(--fs-meta); color: var(--on-navy-dim); }
+
+/* ---- Footer ------------------------------------------------------------ */
+.site-footer {
+  background: var(--ink-deep);
+  color: var(--on-navy);
+  padding-block: var(--s-9) var(--s-6);
+  font-size: var(--fs-meta);
+}
+.site-footer__top { display: grid; gap: var(--s-8); }
+.site-footer__brand { max-width: 24rem; }
+.site-footer__blurb { margin-block-start: var(--s-5); color: var(--on-navy-dim); line-height: var(--lh-normal); }
+
+.footer-col__head {
+  font-family: var(--font-display);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  margin-block-end: var(--s-4);
+}
+.footer-col ul { display: grid; gap: var(--s-3); }
+.footer-col a { color: var(--on-navy-dim); text-decoration: none; }
+.footer-col a:hover { color: var(--cyan-soft); text-decoration: underline; }
+.footer-col address { font-style: normal; color: var(--on-navy-dim); line-height: var(--lh-normal); }
+
+.site-footer__bottom {
+  margin-block-start: var(--s-8);
+  padding-block-start: var(--s-5);
+  border-block-start: 1px solid var(--rule-dark);
+  display: grid;
+  gap: var(--s-3);
+  font-size: var(--fs-small);
+  color: var(--on-navy-dim);
+}
+.site-footer__bottom a { color: var(--on-navy-dim); }
+
+/* ---- Notice (honest disclosure blocks) -------------------------------- */
+.notice {
+  padding: var(--s-5) var(--s-6);
+  background: var(--mist);
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--blue);
+  border-radius: var(--radius);
+  /* These blocks carry the disclosure copy (no backend, no map, standards
+     vs certification). They are the last thing that should be set small. */
+  font-size: var(--fs-body);
+  color: var(--slate);
+}
+.notice strong { color: var(--ink); }
+:is(.surface-navy, .surface-ink) .notice {
+  background: var(--navy-lift);
+  border-color: var(--rule-dark);
+  border-inline-start-color: var(--cyan);
+  color: var(--on-navy);
+}
+:is(.surface-navy, .surface-ink) .notice strong { color: var(--on-dark); }
+
+/* ---- Back to top ------------------------------------------------------- */
+.to-top {
+  position: fixed;
+  inset-block-end: var(--s-5);
+  inset-inline-end: var(--s-5);
+  z-index: 70;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  background: var(--blue);
+  color: var(--on-brand);
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition: opacity var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out),
+              visibility var(--dur) step-end,
+              background-color var(--dur-fast) var(--ease-out);
+}
+.to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), visibility 0s, background-color var(--dur-fast) var(--ease-out); }
+.to-top:hover { background: var(--blue-bright); }
+
+/* ==========================================================================
+   Page modules
+   Composed from the primitives above; each one exists because a specific
+   section needs it, not as a generic utility.
+   ========================================================================== */
+
+/* ---- Small heading inside a block of content --------------------------- */
+.subhead {
+  font-size: var(--fs-h5);
+  margin-block: var(--s-6) var(--s-4);
+}
+:is(.surface-navy, .surface-ink) .subhead { color: var(--on-dark); }
+
+/* ---- Home: five streams ------------------------------------------------ */
+.streams__action { margin-block-start: var(--s-7); }
+
+/* ---- Vision / mission statements --------------------------------------- */
+.statement__head {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-block-end: var(--s-4);
+}
+.statement {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: var(--tracking-snug);
+  color: var(--on-dark);
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+/* ---- About: core values ------------------------------------------------ */
+
+/* ---- Products: category band ------------------------------------------- */
+/* Item reference set inside the heading, like a part number on a drawing. */
+.h-ref {
+  display: inline-block;
+  margin-inline-end: 0.6em;
+  font-size: 0.5em;
+  font-weight: 600;
+  color: var(--cyan-deep);
+  vertical-align: 0.28em;
+}
+:is(.surface-navy, .surface-ink) .h-ref { color: var(--cyan); }
+
+/* Subcategory groups: hairline-separated spec blocks, not nested cards. */
+.spec-groups {
+  display: grid;
+  gap: var(--s-6);
+  padding-block-start: var(--s-2);
+}
+.spec-group { border-block-start: 2px solid var(--cyan); padding-block-start: var(--s-4); }
+.spec-group__head {
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-block-end: var(--s-2);
+}
+:is(.surface-navy, .surface-ink) .spec-group__head { color: var(--on-dark); }
+.spec-group .item-list li:last-child { border-block-end: 0; }
+
+/* ---- Services: in-page index (ten entries, so a plain list would sprawl) */
+.service-index { margin-block-start: var(--s-2); }
+.service-index__list {
+  display: grid;
+  gap: 0;
+  border-block-start: 1px solid var(--rule);
+}
+.service-index__list li { border-block-end: 1px solid var(--rule); }
+.service-index__list a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-2);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--slate);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out),
+              padding-inline-start var(--dur) var(--ease-out);
+}
+.service-index__list a span { color: var(--cyan-deep); font-weight: 600; }
+.service-index__list a:hover,
+.service-index__list a.is-active {
+  color: var(--ink);
+  padding-inline-start: var(--s-4);
+}
+.service-index__list a.is-active { font-weight: 600; }
+
+/* In-page index built from ghost buttons (products, industries, standards) */
+.btn--ghost.is-active {
+  border-color: var(--cyan-deep);
+  color: var(--ink);
+  background: rgba(0, 184, 212, 0.08);
+}
+.btn--ghost.is-active::after { transform: scaleX(1); }
+
+/* ---- Home: industry cards (image + text) ------------------------------- */
+.industry-card { padding: 0; overflow: hidden; }
+.industry-card .figure { border-radius: 0; }
+.industry-card .figure img { aspect-ratio: 16 / 10; }
+.industry-card .card__title { padding: var(--s-5) var(--s-5) 0; }
+.industry-card .card__body { padding: 0 var(--s-5) var(--s-5); }
+.industry-card::before { inset-block-start: 0; }
+
+/* ---- Quality: standards grid ------------------------------------------- */
+
+/* ---- Credits: breadcrumb on a light ground ----------------------------- */
+.crumbs--light a { color: var(--link); }
+.crumbs--light a:hover { color: var(--link-hover); }
+.crumbs--light [aria-current='page'] { color: var(--slate); }
+.crumbs--light li + li::before { color: var(--rule); }
+
+/* ---- Split order override ---------------------------------------------- *
+   Only meaningful once the split is actually two columns, so it is scoped to
+   that breakpoint in responsive.css. Declared here as a no-op placeholder so
+   the class is never undefined.
+ * ----------------------------------------------------------------------- */
+.order-last { order: 0; }
+
+/* ---- Products: detail strip ------------------------------------------- *
+   Small supporting shots of the goods themselves under each category.
+   A procurement buyer wants to see the hardware, not only read a list.
+ * ----------------------------------------------------------------------- */
+.detail-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4);
+}
+.detail-strip__item { min-width: 0; }
+.detail-strip .figure { border-radius: var(--radius); }
+.detail-strip__cap {
+  margin-block-start: var(--s-2);
+  font-size: var(--fs-small);
+  color: var(--slate);
+}
+:is(.surface-navy, .surface-ink) .detail-strip__cap { color: var(--on-navy-dim); }
+
+/* Logo at the head of the mobile panel */
+.mobile-nav__brand { align-self: flex-start; margin-block-end: var(--s-7); }
+
+/* ---- Standards coverage pairs (from the company's own standards table) -- */
+.coverage {
+  margin-block-start: var(--s-5);
+  border-block-start: 1px solid var(--rule);
+}
+.coverage__row {
+  display: grid;
+  gap: var(--s-1) var(--s-5);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+}
+.coverage dt {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--slate-soft);
+}
+.coverage dd { margin: 0; color: var(--ink); font-size: var(--fs-meta); }
+:is(.surface-navy, .surface-ink) .coverage { border-block-start-color: var(--rule-dark); }
+:is(.surface-navy, .surface-ink) .coverage__row { border-block-end-color: var(--rule-dark); }
+:is(.surface-navy, .surface-ink) .coverage dd { color: var(--on-navy); }
+
+/* ---- Theme and language controls --------------------------------------- */
+.header-tools { display: flex; align-items: center; gap: var(--s-2); }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+.icon-btn:hover { border-color: var(--slate-soft); background: rgba(0, 184, 212, 0.08); }
+.icon-btn svg { width: 1.125rem; height: 1.125rem; }
+
+/* Only one of the two icons is shown, decided by the active theme. */
+.icon-btn .i-sun { display: none; }
+:root[data-theme='dark'] .icon-btn .i-sun { display: block; }
+:root[data-theme='dark'] .icon-btn .i-moon { display: none; }
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 2.75rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out);
+}
+.lang-switch:hover { border-color: var(--slate-soft); background: rgba(0, 184, 212, 0.08); color: var(--ink); }
+
+/* In dark mode the header bar is a dark translucent surface, not white. */
+:root[data-theme='dark'] .site-header { background: rgba(11, 22, 35, 0.92); }
+
+/* The hero scrim already darkens the photograph; in dark mode take it
+   further so the page does not brighten as you reach the top. */
+:root[data-theme='dark'] .hero__media img,
+:root[data-theme='dark'] .banner__media img { filter: brightness(0.82); }
+
+/* ---- Catalogue --------------------------------------------------------- */
+.catalogue { margin-block-start: var(--s-6); }
+
+.catalogue__controls {
+  display: grid;
+  gap: var(--s-5);
+  padding-block-end: var(--s-5);
+}
+.catalogue__controls[hidden] { display: none; }
+.catalogue__search { max-width: 32rem; }
+
+.catalogue__filters { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 2.75rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--slate);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.chip:hover { border-color: var(--slate-soft); color: var(--ink); }
+.chip__n { font-size: var(--fs-small); color: var(--slate-soft); }
+.chip[aria-pressed='true'] {
+  color: var(--on-dark);
+  background: var(--navy);
+  border-color: var(--navy);
+  font-weight: 600;
+}
+.chip[aria-pressed='true'] .chip__n { color: var(--cyan); }
+
+.catalogue__count {
+  font-size: var(--fs-meta);
+  color: var(--slate);
+  padding-block: var(--s-3);
+  border-block-start: 1px solid var(--rule);
+}
+.catalogue__count:empty { display: none; }
+
+.catalogue__list { display: grid; gap: 0; }
+
+.cat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+}
+.cat-item[hidden] { display: none; }
+.cat-item__text { display: flex; flex-direction: column; min-width: 0; }
+.cat-item__name { color: var(--ink); font-size: var(--fs-body); }
+.cat-item__meta { font-size: var(--fs-small); color: var(--slate-soft); margin-block-start: 2px; }
+
+.cat-item__add {
+  flex: 0 0 auto;
+  min-height: 2.25rem;
+  padding-inline: var(--s-4);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--link);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.cat-item__add:hover { border-color: var(--link); background: rgba(0, 184, 212, 0.08); }
+.cat-item__add[aria-pressed='true'] {
+  color: var(--on-accent);
+  background: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.catalogue__empty { margin-block-start: var(--s-5); }
+.catalogue__empty[hidden] { display: none; }
+
+/* ---- Quotation request dock and panel ---------------------------------- */
+.request-dock {
+  position: fixed;
+  inset-block-end: var(--s-5);
+  inset-inline-end: var(--s-5);
+  z-index: 75;
+}
+.request-dock[hidden] { display: none; }
+
+.request-dock__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 3rem;
+  padding-inline: var(--s-5);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  color: var(--on-dark);
+  background: var(--navy);
+  border: 1px solid var(--navy-lift);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.request-dock__btn:hover { background: var(--navy-lift); }
+.request-dock__btn svg { width: 1.125rem; height: 1.125rem; }
+.request-dock__n {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: 0.375rem;
+  font-size: var(--fs-small);
+  color: var(--on-accent);
+  background: var(--cyan);
+  border-radius: 999px;
+}
+
+.request-panel {
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: min(34rem, calc(100vh - 4rem));
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+.request-panel::backdrop { background: rgba(6, 21, 39, 0.62); }
+.request-panel[open] { display: flex; flex-direction: column; }
+
+.request-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-5) var(--s-4);
+  border-block-end: 1px solid var(--rule);
+}
+.request-panel__head h2 { font-size: var(--fs-h5); }
+
+.request-panel__list { overflow-y: auto; padding-inline: var(--s-5); }
+.request-panel__list[hidden] { display: none; }
+
+.request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+}
+.request-item__text { display: flex; flex-direction: column; min-width: 0; }
+.request-item__name { font-size: var(--fs-meta); }
+.request-item__meta { font-size: var(--fs-small); color: var(--slate-soft); margin-block-start: 2px; }
+.request-item__remove {
+  flex: 0 0 auto;
+  min-height: 2.25rem;
+  padding-inline: var(--s-3);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--link);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.request-item__remove:hover { border-color: var(--link); }
+
+.request-panel__empty { padding: var(--s-6) var(--s-5); color: var(--slate); font-size: var(--fs-meta); }
+.request-panel__empty[hidden] { display: none; }
+
+.request-panel__foot {
+  margin-block-start: auto;
+  padding: var(--s-5);
+  border-block-start: 1px solid var(--rule);
+  display: grid;
+  gap: var(--s-4);
+}
+.request-panel__note { font-size: var(--fs-small); color: var(--slate); }
+.request-panel__note[hidden] { display: none; }

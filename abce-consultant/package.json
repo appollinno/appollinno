@@ -1,0 +1,40 @@
+{
+  "name": "abce-consultant-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Corporate website for ABCE Consultant LDA - procurement, industrial supply and integrated logistics for high-criticality industries.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/sitemap.mjs && vite build",
+    "start": "vite preview",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "icons": "node scripts/icons.mjs",
+    "seo": "node scripts/sitemap.mjs",
+    "images": "node scripts/optimise-images.mjs",
+    "shots": "node scripts/screenshots.mjs",
+    "shots:full": "node scripts/screenshots.mjs --full"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "lucide": "^0.544.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.57.0",
+    "eslint": "^9.39.5",
+    "globals": "^16.5.0",
+    "lighthouse": "^12.8.2",
+    "vite": "^7.1.14",
+    "vitest": "^5.1.1"
+  }
+}

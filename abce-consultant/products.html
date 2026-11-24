@@ -1,0 +1,94 @@
+<!--@page
+{
+  "metaKey": "products",
+  "ogImage": "default",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Products — ABCE Consultant LDA",
+    "url": "https://www.abceconsu.com/products.html",
+    "about": {
+      "@id": "https://www.abceconsu.com/#organization"
+    }
+  }
+}
+-->
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<!--@include head-meta.html -->
+</head>
+<body class="{{ page.bodyClass }}">
+<!--@include header.html -->
+
+  <main id="main">
+
+    <section class="banner" aria-labelledby="page-h">
+      <div class="banner__media">
+        <img src="/assets/images/cat-mechanical-piping.jpg" alt="" width="1280" height="853" fetchpriority="high" decoding="async">
+      </div>
+      <div class="banner__scrim" aria-hidden="true"></div>
+      <div class="container container--wide">
+        <div class="banner__content">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="{{ homeHref }}">{{ nav.0.label }}</a></li>
+              <li><span aria-current="page">{{ page.title }}</span></li>
+            </ol>
+          </nav>
+          <h1 id="page-h">{{ c.prod_h1 }}</h1>
+          <p class="lede">{{ c.prod_lede }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight surface-mist" aria-labelledby="index-h">
+      <div class="container">
+        <h2 class="visually-hidden" id="index-h">{{ c.prod_indexSr }}</h2>
+        <div data-section-index>
+          <!--@render products.index -->
+        </div>
+      </div>
+    </section>
+
+<!--@render products.bands -->
+
+    <!-- ================= CATALOGUE ================= -->
+    <section class="section surface-paper" id="catalogue" aria-labelledby="catalogue-h">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="catalogue-h">{{ c.prod_catTitle }}</h2>
+          <p class="lede">{{ c.prod_catLede }}</p>
+        </div>
+        <!--@render products.catalogue -->
+      </div>
+    </section>
+
+    <section class="section surface-mist" aria-labelledby="howto-h">
+      <div class="container container--narrow">
+        <div class="section-head" data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="howto-h">{{ c.prod_howTitle }}</h2>
+          <p class="lede">{{ c.prod_howLede }}</p>
+        </div>
+        <table class="spec-table" data-reveal>
+          <caption>{{ c.prod_howCaption }}</caption>
+          <tbody>
+            <tr><th scope="row">{{ c.prod_row1h }}</th><td>{{ c.prod_row1d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row2h }}</th><td>{{ c.prod_row2d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row3h }}</th><td>{{ c.prod_row3d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row4h }}</th><td>{{ c.prod_row4d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row5h }}</th><td>{{ c.prod_row5d }}</td></tr>
+            <tr><th scope="row">{{ c.prod_row6h }}</th><td>{{ c.prod_row6d }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+<!--@include cta-band.html -->
+  </main>
+
+<!--@include footer.html -->
+</body>
+</html>

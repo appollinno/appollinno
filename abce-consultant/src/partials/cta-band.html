@@ -1,0 +1,15 @@
+  <section class="section cta-band" aria-labelledby="cta-h">
+    <div class="container">
+      <div class="cta-band__inner split">
+        <div data-reveal>
+          <span class="datum" aria-hidden="true"></span>
+          <h2 id="cta-h">{{ c.cta_title }}</h2>
+          <p class="lede">{{ c.cta_lede }}</p>
+        </div>
+        <div class="cluster cta-band__actions" data-reveal>
+          <a class="btn btn--accent" href="{{ quoteHref }}">{{ t.cta_quote }}</a>
+          <a class="btn btn--ghost" href="mailto:{{ site.email }}">{{ c.cta_email }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
